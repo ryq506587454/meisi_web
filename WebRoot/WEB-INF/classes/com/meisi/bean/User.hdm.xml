@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">    
+<!-- 用户实体类的hbm文件 -->   
+<hibernate-mapping package="com.meisi.bean">  
+    <class name="User" table="User">  
+        <id name="userId" column="userId" type="long" length="11" >  
+            <generator class="assigned"/> 
+        </id>   
+        <property name="password" column="password" type="string" length="20" not-null="true"/>  
+        <property name="name" column="name" type="string" length="20" not-null="true" />  
+        <property name="grade" column="grade" type="int" length="3" not-null="true" />  
+        <property name="tel" column="tel" type="long" length="11" not-null="true" />   
+        <property name="identity" column="identity" type="long"  length="18" not-null="true" />           
+        <many-to-one name="card"  unique="true" class="com.meisi.bean.Card" cascade="all">
+            <column name="cardId" />
+        </many-to-one>
+       	<set name="course" table="User_Course">
+       		<key column="userId"></key>
+       		<many-to-many  class="com.meisi.bean.Course" column="courseId" />
+       	</set>
+    </class>  
+</hibernate-mapping>  

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">    
+<!-- 会员卡实体类的hbm文件 -->      
+<hibernate-mapping package="com.meisi.bean">  
+    <class name="Consumelog" table="Consumelog">  
+        <id name="consumeId" column="consumeId" type="int">  
+            <generator class="identity"/> 
+        </id>   
+        <property name="consume" column="Consume" type="float" not-null="true" />   
+        <property name="consumeDate" column="consumeDate" type="date" not-null="true"/>  
+    </class>  
+</hibernate-mapping>  
+ 

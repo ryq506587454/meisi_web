@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<!--相当于request.setCharacterEncoding("UTF-8"); 解决post请求乱码   --> 
+	<constant name="struts.i18n.encoding" value="UTF-8"/>  
+	<!--提供详细报错页面，修改struts.xml后不需要重启服务器   -->
+	<constant name="struts.devMode" value="true" />  
+	<!-- 用户action配置 -->
+	<package name="User" extends="struts-default,json-default" namespace="/">
+		<action name="User_*" method="{1}"  class="UserAction">		
+			<!-- 登陆成功后返回页面 -->
+			<result name="Login_SUCCESS">/index.jsp</result>
+			<result name="Login_FAIL">/tip/out.jsp</result>
+			<!-- 查询所有用户 -->
+			<result name="findAllUser_SUCCESS">/vip_table.jsp</result>
+			<!-- 查询所有教练 -->
+			<result name="findAllCoach_SUCCESS">/coach_table.jsp</result>
+			<!-- 查重验证 -->			   
+			<result name="MediaLogin" type="json" >
+				<param name="root">mediaUser</param>				
+			</result>  	                   			
+		</action>
+	</package>
+	
+	
+</struts>    

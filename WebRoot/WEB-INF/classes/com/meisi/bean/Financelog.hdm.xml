@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">    
+<!-- 会员卡实体类的hbm文件 -->      
+<hibernate-mapping package="com.meisi.bean">  
+    <class name="Financelog" table="Financelog">  
+        <id name="financeId" column="financeId" type="int">  
+            <generator class="identity"/> 
+        </id>   
+        <property name="inCome" column="inCome" type="float" not-null="true" />  
+        <property name="outCome" column="outCome" type="float" not-null="true" />  
+        <property name="countDate" column="countDate" type="date" not-null="true"/>  
+    </class>  
+</hibernate-mapping>  
+ 

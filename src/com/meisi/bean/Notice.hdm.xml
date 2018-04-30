@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">    
+<!-- 会员卡实体类的hbm文件 -->      
+<hibernate-mapping package="com.meisi.bean">  
+    <class name="Notice" table="Notice">  
+        <id name="noticeId" column="noticeId" type="int">  
+            <generator class="identity"/> 
+        </id>   
+        <property name="bulletin" column="bulletin" type="string" not-null="true" /> 
+        <property name="noticeDetail" column="noticeDetail" type="string" not-null="true" />   
+        <property name="publishTime" column="publishTime" type="date" not-null="true"/>  
+    </class>  
+</hibernate-mapping>  
+ 

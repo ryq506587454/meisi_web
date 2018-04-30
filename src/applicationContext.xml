@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd"> 
+ <!-- 引入外部文件 -->
+ <context:property-placeholder location="classpath:jdbc.properties"/> 
+ <!-- 配置C3P0连接池 -->
+	 <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+	 	<property name="driverClass" value="${jdbc.driverClass}"/>
+	 	<property name="jdbcUrl" value="${jdbc.url}"/>
+	 	<property name="user" value="${jdbc.username}"/>
+	 	<property name="password" value="${jdbc.password}"/>	
+	 </bean>
+ <!-- hibernate与spring整合 -->
+ 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+ 		<!-- 注入连接池 -->
+		<property name="dataSource" ref="dataSource"/>
+		<!-- 配置hibernate属性 -->
+		<property name="hibernateProperties">
+			<props>
+				<!-- 设置mysql方言 -->
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<!-- 设置生成表结构的策略配置 -->
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<!-- 操作数据库时,会 向控制台打印sql语句 -->
+				<prop key="hibernate.show_sql">true</prop>
+				<!-- 打印sql语句前,会将sql语句先格式化  -->
+				<prop key="hibernate.format_sql">true</prop>
+			</props>
+		</property>		
+		<!-- 加载hibernate映射 -->
+		<property name="mappingResources">
+			<list>
+				<value>com/meisi/bean/User.hdm.xml</value>
+				<value>com/meisi/bean/Card.hdm.xml</value>
+				<value>com/meisi/bean/Course.hdm.xml</value>
+				<value>com/meisi/bean/Financelog.hdm.xml</value>
+				<value>com/meisi/bean/Consumelog.hdm.xml</value>
+				<value>com/meisi/bean/Notice.hdm.xml</value>
+				<value>com/meisi/bean/Punishlog.hdm.xml</value>				
+			</list>
+		</property>				
+	</bean>      
+ <!-- 对User的一系列管理 -->
+        <!-- User交互层-->
+         	<!--将action交给Spring框架管理  -->
+   	<bean id="UserAction" class="com.meisi.action.UserAction">
+		<property name="UserService" ref="UserService"/>
+	</bean>
+	 	<!-- User业务层-->
+	<bean id="UserService" class="com.meisi.service.UserService">
+			<!-- 注入Dao -->
+		<property name="UserDao" ref="UserDao"/>
+	</bean>
+		<!-- User持久层-->
+	<bean id="UserDao" class="com.meisi.dao.UserDao">
+			<!-- 注入SessionFactory -->
+		<property name="sessionFactory" ref="sessionFactory"/>			
+	</bean>
+<!-- 对User的一系列管理结束 -->
+</beans>

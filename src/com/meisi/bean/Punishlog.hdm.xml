@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">    
+<!-- 会员卡实体类的hbm文件 -->      
+<hibernate-mapping package="com.meisi.bean">  
+    <class name="Punishlog" table="Punishlog">  
+        <id name="punishlogId" column="punishlogId" type="int">  
+            <generator class="identity"/> 
+        </id>   
+        <property name="punMoney" column="punMoney" type="float" not-null="true" />  
+        <property name="logDate" column="logDate" type="date" not-null="true" />
+        <property name="Content" column="Content" type="string" length="15" not-null="true" />    
+    </class>  
+</hibernate-mapping>  
+ 

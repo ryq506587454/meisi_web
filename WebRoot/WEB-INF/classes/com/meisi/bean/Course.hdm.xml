@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">    
+<!-- 会员卡实体类的hbm文件 -->      
+<hibernate-mapping package="com.meisi.bean">  
+    <class name="Course" table="Course">  
+        <id name="courseId" column="courseId" type="long">  
+            <generator class="assigned"/> 
+        </id>   
+        <property name="courseName" column="courseName" type="string" not-null="true" />  
+        <property name="startDate" column="startDate" type="timestamp" not-null="true" />  
+        <property name="courseIntro" column="courseIntro" type="string" not-null="true"/>  
+        <property name="courseType" column="courseType" type="string" not-null="true"/> 
+        <property name="totalNumber" column="totalNumber" type="int" not-null="true"/>     
+        <set name="user" table="User_Course" inverse="true">
+       		<key column="courseId"></key>
+       		<many-to-many lazy="false" fetch="join" class="com.meisi.bean.User" column="userId" />
+       	</set>
+        
+    </class>  
+</hibernate-mapping>  
+ 
