@@ -68,5 +68,22 @@
 			<!-- 注入SessionFactory -->
 		<property name="sessionFactory" ref="sessionFactory"/>			
 	</bean>
-<!-- 对User的一系列管理结束 -->
+ <!-- 对User的一系列管理结束 -->
+ <!-- 对Course的一系列管理 -->
+        <!-- Course交互层-->
+         	<!--将action交给Spring框架管理  -->
+   	<bean id="CourseAction" class="com.meisi.action.CourseAction">
+		<property name="CourseService" ref="CourseService"/>
+	</bean>
+	 	<!-- Course业务层-->
+	<bean id="CourseService" class="com.meisi.service.CourseService">
+			<!-- 注入Dao -->
+		<property name="CourseDao" ref="CourseDao"/>
+	</bean>
+		<!-- Course持久层-->
+	<bean id="CourseDao" class="com.meisi.dao.CourseDao">
+			<!-- 注入SessionFactory -->
+		<property name="sessionFactory" ref="sessionFactory"/>			
+	</bean>
+ <!-- 对Course的一系列管理结束 -->
 </beans>

@@ -70,11 +70,10 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 	    ac.getSession().put("CoachList",CoachList);	 	
 		return "findAllCoach_SUCCESS";				
 	}
-	//微信用户登陆
+	//微信用户登陆-移动端
 	public String meidalogin(){
 		System.out.println("UA.meidalogin被调用了。。");
-		mediaUser = UserService.login(user);
-		
+		mediaUser = UserService.login(user);		
 		return "MediaLogin";		
 	}
 	
