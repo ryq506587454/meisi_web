@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import com.meisi.bean.Course;
+import com.meisi.bean.User;
 
 
 public class CourseDao extends HibernateDaoSupport{
@@ -11,20 +12,28 @@ public class CourseDao extends HibernateDaoSupport{
 	public List<Course> findCourseByType(Course course){
 		System.out.println("CD.findCourseType被调用。。");
 		System.out.println(course.getCourseId()+" "+course.getCourseType());
-		List<Course> courList = new ArrayList<Course>(); 
 		String hql = "from Course where courseType = ?";  	
-		courList = this.getHibernateTemplate().find(hql,course.getCourseType()); 
+		List<Course> courList = (ArrayList<Course>)this.getHibernateTemplate().find(hql,course.getCourseType()); 
 		return courList;
 		
 	}
-	//根据课程ID查课-移动端
-		public List<Course> findCourseById(Course course){
-			System.out.println("CD.meidaFindByID被调用了。。");	
-			System.out.println(course.getCourseId()+" "+course.getCourseType());
-			List<Course> courList = new ArrayList<Course>(); 
-			String hql = "from Course where courseId = ?";  	
-			courList = this.getHibernateTemplate().find(hql,course.getCourseId()); 
-			return courList;		
-		}
-		
+	//根据课程ID查课
+	public Course findCourseById(Course course){
+		System.out.println("CD.findCourseById被调用了。。");	
+		System.out.println(course.getCourseId()+" "+course.getCourseType());
+		Course c  =(Course)this.getHibernateTemplate().get(Course.class,course.getCourseId()); 		
+		return c;		
+	}
+	//预约课程-移动端
+	public String apptmenCourse(String userId,Course c){
+		System.out.println("CD.apptmenCourse被调用了。。");
+		System.out.println(userId+" "+c.getCourseId());
+		String hql = "from User where userId = ?";
+		User vip = (User)this.getHibernateTemplate().find(hql,userId); 
+		hql = "from Course where courseId = ";
+		Course appt = (Course) this.getHibernateTemplate().find(hql,c.getCourseId()); 
+		vip.getCourse().add(appt);
+		this.getHibernateTemplate().update(vip);
+		return "OK";		
+	}
 }

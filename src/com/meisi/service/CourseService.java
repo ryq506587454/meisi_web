@@ -5,6 +5,7 @@ package com.meisi.service;
 import java.util.List;
 
 import com.meisi.bean.Course;
+import com.meisi.bean.User;
 import com.meisi.dao.CourseDao;
 
 
@@ -19,10 +20,15 @@ public class CourseService {
 		System.out.println("CS.findCourseType被调用。。");
 		return CourseDao.findCourseByType(course);
 	}
-	//
-	public List<Course> findCourseById(Course course){
-		System.out.println("CS.findCourseType被调用。。");
+	//根据课程ID查课
+	public Course findCourseById(Course course){
+		System.out.println("CS.findCourseById被调用。。");
 		return CourseDao.findCourseById(course);
+	}
+	//移动端预约选课
+	public String apptmenCourse(String userId,Course c){
+		System.out.println("CS.apptmenCourse。。");
+		return CourseDao.apptmenCourse(userId,c);		
 	}
 	
 }	

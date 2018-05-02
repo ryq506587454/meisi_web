@@ -15,18 +15,24 @@
 			<result name="findAllUser_SUCCESS">/vip_table.jsp</result>
 			<!-- 查询所有教练 -->
 			<result name="findAllCoach_SUCCESS">/coach_table.jsp</result>
-			<!-- 传送数据到小程序 -->			   
+			<!-- 移动端登陆 -->			   
 			<result name="MediaLogin" type="json" >
 				<param name="root">mediaUser</param>				
 			</result>  	                   			
 		</action>
 		<action name="Course_*" method="{1}"  class="CourseAction">					
-			<!-- 查重验证 -->			   
-			<result name="MeidaFindByType" type="json" >
+			<!--向移动端返回课程列表 -->		   
+			<result name="MeidaCourseList" type="json" >
 				<param name="root">courList</param>				
+			</result> 
+			<!--向移动端返回某一课程 -->		   
+			<result name="MeidaCourse" type="json" >
+				<param name="root">mediaCourse</param>				
+			</result> 
+			<!--向移动端返回某一信息 -->		   
+			<result name="MeidaMsg" type="json" >
+				<param name="root">msg</param>				
 			</result>  	                   			
 		</action>
-	</package>
-	
-	
+	</package>		
 </struts>    
