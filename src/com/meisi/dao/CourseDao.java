@@ -1,10 +1,12 @@
 package com.meisi.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import com.meisi.bean.Course;
 import com.meisi.bean.User;
+import com.meisi.util.User_Course;
 
 
 public class CourseDao extends HibernateDaoSupport{
@@ -29,11 +31,23 @@ public class CourseDao extends HibernateDaoSupport{
 		System.out.println("CD.apptmenCourse被调用了。。");
 		System.out.println(userId+" "+c.getCourseId());
 		String hql = "from User where userId = ?";
-		User vip = (User)this.getHibernateTemplate().find(hql,userId); 
+		User vip = (User)this.getHibernateTemplate().get(User.class,userId);
 		hql = "from Course where courseId = ";
-		Course appt = (Course) this.getHibernateTemplate().find(hql,c.getCourseId()); 
+		Course appt = (Course)this.getHibernateTemplate().get(Course.class,c.getCourseId()); 	 
 		vip.getCourse().add(appt);
 		this.getHibernateTemplate().update(vip);
 		return "OK";		
 	}
-}
+	//查看预约课程
+	public List<User_Course> findApptCourse(String userId){
+		System.out.println("CD.apptmenCourse被调用了。。");
+		System.out.println(userId+" ");
+		User vip = (User)this.getHibernateTemplate().get(User.class, userId);
+		List<User_Course> uc = new ArrayList<User_Course>();
+		
+		
+		//hql = "selec ut.startTime,uc.courseId from user_time ut,user_course uc  WHERE ut.userId = uc.userId adn uc.userID="+userId;
+		
+		return null;
+	}
+}	

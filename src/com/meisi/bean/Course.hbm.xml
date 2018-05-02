@@ -6,13 +6,17 @@
         <id name="courseId" column="courseId" type="long">  
             <generator class="assigned"/> 
         </id>   
-        <property name="courseName" column="courseName" type="string" not-null="true" />  
-        <property name="startDate" column="startDate" type="timestamp" not-null="true" />  
+        <property name="courseName" column="courseName" type="string" not-null="true" />   
         <property name="courseIntro" column="courseIntro" type="string" not-null="true"/>  
-        <property name="courseType" column="courseType" type="string" not-null="true"/> 
-        <property name="totalNumber" column="totalNumber" type="int" not-null="true"/>     
+        <property name="courseType" column="courseType" type="string" not-null="true"/>
+        <property name="courseDuration" column="courseDuration" type="long" not-null="true"/> 
+        <property name="totalNumber" column="totalNumber" type="int" not-null="true"/>  
+        <set name="startDate" table="course_time">  
+            <key column="courseId" />  
+            <element type="timestamp" column="startTime" not-null="true" /> 
+        </set>   
         <set name="user" table="User_Course" inverse="true">
-       		<key column="courseId"></key>
+       		<key column="courseId" />      
        		<many-to-many lazy="false" fetch="join" class="com.meisi.bean.User" column="userId" />
        	</set>
         

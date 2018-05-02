@@ -1,6 +1,8 @@
 package com.meisi.bean;
 
+import java.util.Date;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 /*
  * 用户实体类
@@ -20,14 +22,15 @@ import java.util.Set;
 
 
 public class User {
-	private long userId;		//用户账号
-	private String password;//用户登陆密码，默认888888
-	private String name;	//用户姓名
-	private int grade;		//用户等级，
-	private long tel;		//用户手机号，会员默认为登录帐号	
-	private long identity;	//身份证号
-	private Card card;		//会员卡
-	private Set<Course> course = new HashSet<Course>();
+	private long userId;								//用户账号
+	private String password;							//用户登陆密码，默认888888
+	private String name;								//用户姓名
+	private int grade;									//用户等级，
+	private long tel;									//用户手机号，会员默认为登录帐号	
+	private long identity;								//身份证号
+	private Card card;									//会员卡
+	private Set<Course> course ; 						//已约课程
+	private Map<Date,Course> appt;						//预约课程
 	
 	public long getUserId() {
 		return userId;
@@ -76,12 +79,12 @@ public class User {
 	}
 	public void setCourse(Set<Course> course) {
 		this.course = course;
+	}			
+	public Map<Date, Course> getAppt() {
+		return appt;
 	}
-	@Override
-	public String toString() {
-		return "User [userId=" + userId + ", password=" + password + ", name="
-				+ name + ", grade=" + grade + ", tel=" + tel + ", identity="
-				+ identity + ", card=" + card.getCardId()+"]";
+	public void setAppt(Map<Date, Course> appt) {
+		this.appt = appt;
 	}
 	public void pushSet(){
 		for (Course i : this.getCourse()) {

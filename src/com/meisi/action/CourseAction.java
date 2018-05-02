@@ -78,5 +78,9 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		msg = CourseService.apptmenCourse(userId, Course);
 		return "MeidaMsg";		
 	}
+	//查看预约课
+	public String meidaFindMyAppt(){
+		
+	}
 
 }

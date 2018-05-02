@@ -23,6 +23,7 @@ public class UserDao extends HibernateDaoSupport{
 			return null;
 		}
 	}
+	
 	//查询所有用户
 	public List<User> findAllVip(){
 		System.out.println("UD.findAllVip被调用。。");

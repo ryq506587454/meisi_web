@@ -42,13 +42,13 @@
 		<!-- 加载hibernate映射 -->
 		<property name="mappingResources">
 			<list>
-				<value>com/meisi/bean/User.hdm.xml</value>
-				<value>com/meisi/bean/Card.hdm.xml</value>
-				<value>com/meisi/bean/Course.hdm.xml</value>
-				<value>com/meisi/bean/Financelog.hdm.xml</value>
-				<value>com/meisi/bean/Consumelog.hdm.xml</value>
-				<value>com/meisi/bean/Notice.hdm.xml</value>
-				<value>com/meisi/bean/Punishlog.hdm.xml</value>				
+				<value>com/meisi/bean/User.hbm.xml</value>
+				<value>com/meisi/bean/Card.hbm.xml</value>
+				<value>com/meisi/bean/Course.hbm.xml</value>
+				<value>com/meisi/bean/Financelog.hbm.xml</value>
+				<value>com/meisi/bean/Consumelog.hbm.xml</value>
+				<value>com/meisi/bean/Notice.hbm.xml</value>
+				<value>com/meisi/bean/Punishlog.hbm.xml</value>				
 			</list>
 		</property>				
 	</bean>      

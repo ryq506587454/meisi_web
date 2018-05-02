@@ -15,8 +15,13 @@
             <column name="cardId" />
         </many-to-one>
        	<set name="course" table="User_Course">
-       		<key column="userId"></key>
-       		<many-to-many  class="com.meisi.bean.Course" column="courseId" />
+       		<key column="userId" />       		 
+       		<many-to-many  class="com.meisi.bean.Course" column="courseId" /> 		
        	</set>
+       	<map name="addressMap" table="t_addressMap">
+             <key column="userId"></key>
+             <map-key type="timestamp" column="startTime"></map-key>               
+             <element type="string" column="courseName"></element>
+        </map>
     </class>  
 </hibernate-mapping>  
