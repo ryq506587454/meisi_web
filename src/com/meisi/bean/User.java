@@ -30,7 +30,7 @@ public class User {
 	private long identity;								//身份证号
 	private Card card;									//会员卡
 	private Set<Course> course ; 						//已约课程
-	private Map<Date,Course> appt;						//预约课程
+	private Set<Date> courseTime;						//预约课程
 	
 	public long getUserId() {
 		return userId;
@@ -80,11 +80,12 @@ public class User {
 	public void setCourse(Set<Course> course) {
 		this.course = course;
 	}			
-	public Map<Date, Course> getAppt() {
-		return appt;
+	
+	public Set<Date> getCourseTime() {
+		return courseTime;
 	}
-	public void setAppt(Map<Date, Course> appt) {
-		this.appt = appt;
+	public void setCourseTime(Set<Date> courseTime) {
+		this.courseTime = courseTime;
 	}
 	public void pushSet(){
 		for (Course i : this.getCourse()) {

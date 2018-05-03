@@ -18,10 +18,10 @@
        		<key column="userId" />       		 
        		<many-to-many  class="com.meisi.bean.Course" column="courseId" /> 		
        	</set>
-       	<map name="addressMap" table="t_addressMap">
-             <key column="userId"></key>
-             <map-key type="timestamp" column="startTime"></map-key>               
-             <element type="string" column="courseName"></element>
-        </map>
+       	<set name="courseTime" table="User_Course">  
+            <key column="userId" />  
+            <element type="timestamp" column="courseTime" not-null="true" /> 
+        </set> 
+       	
     </class>  
 </hibernate-mapping>  

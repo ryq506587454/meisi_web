@@ -26,9 +26,9 @@ public class CourseService {
 		return CourseDao.findCourseById(course);
 	}
 	//移动端预约选课
-	public String apptmenCourse(String userId,Course c){
+	public String apptmenCourse(String userId,Course c,String data){
 		System.out.println("CS.apptmenCourse。。");
-		return CourseDao.apptmenCourse(userId,c);		
+		return CourseDao.apptmenCourse(userId,c,data);		
 	}
 	
 }	

@@ -54,6 +54,14 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		public void setUserId(String userId) {
 			this.userId = userId;
 		}
+		private String courseDate;
+		
+	public String getCourseDate() {
+			return courseDate;
+		}
+		public void setCourseDate(String courseDate) {
+			this.courseDate = courseDate;
+		}
 	//课程业务层注入
 	private CourseService CourseService;
 	public void setCourseService(CourseService courseService) {
@@ -75,12 +83,10 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 	//移动端预约选课
 	public String meidaAppt(){
 		System.out.println("CA.meidaAppt被调用了。。");	
-		msg = CourseService.apptmenCourse(userId, Course);
+		msg = CourseService.apptmenCourse(userId, Course,courseDate);
 		return "MeidaMsg";		
 	}
 	//查看预约课
-	public String meidaFindMyAppt(){
-		
-	}
+	
 
 }
