@@ -8,7 +8,7 @@
         </id>   
         <property name="startTime" column="startTime" type="date" not-null="true" />  
         <property name="endTime" column="endTime" type="date" not-null="true" />  
-        <property name="type" column="type" type="string" not-null="true"  length="3" />  
+        <property name="type" column="type" type="string" not-null="true"  length="5" />  
         <property name="restTimes" column="restTimes" not-null="true" type="int" length="6" />  
         <one-to-one name="user" class="com.meisi.bean.User" property-ref="card" />
     </class>  

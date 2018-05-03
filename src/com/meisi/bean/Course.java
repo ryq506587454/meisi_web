@@ -19,7 +19,7 @@ public class Course {
 	private String courseName; 								//课程名称
 	private String courseIntro; 							//简介
 	private String courseType;								//课程类型
-	private long courseDuration;							//课程市场
+	private long courseDuration;							//课程时长
 	private int totalNumber;								//总人数
 	private Set<Date> startDate = new HashSet<Date>();		//开课时间
 	private Set<User> user = new HashSet<User>();			//用户		

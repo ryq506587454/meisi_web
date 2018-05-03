@@ -16,8 +16,11 @@
 			<!-- 查询所有教练 -->
 			<result name="findAllCoach_SUCCESS">/coach_table.jsp</result>
 			<!-- 移动端登陆 -->			   
-			<result name="MediaLogin" type="json" >
+			<result name="MediaUser" type="json" >
 				<param name="root">mediaUser</param>				
+			</result> 
+			<result name="MediaMsg" type="json" >
+				<param name="root">msg</param>				
 			</result>  	                   			
 		</action>
 		<action name="Course_*" method="{1}"  class="CourseAction">					

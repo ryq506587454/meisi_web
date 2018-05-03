@@ -48,7 +48,8 @@
 				<value>com/meisi/bean/Financelog.hbm.xml</value>
 				<value>com/meisi/bean/Consumelog.hbm.xml</value>
 				<value>com/meisi/bean/Notice.hbm.xml</value>
-				<value>com/meisi/bean/Punishlog.hbm.xml</value>				
+				<value>com/meisi/bean/Punishlog.hbm.xml</value>	
+				<value>com/meisi/bean/Appointment.hbm.xml</value>			
 			</list>
 		</property>				
 	</bean>      

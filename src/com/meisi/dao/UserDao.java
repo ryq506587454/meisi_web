@@ -1,6 +1,9 @@
 package com.meisi.dao;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -16,8 +19,11 @@ public class UserDao extends HibernateDaoSupport{
 	public User login(User user){		
 		System.out.println("UD.login被调用。。");
 		System.out.println(user.getUserId()+" "+user.getPassword());
-		User u = (User)this.getHibernateTemplate().get(User.class, user.getUserId());	
-		if(u.getPassword().equals(user.getPassword())){		
+		User u = new User();
+		u = (User)this.getHibernateTemplate().get(User.class, user.getUserId());
+		if(u==null){
+			return null;
+		}else if(u.getPassword().equals(user.getPassword())){	
 			return u;
 		}else{
 			return null;
@@ -47,5 +53,24 @@ public class UserDao extends HibernateDaoSupport{
 		String hql = "from User where grade = 1 ";  
 		StuffList= this.getHibernateTemplate().find(hql);		
 		return StuffList;		
+	}
+	//修改信息
+	public String updateUserInfo(String flag,User user){
+		System.out.println("UD.updateUserInfo被调用。。");
+		User u = this.getHibernateTemplate().get(User.class, user.getUserId());
+		switch(Integer.parseInt(flag)){
+			case 1:
+				u.setName(user.getName());
+			break;
+			case 2:
+				u.setTel(user.getTel());
+			break;
+			case 3:
+				u.setSex(user.getSex());
+			break;
+		}
+		this.getHibernateTemplate().update(u);
+		this.getSession().beginTransaction().commit();		
+		return "OK";		
 	}
 }

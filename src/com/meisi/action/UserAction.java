@@ -15,28 +15,48 @@ import com.opensymphony.xwork2.ModelDriven;
 
 
 public class UserAction extends ActionSupport implements ModelDriven<User>{	
-	//JSON数据
-	private User mediaUser;	
-	public User getMediaUser() {
-		return mediaUser;
-	}
-	public void setMediaUser(User mediaUser) {
-		this.mediaUser = mediaUser;
-	}
-	//模型驱动需要的
-	private User user;
-	@Override
-	public User getModel() {
-		 if(user == null){
-	           user = new User();
-	       }
-		return this.user;
-	}
+	//生成模型
+		//用户模型
+		private User user;
+		@Override
+		public User getModel() {
+			 if(user == null){
+		           user = new User();
+		       }
+			return this.user;
+		}
+	//向微信端发送的JSON数据
+		private User mediaUser;	
+		public User getMediaUser() {
+			return mediaUser;
+		}
+		public void setMediaUser(User mediaUser) {
+			this.mediaUser = mediaUser;
+		}
+		private String msg;
+		public String getMsg() {
+			return msg;
+		}
+		public void setMsg(String msg) {
+			this.msg = msg;
+		} 
+		
+	//微信小程序传过来的非模型元素	
+		private String flag;	
+		public String getFlag() {
+			return flag;
+		}
+		public void setFlag(String flag) {
+			this.flag = flag;
+		}
+		
 	//用户业务层注入
 	private UserService UserService;
 	public void setUserService(UserService userService) {
 		UserService = userService;
 	}
+	
+	
 	//登陆功能
 	public String login(){
 		System.out.println("UA.login被调用了。。");
@@ -74,9 +94,13 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 	public String meidalogin(){
 		System.out.println("UA.meidalogin被调用了。。");
 		mediaUser = UserService.login(user);		
-		return "MediaLogin";		
+		return "MediaUser";		
 	}
-	
+	//修改用户信息-移动端
+	public String mediaUpdataInfo(){
+		msg = UserService.updateUserInfo(flag, user);		
+		return "MediaMsg";
+	}
 	
 	
 }

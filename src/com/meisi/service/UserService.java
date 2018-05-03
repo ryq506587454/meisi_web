@@ -38,6 +38,11 @@ public class UserService {
 		System.out.println("US.findAllStuff被调用。。");
 		return UserDao.findAllStuff();
 	}
+	//修改信息
+	public String updateUserInfo(String flag,User user){
+		System.out.println("US.updateUserInfo被调用。。");
+		return UserDao.updateUserInfo(flag,user);
+	}
 		
 	
 
