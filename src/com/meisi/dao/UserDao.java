@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
+import com.meisi.bean.Appointment;
 import com.meisi.bean.Course;
 import com.meisi.bean.User;
 /*
@@ -70,7 +71,24 @@ public class UserDao extends HibernateDaoSupport{
 			break;
 		}
 		this.getHibernateTemplate().update(u);
-		this.getSession().beginTransaction().commit();		
+		this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();		
+		return "OK";		
+	}
+	//取消预约
+	public String quiteAppt(User user,String courseName,String apptId){
+		System.out.println("UD.quiteAppt被调用。。");
+		User vip = this.getHibernateTemplate().get(User.class, user.getUserId());	
+		String hql = "from Course where courseName = ?";
+		List<Course> courseList = (ArrayList<Course>)this.getHibernateTemplate().find(hql,courseName);
+		Course vipCourse = courseList.get(0);
+		Appointment a = new Appointment();
+		a.setApptId(Integer.parseInt(apptId));
+		Appointment vipAppt =this.getHibernateTemplate().get(Appointment.class,a.getApptId());
+		vip.getAppt().remove(vipAppt);
+		vip.getCourse().remove(vipCourse);
+		this.getHibernateTemplate().delete(vipAppt);
+		this.getHibernateTemplate().update(vip);
+		this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();			
 		return "OK";		
 	}
 }

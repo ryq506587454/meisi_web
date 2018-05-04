@@ -7,9 +7,9 @@
             <generator class="identity"/> 
         </id>   
         <property name="courseTime" column="courseTime" type="timestamp" not-null="true" />  
-        <property name="couserName" column="couserName" type="string" not-null="true"  length="11" /> 
+        <property name="courseName" column="courseName" type="string" not-null="true"  length="11" /> 
         <property name="courseDuration" column="courseDuration" type="long" not-null="true"/>
-        <many-to-one name="user" class="User" column="userId" not-null="true"/> 
+        <many-to-one name="user" class="User" column="userId" not-null="true" /> 
     </class>  
 </hibernate-mapping>  
  

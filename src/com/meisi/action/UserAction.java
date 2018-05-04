@@ -49,7 +49,21 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 		public void setFlag(String flag) {
 			this.flag = flag;
 		}
-		
+		private String courseName;
+		public String getCourseName() {
+			return courseName;
+		}
+		public void setCourseName(String courseName) {
+			this.courseName = courseName;
+		}
+		private String appId;
+		public String getAppId() {
+			return appId;
+		}
+		public void setAppId(String appId) {
+			this.appId = appId;
+		}
+
 	//用户业务层注入
 	private UserService UserService;
 	public void setUserService(UserService userService) {
@@ -98,7 +112,14 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 	}
 	//修改用户信息-移动端
 	public String mediaUpdataInfo(){
+		System.out.println("US.mediaUpdataInfo被调用。。");
 		msg = UserService.updateUserInfo(flag, user);		
+		return "MediaMsg";
+	}
+	//取消预约
+	public String mediaQuiteAppt(){
+		System.out.println("US.mediaQuiteAppt被调用。。");
+		msg = UserService.quiteAppt(user, courseName, appId);
 		return "MediaMsg";
 	}
 	

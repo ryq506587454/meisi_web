@@ -1,19 +1,16 @@
 package com.meisi.dao;
 
-import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.Session;
+import org.hibernate.Query;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-
 import com.meisi.bean.Appointment;
 import com.meisi.bean.Course;
 import com.meisi.bean.User;
-import com.meisi.util.User_Course;
 
 
 public class CourseDao extends HibernateDaoSupport{
@@ -37,19 +34,17 @@ public class CourseDao extends HibernateDaoSupport{
 	public String apptmenCourse(String userId,Course c,String date){
 		System.out.println("CD.apptmenCourse被调用了。。");
 		System.out.println(userId+" "+c.getCourseId());
-		String flag = null;
 		//转化时间类型
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		ParsePosition pos = new ParsePosition(0);//指向String转换为Date()时的索引位置
 		Date rcreate = format.parse(date,pos);
 		//查询User
-		String hql = "from User where userId = ?";
 		User vip = (User)this.getHibernateTemplate().get(User.class,Long.parseLong(userId));
 		//查询course
-		hql = "from Course where courseId = ";
-		Course apptCourse = (Course)this.getHibernateTemplate().get(Course.class,c.getCourseId()); 	 
+		Course apptCourse = (Course)this.getHibernateTemplate().get(Course.class,c.getCourseId());
+		//给用户添加新的预约课程
 		vip.getCourse().add(apptCourse);
-		//进行预约条件
+		//进行预约条件判断
 		if(vip.getCard().getRestTimes()>0){
 			for (Appointment d : vip.getAppt()) {
 				if(d.getCourseTime().compareTo(rcreate) == 0){
@@ -59,18 +54,37 @@ public class CourseDao extends HibernateDaoSupport{
 			//新建预约记录
 			Appointment newApptLog = new Appointment();
 			newApptLog.setUser(vip);
-			newApptLog.setCouserName(apptCourse.getCourseName());				
+			newApptLog.setCourseName(apptCourse.getCourseName());				
 			newApptLog.setCourseTime(rcreate);
 			newApptLog.setCourseDuration(apptCourse.getCourseDuration());
 			//将预约记录添加进vip
 			vip.getAppt().add(newApptLog);
+			//扣除次数
+			vip.getCard().setRestTimes(vip.getCard().getRestTimes()-1);
 			//执行更新
 			this.getHibernateTemplate().update(vip);
-			this.getSession().beginTransaction().commit();
+			this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
 			return "OK";
 		}else{
 			return "TIMESERRO";
 		}			
 	}
-
+	//推荐课程-移动端
+	public List<Course> addviceCourse(){
+		System.out.println("CD.addviceCourse被调用。。");
+		List<Course> advice = new ArrayList<Course>();
+		String Sql = "SELECT count(*) AS count,courseName FROM appointment GROUP BY courseName ORDER BY count DESC limit 4";  	
+		List<Object[]> list = this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(Sql).list();
+		this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();	
+		for (Object[] objects : list) {
+			int count = Integer.valueOf(objects[0].toString()) ;
+			String courseName = (String)objects[1];
+			String hql = "from Course where courseName = ?";
+			List<Course> c = (ArrayList<Course>)this.getHibernateTemplate().find(hql,courseName);
+			advice.add(c.get(0));
+			System.out.println("count:"+count);			
+			System.out.println("courseName:"+courseName);			
+		}	
+			return advice;		
+	}
 }	

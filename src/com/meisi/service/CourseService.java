@@ -30,5 +30,9 @@ public class CourseService {
 		System.out.println("CS.apptmenCourse。。");
 		return CourseDao.apptmenCourse(userId,c,data);		
 	}
-	
+	//热门推荐
+	public List<Course> addviceCourse(){
+		System.out.println("CS.addviceCourse被调用。。");
+		return CourseDao.addviceCourse();
+	}			
 }	

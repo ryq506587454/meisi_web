@@ -9,7 +9,7 @@ import com.meisi.bean.User;
 public class Appointment {
 	private int apptId;				//约课记录ID
 	private Date courseTime;		//开课时间
-	private String couserName;		//课程名称
+	private String courseName;		//课程名称
 	private long courseDuration;	//课程时长
 	private User user;				//本课用户
 	
@@ -25,11 +25,12 @@ public class Appointment {
 	public void setCourseTime(Date courseTime) {
 		this.courseTime = courseTime;
 	}
-	public String getCouserName() {
-		return couserName;
+	
+	public String getCourseName() {
+		return courseName;
 	}
-	public void setCouserName(String couserName) {
-		this.couserName = couserName;
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
 	}
 	public User getUser() {
 		return user;

@@ -43,7 +43,13 @@ public class UserService {
 		System.out.println("US.updateUserInfo被调用。。");
 		return UserDao.updateUserInfo(flag,user);
 	}
+	//取消预约
+	public String quiteAppt(User user,String courseName,String apptId){
+		System.out.println("US.quiteAppt被调用。。");
+		return UserDao.quiteAppt(user, courseName, apptId);
 		
+	}
+	
 	
 
 }

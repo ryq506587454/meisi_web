@@ -39,14 +39,14 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 			this.mediaCourse = mediaCourse;
 		}
 		//课程列表
-		private List<Course> courList;
-		public List<Course> getCourList() {
-			return courList;
+		private List<Course> mediaCourList;
+		public List<Course> getMediaCourList() {
+			return mediaCourList;
 		}
-		public void setCourList(List<Course> courList) {
-			this.courList = courList;
+		public void setMediaCourList(List<Course> mediaCourList) {
+			this.mediaCourList = mediaCourList;
 		}
-	//微信小程序传过来的非模型元素
+		//微信小程序传过来的非模型元素
 		private String userId;		
 		public String getUserId() {
 			return userId;
@@ -54,9 +54,8 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		public void setUserId(String userId) {
 			this.userId = userId;
 		}
-		private String courseDate;
-		
-	public String getCourseDate() {
+		private String courseDate;		
+		public String getCourseDate() {
 			return courseDate;
 		}
 		public void setCourseDate(String courseDate) {
@@ -71,22 +70,27 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 	//根据课程类型查课-移动端
 	public String meidaFindByType(){
 		System.out.println("CA.meidaFindByType被调用了。。");	
-		courList = CourseService.findCourseByType(Course);
-		return "MeidaCourseList";		
+		mediaCourList = CourseService.findCourseByType(Course);
+		return "MediaCourseList";		
 	}
 	//根据课程ID查课-移动端
 	public String meidaFindByID(){
 		System.out.println("CA.meidaFindByID被调用了。。");	
 		mediaCourse = CourseService.findCourseById(Course);
-		return "MeidaCourse";		
+		return "MediaCourse";		
 	}
 	//移动端预约选课
 	public String meidaAppt(){
 		System.out.println("CA.meidaAppt被调用了。。");	
 		msg = CourseService.apptmenCourse(userId, Course,courseDate);
-		return "MeidaMsg";		
+		return "MediaMsg";		
 	}
-	//查看预约课
+	//热门推荐
+	public String meidaAdvice(){
+		System.out.println("CA.meidaAdvice被调用了。。");	
+		mediaCourList=CourseService.addviceCourse();			
+		return "MediaCourseList";
+	}
 	
 
 }
