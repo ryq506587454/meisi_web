@@ -20,15 +20,16 @@ public class UserDao extends HibernateDaoSupport{
 	public User login(User user){		
 		System.out.println("UD.login被调用。。");
 		System.out.println(user.getUserId()+" "+user.getPassword());
-		User u = new User();
-		u = (User)this.getHibernateTemplate().get(User.class, user.getUserId());
+		//String hql ="from User where userId = ? and grade = 1";
+		User u  = (User)this.getHibernateTemplate().get(User.class,user.getUserId());
+		//User u = list.get(0);
 		if(u==null){
 			return null;
 		}else if(u.getPassword().equals(user.getPassword())){	
 			return u;
 		}else{
 			return null;
-		}
+		}   
 	}
 	
 	//查询所有用户

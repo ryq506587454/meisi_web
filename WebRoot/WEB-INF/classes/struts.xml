@@ -19,24 +19,25 @@
 			<result name="MediaUser" type="json" >
 				<param name="root">mediaUser</param>				
 			</result> 
+			<!-- 返回信息 -->
 			<result name="MediaMsg" type="json" >
 				<param name="root">msg</param>				
 			</result>  	                   			
 		</action>
-		<action name="Course_*" method="{1}"  class="CourseAction">					
-			<!--向移动端返回课程列表 -->		   
+		<action name="Course_*" method="{1}"  class="CourseAction">			
+			<!--返回课程列表 -->		   
 			<result name="MediaCourseList" type="json" >
 				<param name="root">mediaCourList</param>				
 			</result> 
-			<!--向移动端返回某一课程 -->		   
+			<!--返回某一课程 -->		   
 			<result name="MediaCourse" type="json" >
 				<param name="root">mediaCourse</param>				
 			</result> 
-			<!--向移动端返回某一信息 -->		   
+			<!--返回某一信息 -->		   
 			<result name="MediaMsg" type="json" >
 				<param name="root">msg</param>				
 			</result>
-			<!--向移动端返回课程名称 -->		   
+			<!--返回课程名称 -->		   
 			<result name="MediaCourseName" type="json" >
 				<param name="root">meidaCourseName</param>				
 			</result>  	                   			

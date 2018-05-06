@@ -18,7 +18,8 @@
         <set name="user" lazy="false" table="User_Course" inverse="true">
        		<key column="courseId" />      
        		<many-to-many fetch="join" class="com.meisi.bean.User" column="userId" />
-       	</set>        
+       	</set>
+       	<many-to-one name="coach" class="com.meisi.bean.Coach" column="coachId"  not-null="true"/>        
     </class>  
 </hibernate-mapping>  
  

@@ -34,5 +34,31 @@ public class CourseService {
 	public List<Course> addviceCourse(){
 		System.out.println("CS.addviceCourse被调用。。");
 		return CourseDao.addviceCourse();
-	}			
+	}	
+	//查询所有课程
+	public List<Course> findAllCourse(){
+		System.out.println("CS.findAllCoursee被调用。。");
+		return CourseDao.findAllCourse();		
+	}
+	//根据教练查询
+	public List<Course> findCourseByCoach(String name,Course Course){
+		System.out.println("CS.findCourseByCoach被调用。。");
+		if(name.equals("无")){
+			return findCourseByType(Course);
+		}else{
+			return CourseDao.findCourseByCoach(name);
+		}		
+	}
+	//按照条件查询
+	public List<Course> findCourseByFlag(String flag,String data){
+		System.out.println("CS.findCourseByFlag被调用。。");
+		if(data.equals(" ")||data==null){
+			return null;
+		}else if(flag.equals("All")){
+			return this.findAllCourse();
+		}else{
+			return CourseDao.findCourseByFlag(flag, data);
+		}
+		
+	}
 }	

@@ -5,10 +5,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Query;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import com.meisi.bean.Appointment;
+import com.meisi.bean.Coach;
 import com.meisi.bean.Course;
 import com.meisi.bean.User;
 
@@ -86,5 +88,32 @@ public class CourseDao extends HibernateDaoSupport{
 			System.out.println("courseName:"+courseName);			
 		}	
 			return advice;		
+	}
+	//查询所有课程
+	public List<Course> findAllCourse(){
+		String hql = "from Course";
+		List<Course> allCourse = this.getHibernateTemplate().find(hql);
+		return allCourse;
+		
+	}
+	//根据老师选课
+	public List<Course> findCourseByCoach(String name){
+		System.out.println("CD.findCourseByCoach被调用了。。。");
+		String hql = "from Coach where coachName = ?";
+		List<Coach> cList = (ArrayList<Coach>)this.getHibernateTemplate().find(hql,name);
+		List<Course> allCourse = new ArrayList<Course>(); 
+		Coach c = cList.get(0);		
+		for (Course cc : c.getCourse()) {
+			allCourse.add(cc);
+		}		
+		return allCourse;			
+	}
+	//根据条件查询
+	public List<Course> findCourseByFlag(String flag,String data){
+		System.out.println("CD.findCourseByFlag被调用了。。。");						
+		String hql = " from Course where " +flag+" = ?";
+		List<Course> courseList = (ArrayList<Course>)this.getHibernateTemplate().find(hql,data);
+		return courseList;		
+		
 	}
 }	

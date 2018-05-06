@@ -20,7 +20,8 @@ public class Course {
 	private String courseIntro; 							//简介
 	private String courseType;								//课程类型
 	private long courseDuration;							//课程时长
-	private int totalNumber;								//总人数
+	private int totalNumber;								//总人数	
+	private Coach coach;									//该课教练
 	private Set<Date> startDate = new HashSet<Date>();		//开课时间
 	private Set<User> user = new HashSet<User>();			//用户		
 	public int getTotalNumber() {
@@ -71,6 +72,12 @@ public class Course {
 	}
 	public void setCourseIntro(String courseIntro) {
 		this.courseIntro = courseIntro;
+	}
+	public Coach getCoach() {
+		return coach;
+	}
+	public void setCoach(Coach coach) {
+		this.coach = coach;
 	}
 	@Override
 	public String toString() {

@@ -30,24 +30,16 @@
 			      </ul>
 			    </li>
 			    <li>
-			      <a class="am-cf" data-am-collapse="{target: '#collapse-nav2'}"><span class="am-icon-group" />&nbsp;&nbsp;员工管理 <span class="am-icon-angle-right am-fr am-margin-right" /></a>
+			      <a class="am-cf" data-am-collapse="{target: '#collapse-nav2'}"><span class="am-icon-pencil" />&nbsp;&nbsp;课程管理 <span class="am-icon-angle-right am-fr am-margin-right" /></a>
 			      <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav2">
-			        <li><a href="User_findAllCoach.action">教练列表</a></li>			       
-			        <li><a href="">工作人员列表</a></li>
-			        <li><a href="">添加员工</a></li>		        						       
-			      </ul>
-			    </li>
-			    <li>
-			      <a class="am-cf" data-am-collapse="{target: '#collapse-nav3'}"><span class="am-icon-pencil" />&nbsp;&nbsp;课程管理 <span class="am-icon-angle-right am-fr am-margin-right" /></a>
-			      <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav3">
-			        <li><a href="">课程列表</a></li>
+			        <li><a href="course_table.jsp">课程列表</a></li>
 			        <li><a href="">预约详情</a></li>	
 			        <li><a href="">增加课程</a></li>			        		        						       
 			      </ul>
 			    </li>
 			    <li>
-			      <a class="am-cf" data-am-collapse="{target: '#collapse-nav4'}"><span class="am-icon-line-chart" />&nbsp;&nbsp;收益统计 <span class="am-icon-angle-right am-fr am-margin-right" /></a>
-			      <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav4">
+			      <a class="am-cf" data-am-collapse="{target: '#collapse-nav3'}"><span class="am-icon-line-chart" />&nbsp;&nbsp;收益统计 <span class="am-icon-angle-right am-fr am-margin-right" /></a>
+			      <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav3">
 			        <li><a href="">收入汇总</a></li>
 			        <li><a href="">收入详情</a></li>   
 			      </ul>

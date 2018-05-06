@@ -46,8 +46,7 @@ public class UserService {
 	//取消预约
 	public String quiteAppt(User user,String courseName,String apptId){
 		System.out.println("US.quiteAppt被调用。。");
-		return UserDao.quiteAppt(user, courseName, apptId);
-		
+		return UserDao.quiteAppt(user, courseName, apptId);		
 	}
 	
 	
