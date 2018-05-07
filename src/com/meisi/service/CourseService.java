@@ -5,8 +5,8 @@ package com.meisi.service;
 import java.util.List;
 
 import com.meisi.bean.Course;
-import com.meisi.bean.User;
 import com.meisi.dao.CourseDao;
+import com.meisi.util.ApptLog;
 
 
 public class CourseService {
@@ -52,13 +52,20 @@ public class CourseService {
 	//按照条件查询
 	public List<Course> findCourseByFlag(String flag,String data){
 		System.out.println("CS.findCourseByFlag被调用。。");
-		if(data.equals(" ")||data==null){
-			return null;
-		}else if(flag.equals("All")){
+		System.out.println(data);
+		System.out.println(flag);
+		if(flag.equals("All")){
 			return this.findAllCourse();
+		}else if(data.length()<1){	
+			return null;
 		}else{
+			System.out.println("111");
 			return CourseDao.findCourseByFlag(flag, data);
-		}
-		
+		}		
 	}
+	//预约情况
+	public List<ApptLog> findAppt(String date){
+		return CourseDao.findAppt(date);		
+	}
+	
 }	

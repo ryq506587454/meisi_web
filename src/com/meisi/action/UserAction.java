@@ -8,6 +8,7 @@ import java.util.List;
 import com.meisi.bean.Course;
 import com.meisi.bean.User;
 import com.meisi.service.UserService;
+import com.meisi.util.Utillist;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
@@ -25,7 +26,7 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 		       }
 			return this.user;
 		}
-	//向微信端发送的JSON数据
+	//JSON数据		
 		private User mediaUser;	
 		public User getMediaUser() {
 			return mediaUser;
@@ -40,8 +41,23 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 		public void setMsg(String msg) {
 			this.msg = msg;
 		} 
+		private List<User> userList;						
+		public List<User> getUserList() {
+			return userList;
+		}
+		public void setUserList(List<User> userList) {
+			this.userList = userList;
+		}
+	//传过来的非模型元素	
+		//输入框数据
+		private String data;		
+		public String getData() {
+			return data;
+		}
+		public void setData(String data) {
+			this.data = data;
+		}
 		
-	//微信小程序传过来的非模型元素	
 		private String flag;	
 		public String getFlag() {
 			return flag;
@@ -56,14 +72,35 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 		public void setCourseName(String courseName) {
 			this.courseName = courseName;
 		}
+		private String courseType;
+		public String getCourseType() {
+			return courseType;
+		}
+		public void setCourseType(String courseType) {
+			this.courseType = courseType;
+		}
 		private String appId;
 		public String getAppId() {
 			return appId;
 		}
 		public void setAppId(String appId) {
 			this.appId = appId;
+		}	
+		private String select;		
+		public String getSelect() {
+			return select;
 		}
-
+		public void setSelect(String select) {
+			this.select = select;
+		}
+		//辅助工具
+		private Utillist utillist; 		
+		public Utillist getUtillist() {
+			return utillist;
+		}
+		public void setUtillist(Utillist utillist) {
+			this.utillist = utillist;
+		}
 	//用户业务层注入
 	private UserService UserService;
 	public void setUserService(UserService userService) {
@@ -76,8 +113,6 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 		System.out.println("UA.login被调用了。。");
 		User u = UserService.login(user);
 		if(u!=null){
-			//u.pushSet();
-			//System.out.println(u.toString());
 			ActionContext ac = ActionContext.getContext();
 		    ac.getSession().put("user",u);	 		    
 		    return "Login_SUCCESS";	
@@ -88,21 +123,8 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 	//查询所有会员信息
 	public String findAllVip(){
 		System.out.println("UA.findAllUser被调用了。。");
-		List<User> VipList =UserService.findAllVip();
-		ActionContext ac = ActionContext.getContext();
-	    ac.getSession().put("VipList",VipList);	 	
-		return "findAllUser_SUCCESS";				
-	}
-	//查询所有教练信息
-	public String findAllCoach(){
-		System.out.println("UA.findAllCoach被调用了。。");
-		List<User> CoachList =UserService.findAllCoach();
-		for (User user : CoachList) {
-			System.out.println(user.getName());
-		}
-		ActionContext ac = ActionContext.getContext();
-	    ac.getSession().put("CoachList",CoachList);	 	
-		return "findAllCoach_SUCCESS";				
+		userList =UserService.findAllVip();	
+		return "MediaUserList";			
 	}
 	//微信用户登陆-移动端
 	public String meidalogin(){
@@ -122,6 +144,44 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 		msg = UserService.quiteAppt(user, courseName, appId);
 		return "MediaMsg";
 	}
-	
-	
+	//根据flag查询
+	public String FindByFlag(){
+		System.out.println("UA.meidaFindByFlag被调用了。。");
+		userList = UserService.findUserByFlag(flag, data);	
+		if(userList==null||userList.size()==0){
+	    	msg ="未查询到结果";
+	    	utillist=utillist.CreatUtillist(msg,userList,100);	    	
+	    	return "UtilList";
+	    }else{
+	    	msg ="查询到结果";
+	    	utillist=utillist.CreatUtillist(msg,userList,101);	 
+	    	return "UtilList";	
+	    }
+	}
+	//用户查重
+	public String CheckUserTwo(){
+		System.out.println("UA.CheckUserTwo被调用了。。");
+		msg = UserService.checkUserTwo(user);
+		return "MediaMsg";		
+	}
+	//添加新用户
+	public String addUser(){
+		System.out.println("UA.addUser被调用了。。");
+		msg = UserService.addNewUser(user,select);
+		return "ADD_Success";		
+	}
+	//查找所有教练
+	public String FindAllCoach(){
+		System.out.println("UA.FindAllCoach被调用了。。");
+		msg = "查询成功";
+		utillist=utillist.CreatUtillist(msg,UserService.findAllCoach(),100);
+		return "UtilList";
+	}
+	//根据类别查找教练	
+	public String FindCoachByType(){
+		System.out.println("UA.FindAllCoach被调用了。。");
+		msg = "查询成功";
+		utillist=utillist.CreatUtillist(msg,UserService.findCoachByType(courseType),100);
+		return "UtilList";
+	}
 }

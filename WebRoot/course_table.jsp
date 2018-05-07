@@ -31,10 +31,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="content">
 				<div class="card-box">
 					<div class="form-group row">
-					    <div class="am-btn-group">
-						  <button  class="am-btn am-btn-secondary" disable="true">选择搜索条件</button>
+					    <div class="am-btn-group">						  
 						  <div class="am-dropdown" data-am-dropdown>
-						    <button class="am-btn am-btn-secondary am-dropdown-toggle" data-am-dropdown-toggle > <span class="am-icon-caret-down"></span></button>
+						  <button  class="am-btn am-btn-secondary am-dropdown-toggle"  data-am-dropdown-toggle >选择搜索条件&nbsp;<span class="am-icon-caret-down" /></button>						  
 						    <ul class="am-dropdown-content" id="select">
 						      <li class="am-dropdown-header">条件</li>
 						      <li><a href="javascript:;" data-flag="All">全部课程</a></li>
@@ -81,16 +80,55 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script type="text/javascript" src="assets/js/amazeui.min.js"></script>
 		<script>
 			$(function(){ 
-			console.log("111")
+				console.log("111");
 　　				$('#page-title').text('课程列表');
-					$.ajax({
+					findAllCourse();		 	
+　　			}); 
+		</script>
+		<script>
+			$(function(){
+				$('#select a').click(function(){					
+					var flag  = $(this).data("flag");						
+					 $.ajax({
+					 	 type:"post",					 
+						 url:"Course_FindByFlag",
+						 data:{
+						 flag:flag,
+						 data:$('#SerchInput').val()
+						 },
+						 success:function(result){
+						 	console.log(result);						  				 
+						 	if(result.code==100){						 		
+						 		alert('没有查询到相关信息');						 		
+		    				}else{
+		    					$("#tbody").empty();		
+						 		$.each(result.list,function (index,course){		                       		                        		                        
+			                        $("#tbody").append(
+			                        '<tr><td >'+course.courseId+'</td>'+
+								      '<td>'+course.courseName+'</td>'+
+								      '<td class="am-hide-sm-only">'+course.courseType+'</td>'+
+								      '<td>'+course.courseDuration/60/60+'小时</td>'+
+								      '<td class="am-hide-sm-only">'+course.totalNumber+'</td>'+							      		     							    						    
+								      '<td class="am-hide-sm-only"><button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button></td>'+						     
+								    '</tr>'		                            
+			                        );		                        
+		                    	});
+						 	}		        			   	        			 		        			    		        			         			    
+	    				}
+    				});							
+				})			 
+			});
+		</script>
+		<script type="text/javascript">
+		    function findAllCourse() {
+		        $.ajax({
 					 	 type:"post",					 
 						 url:"Course_FindAllCourse",
 						 data:{						 
 						 },
 						 success:function(result){						 
-	        			    $("#tbody").empty();
-	        			    $.each(result,function (index,course){		                       		                        		                        
+	        			    $("#tbody").empty();	        			      
+	        			    $.each(result,function (index,course){		        			    	                  		                        		                        
 		                        $("#tbody").append(
 		                        '<tr><td >'+course.courseId+'</td>'+
 							      '<td>'+course.courseName+'</td>'+
@@ -102,47 +140,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                        );		                        
 		                    });      			    
 	    				}
-    				});　　　　		 	
-　　				}); 
-		</script>
-		<script>
-			$(function(){
-				$('#select a').click(function(){					
-					var flag  = $(this).data("flag");
-						console.log($('#SerchInput').val());  
-					 $.ajax({
-					 	 type:"post",					 
-						 url:"Course_meidaFindByFlag",
-						 data:{
-						 flag:flag,
-						 data:$('#SerchInput').val()
-						 },
-						 success:function(result){
-						  $("#tbody").empty();
-						  console.log(result)
-						 	if(result=="未查询到结果,请检查"){
-						 		 $("#tbody").append(
-						 		  '<div class="page-header">'+
-  									'<h1>为查询到相关结果</h1>'+
-									'</div>');
-						 	}else{
-						 		$.each(result,function (index,course){		                       		                        		                        
-			                        $("#tbody").append(
-			                        '<tr><td >'+course.courseId+'</td>'+
-								      '<td>'+course.courseName+'</td>'+
-								      '<td class="am-hide-sm-only">'+course.courseType+'</td>'+
-								      '<td>'+course.courseDuration/60/60+'小时</td>'+
-								      '<td class="am-hide-sm-only">'+course.totalNumber+'</td>'+							      		     							    						    
-								      '<td class="am-hide-sm-only"><button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button></td>'+						     
-								    '</tr>'		                            
-			                        );		                        
-		                    });
-						 }		        			   	        			 		        			    		        			         			    
-	    				}
-    				});							
-				})			 
-			});
-		</script>
+    				});
+		    	}		   
+		</script>		
 	</body>
 	
 </html>

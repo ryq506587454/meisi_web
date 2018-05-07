@@ -1,14 +1,13 @@
 package com.meisi.dao;
 
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-
 import com.meisi.bean.Appointment;
+import com.meisi.bean.Card;
+import com.meisi.bean.Coach;
 import com.meisi.bean.Course;
 import com.meisi.bean.User;
 /*
@@ -39,14 +38,6 @@ public class UserDao extends HibernateDaoSupport{
 		String hql = "from User where grade = 0 ";  
 		VipList= this.getHibernateTemplate().find(hql);		
 		return VipList;		
-	}
-	//查询所有教练
-	public List<User> findAllCoach(){
-		System.out.println("UD.findAllCoach被调用。。");
-		List<User> CoachList = new ArrayList<User>(); 
-		String hql = "from User where grade = 1";  	
-		CoachList= this.getHibernateTemplate().find(hql);		
-		return CoachList;		
 	}
 	//查询所有员工
 	public List<User> findAllStuff(){
@@ -91,5 +82,71 @@ public class UserDao extends HibernateDaoSupport{
 		this.getHibernateTemplate().update(vip);
 		this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();			
 		return "OK";		
+	}
+	//根据条件查询
+		public List<User> findUserByFlag(String flag,String data){
+			System.out.println("UD.findCourseByFlag被调用了。。。");	
+			String hql = " from User where " +flag+" = ? and grade = 0";
+			List<User> userList = new ArrayList<User>();
+			if(flag.equals("userId")||flag.equals("tel")){
+				userList = (ArrayList<User>)this.getHibernateTemplate().find(hql,Long.parseLong(data));
+			}else{
+				hql = " from User where " +flag+" like ? and grade = 0";
+				userList = (ArrayList<User>)this.getHibernateTemplate().find(hql,"%"+data+"%");
+			}			
+			return userList;					
+		}
+	//新增用户查重
+		public String checkUserTwo(User u){
+			//1:重复 2:无重复
+			System.out.println("UD.checkUserTwo被调用了。。。");
+			User user = this.getHibernateTemplate().get(User.class, u.getUserId());
+			if(user!=null){
+				return "1";	
+			}else{
+				return "2";	
+			}		
+		}
+	//添加新用户
+		public String addNewUser(User u,String cardType){
+			System.out.println("UD.addNewUser被调用了。。。");						
+			//时间转化格式						
+			Calendar calendar = Calendar.getInstance();
+			//开始时间
+			Date startdate = new Date();				
+			calendar.setTime(startdate);						
+			//设置会员卡
+			Card c = new Card();
+			c.setType(cardType);
+			c.setStartTime(startdate);
+			if(cardType.equals("普通会员")){
+				calendar.add(Calendar.YEAR, 1);
+				Date endDate = calendar.getTime();		
+				c.setEndTime(endDate);
+				c.setRestTimes(50);				
+			}else if(cardType.equals("高级会员")){
+				calendar.add(Calendar.YEAR, 2);
+				Date endDate = calendar.getTime();
+				c.setEndTime(endDate);
+				c.setRestTimes(100);
+			}
+			u.setTel(u.getUserId());
+			u.setGrade(0);
+			u.setCard(c);
+			this.getHibernateTemplate().save(u);
+			this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
+			return "OK";			
+		}
+	//查找所有教练
+	public List<Coach> findAllCoach(){
+			String hql = "from Coach";
+			List<Coach> coachList = this.getHibernateTemplate().find(hql);
+			return coachList;
+		}
+	//根据类别查找教练
+	public List<Coach> findCoachByType(String courseType){
+		String hql = "from Coach where courseType=?";
+		List<Coach> coachList = this.getHibernateTemplate().find(hql,courseType);
+		return coachList;
 	}
 }

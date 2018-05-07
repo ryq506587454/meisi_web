@@ -23,30 +23,23 @@
 			    <li>
 			      <a class="am-cf" data-am-collapse="{target: '#collapse-nav1'}"><span class="am-icon-table" />&nbsp;&nbsp;会员管理 <span class="am-icon-angle-right am-fr am-margin-right" /></span></a>
 			      <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav1" >
-			        <li><a href="User_findAllVip.action">会员列表</a></li>
-			        <li><a href="">添加会员</a></li>
+			        <li><a href="vip_table.jsp">会员列表</a></li>
+			        <li><a href="add_vip.jsp">添加会员</a></li>
+			        <li><a href="add_vip.jsp">添加教练</a></li>
 			        <li><a href="">会员充值</a></li>						       
-			        <li><a href="">会员消费</a></li>
 			      </ul>
 			    </li>
 			    <li>
 			      <a class="am-cf" data-am-collapse="{target: '#collapse-nav2'}"><span class="am-icon-pencil" />&nbsp;&nbsp;课程管理 <span class="am-icon-angle-right am-fr am-margin-right" /></a>
 			      <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav2">
 			        <li><a href="course_table.jsp">课程列表</a></li>
-			        <li><a href="">预约详情</a></li>	
-			        <li><a href="">增加课程</a></li>			        		        						       
+			        <li><a href="appt_detail.jsp">预约详情</a></li>	
+			        <li><a href="add_course.jsp">增加课程</a></li>			        		        						       
 			      </ul>
-			    </li>
-			    <li>
-			      <a class="am-cf" data-am-collapse="{target: '#collapse-nav3'}"><span class="am-icon-line-chart" />&nbsp;&nbsp;收益统计 <span class="am-icon-angle-right am-fr am-margin-right" /></a>
-			      <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav3">
-			        <li><a href="">收入汇总</a></li>
-			        <li><a href="">收入详情</a></li>   
-			      </ul>
-			    </li>
+			    </li>			  
 			  </ul>
-		</div>
-	  </div>
+			</div>
+		  </div>
 	<!-- 左侧导航结束  -->	
 	
    	

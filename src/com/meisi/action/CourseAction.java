@@ -10,6 +10,7 @@ import com.meisi.service.CourseService;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import com.meisi.util.Utillist;
 
 public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 	//生成模型
@@ -22,7 +23,7 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		       }
 			return this.Course;
 		}
-	//向微信端发送的JSON数据
+	//JSON数据
 		//信息
 		private String msg;				
 		public String getMsg() {
@@ -47,7 +48,7 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		public void setMediaCourList(List<Course> mediaCourList) {
 			this.mediaCourList = mediaCourList;
 		}
-		//微信小程序传过来的非模型元素
+		//传过来的非模型元素
 		private String data;		
 		public String getData() {
 			return data;
@@ -82,6 +83,14 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		}
 		public void setCoachName(String coachName) {
 			this.coachName = coachName;
+		}
+		//辅助工具
+		private Utillist utillist; 		
+		public Utillist getUtillist() {
+			return utillist;
+		}
+		public void setUtillist(Utillist utillist) {
+			this.utillist = utillist;
 		}
 	//课程业务层注入
 	private CourseService CourseService;
@@ -125,16 +134,25 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		mediaCourList=CourseService.findCourseByCoach(coachName,Course);			
 		return "MediaCourseList";
 	}
-	//根据课程选课
-	public String meidaFindByFlag(){
+	//根据条件查询
+	public String FindByFlag(){
 		System.out.println("CA.meidaFindByFlag被调用了。。");
-		mediaCourList = CourseService.findCourseByFlag(flag, data);
-	     if(mediaCourList.size()==0){
-	    	msg ="未查询到结果,请检查";
-	    	return "MediaMsg";
+		mediaCourList = CourseService.findCourseByFlag(flag, data);	
+		if(mediaCourList==null||mediaCourList.size()==0){
+	    	msg ="未查询到结果";
+	    	utillist=utillist.CreatUtillist(msg,mediaCourList,100);	    	
+	    	return "UtilList";
 	    }else{
-	    	return "MediaCourseList";	
+	    	msg ="查询到结果";
+	    	utillist=utillist.CreatUtillist(msg,mediaCourList,101);	 
+	    	return "UtilList";	
 	    }
+	}
+	//查询预约
+	public String FindAppt(){
+		msg ="查询到结果";
+    	utillist=utillist.CreatUtillist(msg,CourseService.findAppt(courseDate),100);	 
+    	return "UtilList";	
 	}
 
 }

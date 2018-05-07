@@ -67,22 +67,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<!-- col start -->
 						<div class=" am-u-md-4">
 							<div class="card-box">
-								<h4 class="header-title m-t-0">今日特色教练：</h4>
-								<div class="inbox-widget nicescroll" style="height: 315px; overflow: hidden; outline: none;" tabindex="5000">
-                                    <a href="#">
-                                        <div class="inbox-item">
-                                            <div class="inbox-item-img"><img src="assets/img/avatar-1.jpg" class="img-circle" alt="" /></div>
-                                            <p class="inbox-item-author">董大刀</p>
-                                            <p class="inbox-item-text">高级私人教练</p>                                           
-                                        </div>
-                                    </a> 
-                                    <a href="#">
-                                        <div class="inbox-item">
-                                            <div class="inbox-item-img"><img src="assets/img/avatar-1.jpg" class="img-circle" alt="" /></div>
-                                            <p class="inbox-item-author">董大刀</p>
-                                            <p class="inbox-item-text">高级私人教练</p>                                           
-                                        </div>
-                                    </a> 
+								<h4 class="header-title m-t-0">部分教练：</h4>
+								<div id="coach" class="inbox-widget nicescroll" style="height: 315px; overflow: hidden; outline: none;" tabindex="5000">                                                               
                                 </div>
 							</div>
 						</div>
@@ -123,12 +109,38 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<a href="admin-offcanvas" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
 		<!-- 移动端导航栏结束 -->	
 		<!--  引用必要JS/Jquery  -->
-		<script type="text/javascript" src="assets/js/jquery-2.1.0.js" ></script>
+		  		<script type="text/javascript" src="assets/js/jquery-2.1.0.js" ></script>
+		<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="assets/js/amazeui.min.js"></script>
-		<script type="text/javascript" src="assets/js/app.js" ></script>
-		<script type="text/javascript" src="assets/js/blockUI.js" ></script>
-		<script type="text/javascript" src="assets/js/charts/echarts.min.js" ></script>
-		<script type="text/javascript" src="assets/js/charts/indexChart.js" ></script>
+		<script>
+		$(function(){ 
+			console.log("111");
+			 $.ajax({
+				 	 type:"post",					 
+					 url:"User_FindAllCoach",
+					 data:{						 
+					 },
+					 success:function(result){						 
+        			    $("#coach").empty();	        			      
+        			    $.each(result.list,function (index,coach){		        			    	                  		                        		                        
+	                        $("#coach").append(
+	                        '<a href="#">'+
+                                       '<div class="inbox-item">'+
+                                           '<div class="inbox-item-img"><img src="assets/img/avatar-1.jpg" class="img-circle" alt="" /></div>'+
+                                           '<p class="inbox-item-author">'+coach.coachName+'</p>'+
+                                           '<p class="inbox-item-text">'+coach.coachInfo+'</p>'+                                           
+                                       '</div>'+
+                                 '</a>'	                                                           
+	                        );
+	                         if(index==3){
+                                 	return flase;
+                                }	 		                        
+	                    });      			    
+    				}
+   				});		 	
+　　			}); 
+		</script>
 	</body>
+	
 </html>
 

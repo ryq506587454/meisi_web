@@ -5,6 +5,7 @@ package com.meisi.service;
 
 import java.util.List;
 
+import com.meisi.bean.Coach;
 import com.meisi.bean.User;
 import com.meisi.dao.UserDao;
 
@@ -29,7 +30,7 @@ public class UserService {
 		return UserDao.findAllVip();
 	}
 	//遍历所有教练信息
-	public List<User> findAllCoach(){
+	public List<Coach> findAllCoach(){
 		System.out.println("US.findAllCoach被调用。。");
 		return UserDao.findAllCoach();
 	}
@@ -48,7 +49,30 @@ public class UserService {
 		System.out.println("US.quiteAppt被调用。。");
 		return UserDao.quiteAppt(user, courseName, apptId);		
 	}
-	
-	
-
+	//按照条件查询
+	public List<User> findUserByFlag(String flag,String data){
+		System.out.println("US.findUserByFlag");
+		if(flag.equals("All")){
+			return this.findAllVip();
+		}else if(data.length()<1){	
+			return null;
+		}else{
+			return UserDao.findUserByFlag(flag, data);
+		}		
+	}
+	//用户查重
+	public String checkUserTwo(User u){
+		System.out.println("US.checkUserTwo");
+		return UserDao.checkUserTwo(u);
+	}
+	//添加用户
+	public String addNewUser(User u,String cType){
+		System.out.println("US.addNewUser");
+		return UserDao.addNewUser(u,cType);
+	}
+	//根据类别查找教练
+	public List<Coach> findCoachByType(String courseType){
+		System.out.println("US.findCoachByType");
+		return UserDao.findCoachByType(courseType);
+	}
 }

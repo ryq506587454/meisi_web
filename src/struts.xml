@@ -10,11 +10,7 @@
 		<action name="User_*" method="{1}"  class="UserAction">		
 			<!-- 登陆成功后返回页面 -->
 			<result name="Login_SUCCESS">/index.jsp</result>
-			<result name="Login_FAIL">/tip/out.jsp</result>
-			<!-- 查询所有用户 -->
-			<result name="findAllUser_SUCCESS">/vip_table.jsp</result>
-			<!-- 查询所有教练 -->
-			<result name="findAllCoach_SUCCESS">/coach_table.jsp</result>
+			<result name="Login_FAIL">/tip/out.jsp</result>			
 			<!-- 移动端登陆 -->			   
 			<result name="MediaUser" type="json" >
 				<param name="root">mediaUser</param>				
@@ -22,7 +18,17 @@
 			<!-- 返回信息 -->
 			<result name="MediaMsg" type="json" >
 				<param name="root">msg</param>				
-			</result>  	                   			
+			</result> 
+			<!-- 返回用户列表信息 -->
+			<result name="MediaUserList" type="json" >
+				<param name="root">userList</param>				
+			</result> 
+			<!--返回带Msg的用户列表 -->		   
+			<result name="UtilList" type="json" >
+				<param name="root">Utillist</param>				
+			</result> 
+			<!-- 新增成功 -->	  
+			<result name="ADD_Success">/tip/addsuc.jsp</result>		                 			
 		</action>
 		<action name="Course_*" method="{1}"  class="CourseAction">			
 			<!--返回课程列表 -->		   
@@ -40,7 +46,11 @@
 			<!--返回课程名称 -->		   
 			<result name="MediaCourseName" type="json" >
 				<param name="root">meidaCourseName</param>				
-			</result>  	                   			
+			</result>  	 
+			<!--返回带Msg的课程列表 -->		   
+			<result name="UtilList" type="json" >
+				<param name="root">Utillist</param>				
+			</result> 			                   			
 		</action>
 	</package>		
 </struts>    

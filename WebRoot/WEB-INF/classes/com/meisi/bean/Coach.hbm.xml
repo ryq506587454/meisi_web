@@ -6,7 +6,9 @@
         <id name="coachId" column="coachId" type="int">  
             <generator class="identity"/> 
         </id>   
-        <property name="coachName" column="coachName" type="string" not-null="true" />          
+        <property name="coachName" column="coachName" type="string" not-null="true" /> 
+        <property name="coachInfo" column="coachInfo" type="string"  /> 
+        <property name="courseType" column="courseType" type="string"  />                         
         <set name="course" lazy="false" cascade="save-update,delete" inverse="true" >
             <key column="coachId"></key>
             <one-to-many class="Course" />

@@ -24,27 +24,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<!-- 顶部 结束 -->		
 		<!-- 主体 开始 -->
 		<%@ include file="navbar.jsp" %>			 		
-			<!-- 左侧导航结束 -->			
+		<!-- 左侧导航结束 -->			
 		<!-- ============================================================== -->
 		<!-- 表格开始 -->
 		<div class="content-page">
 			<div class="content">
 				<div class="card-box">	
 					<div class="form-group row">
-					    <div class="am-btn-group">
-						  <button class="am-btn am-btn-secondary" disable="true">搜索条件</button>
+					    <div class="am-btn-group">						 
 						  <div class="am-dropdown" data-am-dropdown>
-						    <button class="am-btn am-btn-secondary am-dropdown-toggle" data-am-dropdown-toggle> <span class="am-icon-caret-down"></span></button>
-						    <ul class="am-dropdown-content">
+						    <button  class="am-btn am-btn-secondary am-dropdown-toggle"  data-am-dropdown-toggle >选择搜索条件&nbsp;<span class="am-icon-caret-down" /></button>	
+						    <ul class="am-dropdown-content" id="select">
 						      <li class="am-dropdown-header">条件</li>
-						      <li><a href="javascript:;" data-flag="userId">根绝会员号查询</a></li>
+						      <li><a href="javascript:;" data-flag="All">全部会员信息</a></li>
+						      <li><a href="javascript:;" data-flag="userId">根据会员号查询</a></li>
 						      <li><a href="javascript:;" data-flag="name">根据会员名称查询</a></li>
 						      <li><a href="javascript:;" data-flag="tel">根据会员电话查询</a></li>						      
 						    </ul>
 						  </div>
 						</div>
 					    <div class="col-sm-5">
-					      <input type="text" class="form-control" id="serch" placeholder="请输入搜索内容。。">
+					      <input type="text" id="SerchInput" class="form-control" id="serch" placeholder="请输入搜索内容。。">
 					    </div>
 					  </div>								  
 					<div class="am-g">
@@ -55,28 +55,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							    <tr>
 							      <th class="col-md-2 text-center" >会员号</th>
 							      <th class="col-md-1 text-center" >名称</th>							    
-							      <th class="col-md-2 text-center am-hide-sm-only">电话</th>
+							      <th class="col-md-1 text-center am-hide-sm-only">电话</th>
 							      <th class="col-md-1 text-center am-hide-sm-only" >卡型</th>
-							      <th class="col-md-1 text-center am-hide-sm-only" >办卡日期</th>
-							      <th class="col-md-1 text-center am-hide-sm-only" >到期日期</th>
+							      <th class="col-md-2 text-center am-hide-sm-only" >办卡日期</th>
+							      <th class="col-md-2 text-center am-hide-sm-only" >到期日期</th>
 							      <th class="col-md-1 text-center " >剩余次数</th>
-								  <th class="col-md-3 text-center am-hide-sm-only" >操作</th>
+								  <th class="col-md-2 text-center am-hide-sm-only" >操作</th>
 							    </tr>
 							  </thead>
-							  <tbody>
-							  <c:forEach items="${sessionScope.VipList}" var="VL">
-							    <tr>
-							      <td>${VL.userId}</td>
-							      <td>${VL.name}</td>
-							      <td class="am-hide-sm-only">${VL.tel}</td>
-							      <td class="am-hide-sm-only">${VL.card.type}</td>
-							      <td class="am-hide-sm-only">${VL.card.startTime}</td>
-							      <td class="am-hide-sm-only">${VL.card.endTime}</td>							     
-							      <td >剩余${VL.card.restTimes}次</td>							    
-							      <td class="am-hide-sm-only"><button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button></td>							     
-							    </tr>
-							   </c:forEach>							    						    
-							</tbody>
+							  <tbody id="tbody">							  					    						    
+							  </tbody>
 							</table>				          
 				        </div>
       				</div>				  
@@ -91,8 +79,72 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script>
 			$(function(){ 
 			console.log("111")
-　　				$('#page-title').text('会员列表');　　　　		 	
+　　				$('#page-title').text('会员列表');
+				findAllVip();
 　　			}); 
+		</script>
+		<script>
+			$(function(){
+				$('#select a').click(function(){					
+					var flag  = $(this).data("flag");						
+					  $.ajax({
+					 	 type:"post",					 
+						 url:"User_FindByFlag",
+						 data:{
+						 flag:flag,
+						 data:$('#SerchInput').val()
+						 },
+						 success:function(result){						 						  				 
+						 	if(result.code==100){						 		
+						 		alert('没有查询到相关信息');						 		
+		    				}else{
+		    					  $("#tbody").empty();		
+						 		  $.each(result.list,function (index,vip){						 		 		        			    	                  		                        		                        
+			                        $("#tbody").append(
+			                        '<tr>'+
+								      '<td>'+vip.userId+'</td>'+
+								      '<td>'+vip.name+'</td>'+
+								      '<td class="am-hide-sm-only">'+vip.tel+'</td>'+
+								      '<td class="am-hide-sm-only">'+vip.card.type+'</td>'+
+								      '<td class="am-hide-sm-only">'+vip.card.startTime.slice(0,10)+'</td>'+
+								      '<td class="am-hide-sm-only">'+vip.card.endTime.slice(0,10)+'</td>'+							     
+								      '<td >剩余'+vip.card.restTimes+'次</td>'+							    
+								      '<td class="am-hide-sm-only"><button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button></td>'+							     
+								    '</tr>'	                            
+			                        );		                        
+		                    	});
+						 	}		        			   	        			 		        			    		        			         			    
+	    				}
+    				});						
+				})			 
+			});
+		</script>
+		<script type="text/javascript">
+		    function findAllVip() {
+		        $.ajax({
+					 	 type:"post",					 
+						 url:"User_findAllVip",
+						 data:{						 
+						 },
+						 success:function(result){							 					 
+	        			    $("#tbody").empty();	        			      
+	        			    $.each(result,function (index,vip){		        			    	                  		                        		                        
+		                        $("#tbody").append(
+		                        '<tr>'+
+							      '<td>'+vip.userId+'</td>'+
+							      '<td>'+vip.name+'</td>'+
+							      '<td class="am-hide-sm-only">'+vip.tel+'</td>'+
+							      '<td class="am-hide-sm-only">'+vip.card.type+'</td>'+
+							      '<td class="am-hide-sm-only">'+vip.card.startTime.slice(0,10)+'</td>'+
+							      '<td class="am-hide-sm-only">'+vip.card.endTime.slice(0,10)+'</td>'+							     
+							      '<td >剩余'+vip.card.restTimes+'次</td>'+							    
+							      '<td class="am-hide-sm-only"><button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button> <button type="button" class="am-btn am-btn-default"><span class="am-icon-archive"></span> 修改</button></td>'+							     
+							    '</tr>'	                            
+		                        );		                        
+		                    });      			    
+	    				}
+    				});
+		    	}		   
 		</script>
 	</body>
 	

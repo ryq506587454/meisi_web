@@ -34,7 +34,7 @@
 				<!-- 设置生成表结构的策略配置 -->
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 				<!-- 操作数据库时,会 向控制台打印sql语句 -->
-				<prop key="hibernate.show_sql">true</prop>
+				<!--<prop key="hibernate.show_sql">true</prop> -->
 				<!-- 打印sql语句前,会将sql语句先格式化  -->
 				<prop key="hibernate.format_sql">true</prop>
 			</props>
