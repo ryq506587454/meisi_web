@@ -157,4 +157,12 @@ public class CourseDao extends HibernateDaoSupport{
 		}
 		return null;
 	}
+	//添加课程
+	public String addCourse(Course c,String coachId){
+		Coach coach =  this.getHibernateTemplate().get(Coach.class,Integer.parseInt(coachId));
+		c.setCoach(coach);
+		this.getHibernateTemplate().save(c);
+		this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
+		return "OK";
+	}
 }	

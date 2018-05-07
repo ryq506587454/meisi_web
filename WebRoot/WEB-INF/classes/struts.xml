@@ -50,7 +50,9 @@
 			<!--返回带Msg的课程列表 -->		   
 			<result name="UtilList" type="json" >
 				<param name="root">Utillist</param>				
-			</result> 			                   			
+			</result> 	
+			<!-- 新增成功 -->	  
+			<result name="AddCourse_success">/tip/course_table.jsp</result>	 		                   			
 		</action>
 	</package>		
 </struts>    

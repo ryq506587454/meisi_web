@@ -67,5 +67,8 @@ public class CourseService {
 	public List<ApptLog> findAppt(String date){
 		return CourseDao.findAppt(date);		
 	}
-	
+	//添加课程
+	public String addCourse(Course c,String coachId){
+		return CourseDao.addCourse(c, coachId);
+	}
 }	

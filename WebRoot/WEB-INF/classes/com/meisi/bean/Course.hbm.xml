@@ -19,7 +19,7 @@
        		<key column="courseId" />      
        		<many-to-many fetch="join" class="com.meisi.bean.User" column="userId" />
        	</set>
-       	<many-to-one name="coach" class="com.meisi.bean.Coach" column="coachId"  not-null="true"/>        
+       	<many-to-one name="coach" class="com.meisi.bean.Coach" column="coachId" />        
     </class>  
 </hibernate-mapping>  
  

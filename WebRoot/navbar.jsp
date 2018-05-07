@@ -25,7 +25,7 @@
 			      <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav1" >
 			        <li><a href="vip_table.jsp">会员列表</a></li>
 			        <li><a href="add_vip.jsp">添加会员</a></li>
-			        <li><a href="add_vip.jsp">添加教练</a></li>
+			        <li><a href="">添加教练</a></li>
 			        <li><a href="">会员充值</a></li>						       
 			      </ul>
 			    </li>
@@ -34,7 +34,8 @@
 			      <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav2">
 			        <li><a href="course_table.jsp">课程列表</a></li>
 			        <li><a href="appt_detail.jsp">预约详情</a></li>	
-			        <li><a href="add_course.jsp">增加课程</a></li>			        		        						       
+			        <li><a href="add_course.jsp">增加课程</a></li>	
+			        <li><a href="">安排课程</a></li>				        		        		        						       
 			      </ul>
 			    </li>			  
 			  </ul>

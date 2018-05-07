@@ -3,11 +3,9 @@ package com.meisi.action;
 
 import java.util.List;
 
+import com.meisi.bean.Coach;
 import com.meisi.bean.Course;
-import com.meisi.bean.User;
-import com.meisi.dao.CourseDao;
 import com.meisi.service.CourseService;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import com.meisi.util.Utillist;
@@ -84,6 +82,13 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		public void setCoachName(String coachName) {
 			this.coachName = coachName;
 		}
+		private String coachId;				
+		public String getCoachId() {
+			return coachId;
+		}
+		public void setCoachId(String coachId) {
+			this.coachId = coachId;
+		}
 		//辅助工具
 		private Utillist utillist; 		
 		public Utillist getUtillist() {
@@ -154,5 +159,10 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
     	utillist=utillist.CreatUtillist(msg,CourseService.findAppt(courseDate),100);	 
     	return "UtilList";	
 	}
-
+	//添加课程
+	public String AddCourse(){
+		Course.setCourseDuration(Course.getCourseDuration()*60);
+		msg = CourseService.addCourse(Course, coachId);
+		return "AddCourse_success";
+	}
 }
