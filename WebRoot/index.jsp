@@ -117,7 +117,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			console.log("111");
 			 $.ajax({
 				 	 type:"post",					 
-					 url:"User_FindAllCoach",
+					 url:"Coach_FindAllCoach",
 					 data:{						 
 					 },
 					 success:function(result){						 
@@ -132,9 +132,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                        '</div>'+
                                  '</a>'	                                                           
 	                        );
-	                         if(index==3){
-                                 	return flase;
-                                }	 		                        
+                         	if(index==3){
+                               return flase;
+                            }	 		                        
 	                    });      			    
     				}
    				});		 	

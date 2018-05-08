@@ -8,6 +8,7 @@ public class Coach {
 		private int coachId;						//教练ID
 		private String coachName;					//教练名称
 		private String coachInfo;					//教练介绍
+		private String sex;							//教练性别
 		private String courseType;					//授课类型
 		private Set<Course> course ; 				//教授课程
 		public int getCoachId() {
@@ -39,6 +40,12 @@ public class Coach {
 		}
 		public void setCourseType(String courseType) {
 			this.courseType = courseType;
+		}
+		public String getSex() {
+			return sex;
+		}
+		public void setSex(String sex) {
+			this.sex = sex;
 		}
 		
 		

@@ -65,12 +65,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							  </thead>
 							  <tbody id="tbody">							  					    						    
 							  </tbody>
-							</table>				          
+							</table>
+							<ul class="am-pagination" style="margin-top: 50px;">
+							  <li class="am-pagination-prev"><a href="">&laquo; Prev</a></li>
+							  <li class="am-pagination-next"><a href="">Next &raquo;</a></li>
+							</ul>				          
 				        </div>
       				</div>				  
 				</div>																
 			</div>			
-		</div>
+		</div>		
 		<!-- 表格结束 -->			
 		<a href="admin-offcanvas" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"></a>		
 		<script type="text/javascript" src="assets/js/jquery-2.1.0.js" ></script>
@@ -100,7 +104,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    				}else{
 		    					  $("#tbody").empty();		
 						 		  $.each(result.list,function (index,vip){						 		 		        			    	                  		                        		                        
-			                        $("#tbody").append(
+			                        $("#tbody").append(			                      
 			                        '<tr>'+
 								      '<td>'+vip.userId+'</td>'+
 								      '<td>'+vip.name+'</td>'+
@@ -109,10 +113,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								      '<td class="am-hide-sm-only">'+vip.card.startTime.slice(0,10)+'</td>'+
 								      '<td class="am-hide-sm-only">'+vip.card.endTime.slice(0,10)+'</td>'+							     
 								      '<td >剩余'+vip.card.restTimes+'次</td>'+							    
-								      '<td class="am-hide-sm-only"><button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button></td>'+							     
-								    '</tr>'	                            
-			                        );		                        
-		                    	});
+								      '<td class="am-hide-sm-only"><a type="button" id="btn'+vip.userId+'" data-userid='+vip.userId+' class="am-btn am-btn-default"><span class="am-icon-trash-o" /> 删除</a></td>'+							     
+							    	'</tr>'                           
+			                        );
+			                      $('#btn'+vip.userId).click(function(){								    							    	
+							    	if(confirm("确定删除该用户?")){		
+										$.ajax({
+										 	 type:"post",					 
+											 url:"User_DeletUser",
+											 data:{	
+											 userId:$(this).data("userid")					 
+											 },
+											 success:function(result){							 					 
+						        			     if(result=="1"){
+						        			     alert('删除成功');
+						        			     $('#SerchInput').empty();	
+						        			     findAllVip();
+						        			     }   			    
+						    				 }
+					    				});				    		
+							    	}else{						    		
+							    	}
+							   	}) 		                        
+		                     });
 						 	}		        			   	        			 		        			    		        			         			    
 	    				}
     				});						
@@ -129,7 +152,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						 success:function(result){							 					 
 	        			    $("#tbody").empty();	        			      
 	        			    $.each(result,function (index,vip){		        			    	                  		                        		                        
-		                        $("#tbody").append(
+		                        $("#tbody").append(		                        
 		                        '<tr>'+
 							      '<td>'+vip.userId+'</td>'+
 							      '<td>'+vip.name+'</td>'+
@@ -138,14 +161,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							      '<td class="am-hide-sm-only">'+vip.card.startTime.slice(0,10)+'</td>'+
 							      '<td class="am-hide-sm-only">'+vip.card.endTime.slice(0,10)+'</td>'+							     
 							      '<td >剩余'+vip.card.restTimes+'次</td>'+							    
-							      '<td class="am-hide-sm-only"><button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button> <button type="button" class="am-btn am-btn-default"><span class="am-icon-archive"></span> 修改</button></td>'+							     
-							    '</tr>'	                            
-		                        );		                        
+							      '<td class="am-hide-sm-only"><a type="button" id="btn'+vip.userId+'" data-userid='+vip.userId+' class="am-btn am-btn-default"><span class="am-icon-trash-o" /> 删除</a></td>'+							     
+							    '</tr>'						      	                         		                        							      	                         		                        
+							    );	
+							    $('#btn'+vip.userId).click(function(){						    							    							    	
+							    	if(confirm("确定删除该用户?")){	
+							    		console.log(111)		
+									$.ajax({
+									 	 type:"post",					 
+										 url:"User_DeletUser",
+										 data:{	
+										 userId:$(this).data("userid")					 
+										 },
+										 success:function(result){							 					 
+					        			     if(result=="1"){
+					        			     alert('删除成功');
+					        			     findAllVip();
+					        			     }   			    
+					    				  }
+					    				});				    		
+							    	}else{						    		
+							    	}
+							   })                       
 		                    });      			    
 	    				}
     				});
 		    	}		   
-		</script>
+		</script>	
 	</body>
 	
 </html>

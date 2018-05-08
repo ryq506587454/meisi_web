@@ -16,8 +16,7 @@
 				<ul class="am-nav am-navbar-nav am-navbar-left">
 					<li><h4 class="page-title" id="page-title">首&nbsp;&nbsp;页</h4></li>
 				</ul>				
-				<ul class="am-nav am-navbar-nav am-navbar-right">						
-					<li class="inform user-img"><img src="assets/img/logo.png" alt="user-img" class="img-circle img-thumbnail img-responsive" /></li>
+				<ul class="am-nav am-navbar-nav am-navbar-right">											
 					<li ><a>欢迎你,${sessionScope.user.name}</a></li>
 					<li class="hidden-xs am-hide-sm-only">
                         <form role="search" class="app-search">

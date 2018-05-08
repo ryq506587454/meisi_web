@@ -34,7 +34,7 @@
 				<!-- 设置生成表结构的策略配置 -->
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 				<!-- 操作数据库时,会 向控制台打印sql语句 -->
-				<!--<prop key="hibernate.show_sql">true</prop> -->
+				<!-- <prop key="hibernate.show_sql">true</prop> -->
 				<!-- 打印sql语句前,会将sql语句先格式化  -->
 				<prop key="hibernate.format_sql">true</prop>
 			</props>
@@ -47,8 +47,7 @@
 				<value>com/meisi/bean/Course.hbm.xml</value>
 				<value>com/meisi/bean/Financelog.hbm.xml</value>
 				<value>com/meisi/bean/Consumelog.hbm.xml</value>
-				<value>com/meisi/bean/Notice.hbm.xml</value>
-				<value>com/meisi/bean/Punishlog.hbm.xml</value>	
+				<value>com/meisi/bean/Notice.hbm.xml</value>				
 				<value>com/meisi/bean/Appointment.hbm.xml</value>	
 				<value>com/meisi/bean/Coach.hbm.xml</value>			
 			</list>
@@ -88,4 +87,9 @@
 		<property name="sessionFactory" ref="sessionFactory"/>			
 	</bean>
  <!-- 对Course的一系列管理结束 -->
+ <!-- 对Coach的一系列管理开始 -->
+ 	<bean id="CoachAction" class="com.meisi.action.CoachAction">
+		<property name="UserService" ref="UserService"/>
+	</bean>
+ <!-- 对Coach的一系列管理结束 -->
 </beans>

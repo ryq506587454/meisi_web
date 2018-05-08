@@ -36,11 +36,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  <button  class="am-btn am-btn-secondary am-dropdown-toggle"  data-am-dropdown-toggle >选择搜索条件&nbsp;<span class="am-icon-caret-down" /></button>						  
 						    <ul class="am-dropdown-content" id="select">
 						      <li class="am-dropdown-header">条件</li>
-						      <li><a href="javascript:;" data-flag="All">全部课程</a></li>
-						      <li><a href="javascript:;" data-flag="courseId">根据课程编号查询</a></li>
-						      <li><a href="javascript:;" data-flag="courseName">根据课程名称查询</a></li>
-						      <li><a href="javascript:;" data-flag="courseType">根据课程类型查询</a></li>	
-						      <li><a href="javascript:;" data-flag="courseDuration">根据课程时长查询</a></li>							      
+						      <li><a href="javascript:;" data-flag="All">全部教练</a></li>
+						      <li><a href="javascript:;" data-flag="coachId">根据教练编号查询</a></li>
+						      <li><a href="javascript:;" data-flag="coachName">根据教练名称查询</a></li>
+						      <li><a href="javascript:;" data-flag="courseType">根据授课类型查询</a></li>	
+						      <li><a href="javascript:;" data-flag="sex">根据教练性别查询</a></li>							      
 						    </ul>
 						  </div>
 						</div>
@@ -51,18 +51,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="am-g">
 				        <div class="row" style="padding:0 10px ;">
 				        	<table class="table table-condensed text-center">
-							  <caption><h2>课程列表</h2></caption>
+							  <caption><h2>教练列表</h2></caption>
 							  <thead>
 							    <tr>
-							      <th class="col-md-2 text-center" >课程编号</th>
-							      <th class="col-md-2 text-center" >课程名称</th>							    
-							      <th class="col-md-2 text-center am-hide-sm-only" >课程类型</th>
-							      <th class="col-md-2 text-center" >课程时长</th>
-							      <th class="col-md-2 text-center am-hide-sm-only" >已报人数</th>							     
+							      <th class="col-md-2 text-center" >教练编号</th>
+							      <th class="col-md-2 text-center" >教练名称</th>								  						    							      
+							      <th class="col-md-1 text-center am-hide-sm-only" >教练性别</th>						      
+							      <th class="col-md-3 text-center am-hide-sm-only" >教练简介</th>	
+							      <th class="col-md-1 text-center am-hide-sm-only" >主授课程类型</th>						     
 								  <th class="col-md-2 text-center am-hide-sm-only" >操作</th>
 							    </tr>
 							  </thead>
-							  	<tbody id="tbody">							 	 						    
+							  	<tbody id="tbody" >							 	 						    
 								</tbody>
 							</table>
 							<ul class="am-pagination" style="margin-top: 50px;">
@@ -85,8 +85,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script>
 			$(function(){ 
 				console.log("111");
-　　				$('#page-title').text('课程列表');
-					findAllCourse();		 	
+　　				$('#page-title').text('教练列表');
+					findAllCoach();		 	
 　　			}); 
 		</script>
 		<script>
@@ -95,7 +95,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					var flag  = $(this).data("flag");						
 					 $.ajax({
 					 	 type:"post",					 
-						 url:"Course_FindByFlag",
+						 url:"Coach_FindByFlag",
 						 data:{
 						 flag:flag,
 						 data:$('#SerchInput').val()
@@ -106,37 +106,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						 		alert('没有查询到相关信息');						 		
 		    				}else{
 		    					$("#tbody").empty();		
-						 		$.each(result.list,function (index,course){		                       		                        		                        
-			                        $("#tbody").append(
-			                        '<tr><td >'+course.courseId+'</td>'+
-								      '<td>'+course.courseName+'</td>'+
-								      '<td class="am-hide-sm-only">'+course.courseType+'</td>'+
-								      '<td>'+course.courseDuration/60+'分钟</td>'+
-								      '<td class="am-hide-sm-only">'+course.totalNumber+'</td>'+							      		     							    						    
-								      '<td class="am-hide-sm-only"><button type="button" id="btn'+course.courseId+'" data-courseid='+course.courseId+' class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button></td>'+					     
-								    '</tr>'		                            
-			                        );
-			                         $('#btn'+course.courseId).click(function(){	
-		                        		console.log(111)							    							    	
-							    	if(confirm("确定删除该课程?")){		
+						 		$.each(result.list,function (index,coach){		                       		                        		                        
+			                    $("#tbody").append(
+			                    '<tr><td >'+coach.coachId+'</td>'+
+							      	'<td>'+coach.coachName+'</td>'+
+							      	'<td class="am-hide-sm-only">'+coach.sex+'</td>'+
+							      	'<td>'+coach.coachInfo+'</td>'+
+							      	'<td class="am-hide-sm-only">'+coach.courseType+'课程</td>'+							      		     							    						    
+							        '<td class="am-hide-sm-only"><button type="button" id="btn'+coach.coachId+'" data-coachid='+coach.coachId+' class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button></td>'+						     
+							    '</tr>'		                            
+		                        );
+		                         $('#btn'+coach.coachId).click(function(){								    							    	
+							    	if(confirm("删除该教练会同时删除该教练所授课程，是否继续?")){		
 										$.ajax({
 										 	 type:"post",					 
-											 url:"Course_DeleteCourse",
+											 url:"Coach_DeleteCoach",
 											 data:{	
-											 courseId:$(this).data("courseid")					 
+												coachId:$(this).data("coachid")					 
 											 },
 											 success:function(result){							 					 
 						        			     if(result=="1"){
 						        			     alert('删除成功');
 						        			     $('#SerchInput').empty();	
-						        			     findAllCourse();
+						        			     findAllCoach();
 						        			     }   			    
 						    				 }
 					    				});				    		
 							    	}else{						    		
 							    	}
 							   	})		                        
-		                    	});
+		                      });
 						 	}		        			   	        			 		        			    		        			         			    
 	    				}
     				});							
@@ -144,45 +143,45 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			});
 		</script>
 		<script type="text/javascript">
-		    function findAllCourse() {
+		    function findAllCoach() {
 		        $.ajax({
 					 	 type:"post",					 
-						 url:"Course_FindAllCourse",
+						 url:"Coach_FindAllCoach",
 						 data:{						 
 						 },
-						 success:function(result){						 
+						 success:function(result){	
+						 console.log(result);					 
 	        			    $("#tbody").empty();	        			      
-	        			    $.each(result,function (index,course){		        			    	                  		                        		                        
+	        			    $.each(result.list,function (index,coach){		        			    	                  		                        		                        
 		                        $("#tbody").append(
-		                        '<tr><td >'+course.courseId+'</td>'+
-							      '<td>'+course.courseName+'</td>'+
-							      '<td class="am-hide-sm-only">'+course.courseType+'</td>'+
-							      '<td>'+course.courseDuration/60+' 分钟</td>'+
-							      '<td class="am-hide-sm-only">'+course.totalNumber+'</td>'+							      		     							    						    
-							       '<td class="am-hide-sm-only"><button type="button" id="btn'+course.courseId+'" data-courseid='+course.courseId+' class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button></td>'+						     
+		                        '<tr><td >'+coach.coachId+'</td>'+
+							      '<td>'+coach.coachName+'</td>'+
+							      '<td class="am-hide-sm-only">'+coach.sex+'</td>'+
+							      '<td>'+coach.coachInfo+'</td>'+
+							      '<td class="am-hide-sm-only">'+coach.courseType+'课程</td>'+							      		     							    						    
+							       '<td class="am-hide-sm-only"><button type="button" id="btn'+coach.coachId+'" data-coachid='+coach.coachId+' class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button> </td>'+						     
 							    '</tr>'		                            
 		                        );
-		                        $('#btn'+course.courseId).click(function(){	
-		                        console.log(111)							    							    	
-							    	if(confirm("确定删除该课程?")){		
+		                        $('#btn'+coach.coachId).click(function(){								    							    	
+							    	if(confirm("删除该教练会同时删除该教练所授课程，是否继续?")){		
 										$.ajax({
 										 	 type:"post",					 
-											 url:"Course_DeleteCourse",
+											 url:"Coach_DeleteCoach",
 											 data:{	
-											 courseId:$(this).data("courseid")					 
+												coachId:$(this).data("coachid")					 
 											 },
 											 success:function(result){							 					 
 						        			     if(result=="1"){
 						        			     alert('删除成功');
 						        			     $('#SerchInput').empty();	
-						        			     findAllCourse();
+						        			     findAllCoach();
 						        			     }   			    
 						    				 }
 					    				});				    		
 							    	}else{						    		
 							    	}
-							   	})		                        		                        
-		                    });      			    
+							   	})		                        		                       		                        		                        
+		                    });	                          			    
 	    				}
     				});
 		    	}		   

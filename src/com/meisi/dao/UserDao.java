@@ -39,15 +39,7 @@ public class UserDao extends HibernateDaoSupport{
 		VipList= this.getHibernateTemplate().find(hql);		
 		return VipList;		
 	}
-	//查询所有员工
-	public List<User> findAllStuff(){
-		System.out.println("UD.findAllCoach被调用。。");
-		List<User> StuffList = new ArrayList<User>();	
-		String hql = "from User where grade = 1 ";  
-		StuffList= this.getHibernateTemplate().find(hql);		
-		return StuffList;		
-	}
-	//修改信息
+	//移动端-修改信息
 	public String updateUserInfo(String flag,User user){
 		System.out.println("UD.updateUserInfo被调用。。");
 		User u = this.getHibernateTemplate().get(User.class, user.getUserId());
@@ -73,12 +65,14 @@ public class UserDao extends HibernateDaoSupport{
 		String hql = "from Course where courseName = ?";
 		List<Course> courseList = (ArrayList<Course>)this.getHibernateTemplate().find(hql,courseName);
 		Course vipCourse = courseList.get(0);
+		vipCourse.setTotalNumber(vipCourse.getTotalNumber()-1);
 		Appointment a = new Appointment();
 		a.setApptId(Integer.parseInt(apptId));
 		Appointment vipAppt =this.getHibernateTemplate().get(Appointment.class,a.getApptId());
 		vip.getAppt().remove(vipAppt);
 		vip.getCourse().remove(vipCourse);
 		this.getHibernateTemplate().delete(vipAppt);
+		this.getHibernateTemplate().update(vipCourse);
 		this.getHibernateTemplate().update(vip);
 		this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();			
 		return "OK";		
@@ -108,8 +102,7 @@ public class UserDao extends HibernateDaoSupport{
 			}		
 		}
 	//添加新用户
-		public String addNewUser(User u,String cardType){
-			System.out.println("UD.addNewUser被调用了。。。");						
+		public String addNewUser(User u,String cardType){								
 			//时间转化格式						
 			Calendar calendar = Calendar.getInstance();
 			//开始时间
@@ -149,4 +142,60 @@ public class UserDao extends HibernateDaoSupport{
 		List<Coach> coachList = this.getHibernateTemplate().find(hql,courseType);
 		return coachList;
 	}
+	//添加教练
+	public String addNewCoach(Coach coach){
+		this.getHibernateTemplate().save(coach);
+		this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
+		return "OK";
+	}
+	//新增用户查重
+	public String checkCoachTwo(Coach coach){
+		//1:重复 2:无重复
+		String hql = "from Coach where coachName = ?";
+		List<Coach> coachList = (ArrayList<Coach>)this.getHibernateTemplate().find(hql,coach.getCoachName());
+		Coach coa = coachList.get(0);		
+		if(coa!=null){
+			return "1";	
+		}else{
+			return "2";	
+		}		
+	}
+	//根据ID删除数据
+	public String deleteUser(User u){
+		User user = this.getHibernateTemplate().get(User.class,u.getUserId());
+		this.getHibernateTemplate().delete(user.getCard());	
+		this.getHibernateTemplate().delete(user);	
+		this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
+		return "1";		
+	}
+	//通过flag查询教练	
+	public List<Coach> findCoachByFlag(String flag,String data){
+		String hql = " from Coach where " +flag+" = ?";
+		List<Coach> coachList = new ArrayList<Coach>();
+		if(flag.equals("coachId")){
+			coachList = (ArrayList<Coach>)this.getHibernateTemplate().find(hql,Integer.parseInt(data));
+		}else{
+			hql = " from Coach where " +flag+" like ?";
+			coachList = (ArrayList<Coach>)this.getHibernateTemplate().find(hql,"%"+data+"%");
+		}			
+		return coachList;	
+	}
+	//删除教练
+	public String deleteCoach(Coach c){
+		Coach coach = this.getHibernateTemplate().get(Coach.class,c.getCoachId());
+		if(coach.getCourse().size()>0){
+			for (Course ccc : coach.getCourse()) {						
+				String hql = "from Appointment where courseName =?";
+				List<Appointment> apptList = this.getHibernateTemplate().find(hql,ccc.getCourseName());
+				for (Appointment appt : apptList) {
+					this.getHibernateTemplate().delete(appt);
+				}		
+				this.getHibernateTemplate().delete(ccc);				
+			}
+		}		
+		this.getHibernateTemplate().delete(coach);
+		this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
+		return "1";	
+	}
 }
+

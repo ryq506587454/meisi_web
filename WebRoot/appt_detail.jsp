@@ -28,16 +28,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="content-page">
 			<div class="content">
 				<div class="card-box">
-					<div class="form-group row">
-					    <div class="am-btn-group">						  
-						  <div class="am-dropdown" data-am-dropdown>
-						  <button id="SerchBtn" class="am-btn am-btn-secondary" style="font-size: 18px;">查询</button>						  						   
-						  </div>
-						</div>
-					    <div class="col-md-5">
-					      <input id="SerchInput" type="date" class="form-control" id="serch" placeholder="请输入搜索内容。。">
-					    </div>
-					 </div>
+					<div class="am-input-group am-datepicker-date col-md-6 col-md-offset-3" data-am-datepicker="{format: 'yyyy-mm-dd'}">
+  							<input type="text" class="am-form-field " placeholder="请输入日期"  readonly>
+  						<span class="am-input-group-btn am-datepicker-add-on">
+    						<button class="am-btn am-btn-default"  type="button"><span class="am-icon-calendar"></span> </button>
+  						</span>
+					</div>
 					<div class="am-g">
 				        <div class="row" style="padding:0 10px ;">
 				        	<table class="table table-condensed text-center">

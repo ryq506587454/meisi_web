@@ -52,7 +52,20 @@
 				<param name="root">Utillist</param>				
 			</result> 	
 			<!-- 新增成功 -->	  
-			<result name="AddCourse_success">/tip/course_table.jsp</result>	 		                   			
+			<result name="AddCourse_success">/tip/addCoursesuc.jsp</result>	 		                   			
+		</action>
+		<action name="Coach_*" method="{1}"  class="CoachAction">
+			<!-- 新增成功 -->	  
+			<result name="AddCoach_Success">/tip/addCoachsuc.jsp</result>
+			<!-- 返回信息 -->
+			<result name="MediaMsg" type="json" >
+				<param name="root">msg</param>				
+			</result> 
+			<!--返回带Msg的教练
+			列表 -->		   
+			<result name="UtilList" type="json" >
+				<param name="root">Utillist</param>				
+			</result> 	 			
 		</action>
 	</package>		
 </struts>    

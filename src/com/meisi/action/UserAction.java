@@ -5,7 +5,6 @@ package com.meisi.action;
 
 import java.util.List;
 
-import com.meisi.bean.Course;
 import com.meisi.bean.User;
 import com.meisi.service.UserService;
 import com.meisi.util.Utillist;
@@ -109,8 +108,7 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 	
 	
 	//登陆功能
-	public String login(){
-		System.out.println("UA.login被调用了。。");
+	public String login(){		
 		User u = UserService.login(user);
 		if(u!=null){
 			ActionContext ac = ActionContext.getContext();
@@ -122,31 +120,26 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 	}
 	//查询所有会员信息
 	public String findAllVip(){
-		System.out.println("UA.findAllUser被调用了。。");
 		userList =UserService.findAllVip();	
 		return "MediaUserList";			
 	}
 	//微信用户登陆-移动端
-	public String meidalogin(){
-		System.out.println("UA.meidalogin被调用了。。");
+	public String meidalogin(){		
 		mediaUser = UserService.login(user);		
 		return "MediaUser";		
 	}
 	//修改用户信息-移动端
-	public String mediaUpdataInfo(){
-		System.out.println("US.mediaUpdataInfo被调用。。");
+	public String mediaUpdataInfo(){		
 		msg = UserService.updateUserInfo(flag, user);		
 		return "MediaMsg";
 	}
 	//取消预约
-	public String mediaQuiteAppt(){
-		System.out.println("US.mediaQuiteAppt被调用。。");
+	public String mediaQuiteAppt(){		
 		msg = UserService.quiteAppt(user, courseName, appId);
 		return "MediaMsg";
 	}
 	//根据flag查询
-	public String FindByFlag(){
-		System.out.println("UA.meidaFindByFlag被调用了。。");
+	public String FindByFlag(){		
 		userList = UserService.findUserByFlag(flag, data);	
 		if(userList==null||userList.size()==0){
 	    	msg ="未查询到结果";
@@ -159,29 +152,25 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 	    }
 	}
 	//用户查重
-	public String CheckUserTwo(){
-		System.out.println("UA.CheckUserTwo被调用了。。");
+	public String CheckUserTwo(){		
 		msg = UserService.checkUserTwo(user);
 		return "MediaMsg";		
 	}
 	//添加新用户
-	public String addUser(){
-		System.out.println("UA.addUser被调用了。。");
+	public String addUser(){	
 		msg = UserService.addNewUser(user,select);
 		return "ADD_Success";		
 	}
-	//查找所有教练
-	public String FindAllCoach(){
-		System.out.println("UA.FindAllCoach被调用了。。");
-		msg = "查询成功";
-		utillist=utillist.CreatUtillist(msg,UserService.findAllCoach(),100);
-		return "UtilList";
-	}
+	
 	//根据类别查找教练	
-	public String FindCoachByType(){
-		System.out.println("UA.FindAllCoach被调用了。。");
+	public String FindCoachByType(){		
 		msg = "查询成功";
 		utillist=utillist.CreatUtillist(msg,UserService.findCoachByType(courseType),100);
 		return "UtilList";
+	}
+	//删除Vip
+	public String DeletUser(){
+		msg = UserService.deleteUser(user);
+		return "MediaMsg";
 	}
 }

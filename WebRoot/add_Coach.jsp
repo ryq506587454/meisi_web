@@ -14,8 +14,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<link rel="stylesheet" href="assets/css/core.css" />
 		<link rel="stylesheet" href="assets/css/menu.css" />				
 		<link rel="stylesheet" href="assets/css/admin.css" />	
-		<link rel="stylesheet" href="assets/css/component.css" />	
-			<!-- 消除number类型数据的小三角 -->
+		<link rel="stylesheet" href="assets/css/component.css" />
+		<!-- 消除number类型数据的小三角 -->
 		<style>
     		input::-webkit-outer-spin-button,
     		input::-webkit-inner-spin-button {
@@ -24,9 +24,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		input[type="number"]{
     	    -moz-appearance: textfield;
    		 }
-		</style>	
+		</style>		
 	</head>
-	<body>		
+	<body >		
 		<!-- 顶部 开始-->
 		<%@ include file="header.jsp" %>
 		<!-- 顶部 结束 -->		
@@ -42,26 +42,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<!-- Row start -->
 						<div class="am-u-sm-12">
 							<div class="card-box">								
-								<form action="User_addUser" method="post" class="am-form">
+								<form action="Coach_AddNewCoach" method="post" class="am-form">
 								  <fieldset>
-								    <legend>添加新用户</legend>
+								    <legend>添加新教练</legend>
 								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
-								      <label >用户手机号： </label>
-								      <input name="userId" type="number"   id="userId" minlength="11" placeholder="输入用户手机号" required oninvalid="setCustomValidity('请用户输入正确手机号');"/>
-								     <h4 id="msg"></h4>
-								    </div>																    							
-								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
-								      <label >用户登陆密码：</label>
-								      <input name="password" type="number"   id="password" placeholder="输入用户登录密码" required oninvalid="setCustomValidity('请输入用户登录密码');"/>
-								    </div>	
+								      <label >教练名称:</label>
+								      <input name="coachName" id="coachName" type="text"  placeholder="输入教练名称" required oninvalid="setCustomValidity('请输入教练名称);"/>
+								      <h4 id="msg"></h4>
+								    </div>
 								     <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
-								      <label >用户身份证号：</label>
-								      <input name="identity" type="number"   id="identity" minlength="18" placeholder="输入用户身份证作为找回标识" required oninvalid="setCustomValidity('请用户输入正确的身份证号');"/>
-								    </div>								
-								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
-								      <label >用户姓名：</label>
-								      <input name="name" type="text" id="name" placeholder="用户输入用户名称" required oninvalid="setCustomValidity('请输入用户的姓名');" />
-								    </div>																   								
+								      <label >教练简介:</label>
+								      <input name="coachInfo" id="coachInfo" type="text"  placeholder="输入教练简介" />
+								    </div>	
 								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
 								      <label>性别： </label>
 								      <label class="am-radio-inline">
@@ -70,15 +62,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								      <label class="am-radio-inline">
 								        <input type="radio" name="sex" value="女" > 女
 								      </label>								     
-								    </div>								
+								    </div>																    															   																			    																	   																    								
 								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1" >
-								      <label for="doc-select-1">会员卡类型</label>
-								      <select name="select"  id="doc-select-1" required oninvalid="setCustomValidity('请选择会员类型');"/>								        
-								        <option  value="普通会员">普通会员</option>
-								        <option  value="高级会员">高级会员</option>
+								      <label for="doc-select-1">授课类型</label>
+								      <select name="courseType"  id="select" required />								        
+								        <option  value="瘦身">瘦身</option>
+								        <option  value="增肌">增肌</option>
+								        <option  value="塑形">塑形</option>
+								        <option  value="瑜伽">瑜伽</option>
 								      </select>
 								      <span class="am-form-caret"></span>
-								    </div>	
+								    </div>									    
 								    <div class="am-form-group am-u-sm-7">
 								    	<button id="sub" class="am-btn am-btn-secondary  am-u-sm-3" type="submit">提交</button>
 								    </div>													    															    								    
@@ -97,33 +91,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script type="text/javascript" src="assets/js/amazeui.min.js"></script>
 		<script>
 			$(function(){ 
-　　				$('#page-title').text('添加会员');
+　　				$('#page-title').text('添加教练');		
 　　			}); 
 		</script>
 		<script>
-			$('#userId').blur(function(){	
+			$('#coachName').blur(function(){	
 				var value = $(this).val().length;				
-				if(value!=11){				
+				if(value==" "){			
 				}else{
-						$.ajax({
-						 	 type:"post",					 
-							 url:"User_CheckUserTwo",
-							 data:{
-								userId:$('#userId').val()
-							 },
-							 success:function(result){
-							 if(result=="1"){
-							 		$('#sub').attr("disabled", true);	
-							 		$('#msg').text('该手机号已被注册');	
-							 		$('#msg').css({color:"red"});	
-							 	}else{
-							 		$('#sub').attr("disabled", false);	
-							 		$('#msg').text('该手机号可以注册');
-							 		$('#msg').css({color:"green"});	
-							 	}						 				 					 		        			   	        			 		        			    		        			         			    
-		    				 }
-	    				});	
+					$.ajax({
+					 	 type:"post",					 
+						 url:"Coach_CheckCoachTwo",
+						 data:{
+							coachName:$('#coachName').val()
+						 },
+						 success:function(result){
+						 if(result=="1"){
+						 		$('#sub').attr("disabled", true);	
+						 		$('#msg').text('该教练已被注册');	
+						 		$('#msg').css({color:"red"});	
+						 	}else{
+						 		$('#sub').attr("disabled", false);	
+						 		$('#msg').text('该教练可以注册');
+						 		$('#msg').css({color:"green"});	
+						 	}						 				 					 		        			   	        			 		        			    		        			         			    
+	    				 }
+    				});	
 					}																		  								
 				});
-		</script>
+		</script>		
 </html>

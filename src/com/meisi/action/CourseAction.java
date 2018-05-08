@@ -6,6 +6,7 @@ import java.util.List;
 import com.meisi.bean.Coach;
 import com.meisi.bean.Course;
 import com.meisi.service.CourseService;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import com.meisi.util.Utillist;
@@ -89,6 +90,13 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		public void setCoachId(String coachId) {
 			this.coachId = coachId;
 		}
+		private String courseTime;				
+		public String getCourseTime() {
+			return courseTime;
+		}
+		public void setCourseTime(String courseTime) {
+			this.courseTime = courseTime;
+		}
 		//辅助工具
 		private Utillist utillist; 		
 		public Utillist getUtillist() {
@@ -104,44 +112,37 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 	}
 	
 	//查找所有课程
-	public String FindAllCourse(){
-		System.out.println("CA.FindAllCourse被调用了。。");	
+	public String FindAllCourse(){		
 	    mediaCourList =CourseService.findAllCourse();	    
 	    return "MediaCourseList";				
 	}		
 	//根据课程类型查课-移动端
-	public String meidaFindByType(){
-		System.out.println("CA.meidaFindByType被调用了。。");	
+	public String meidaFindByType(){		
 		mediaCourList = CourseService.findCourseByType(Course);
 		return "MediaCourseList";		
 	}
 	//根据课程ID查课-移动端
-	public String meidaFindByID(){
-		System.out.println("CA.meidaFindByID被调用了。。");	
+	public String meidaFindByID(){		
 		mediaCourse = CourseService.findCourseById(Course);
 		return "MediaCourse";		
 	}
 	//移动端预约选课
-	public String meidaAppt(){
-		System.out.println("CA.meidaAppt被调用了。。");	
+	public String meidaAppt(){		
 		msg = CourseService.apptmenCourse(userId, Course,courseDate);
 		return "MediaMsg";		
 	}
 	//热门推荐
-	public String meidaAdvice(){
-		System.out.println("CA.meidaAdvice被调用了。。");	
+	public String meidaAdvice(){	
 		mediaCourList=CourseService.addviceCourse();			
 		return "MediaCourseList";
 	}
 	//根据教练选课
-	public String meidaFindByCoach(){
-		System.out.println("CA.meidaFindByCoach被调用了。。");	
+	public String meidaFindByCoach(){		
 		mediaCourList=CourseService.findCourseByCoach(coachName,Course);			
 		return "MediaCourseList";
 	}
 	//根据条件查询
-	public String FindByFlag(){
-		System.out.println("CA.meidaFindByFlag被调用了。。");
+	public String FindByFlag(){		
 		mediaCourList = CourseService.findCourseByFlag(flag, data);	
 		if(mediaCourList==null||mediaCourList.size()==0){
 	    	msg ="未查询到结果";
@@ -161,8 +162,26 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 	}
 	//添加课程
 	public String AddCourse(){
-		Course.setCourseDuration(Course.getCourseDuration()*60);
-		msg = CourseService.addCourse(Course, coachId);
+		Course.setCourseDuration(Course.getCourseDuration()*60);	
+		ActionContext ac = ActionContext.getContext();
+	    ac.getSession().put("msg",CourseService.addCourse(Course, coachId));	  
 		return "AddCourse_success";
+	}
+	//课程查重
+	public String CheckCourseTwo(){		
+		msg = CourseService.checkCourseTwo(Course);
+		return "MediaMsg";		
+	}
+	//删除课程
+	public String DeleteCourse(){
+		msg = CourseService.deleteCourse(Course);
+		return "MediaMsg";
+	}
+	//安排课程
+	public String PlanCourse(){
+		String currentDate=courseDate+" "+courseTime;		
+		msg = CourseService.planCourse(Course,currentDate, coachName);
+		System.out.println(msg);
+		return "MediaMsg";
 	}
 }

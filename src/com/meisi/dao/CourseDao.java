@@ -115,7 +115,7 @@ public class CourseDao extends HibernateDaoSupport{
 		if(flag.equals("courseId")){			
 			courseList = (ArrayList<Course>)this.getHibernateTemplate().find(hql,Long.parseLong(data));
 		}else if(flag.equals("courseDuration")){			
-			courseList = (ArrayList<Course>)this.getHibernateTemplate().find(hql,Long.parseLong(data)*60*60);
+			courseList = (ArrayList<Course>)this.getHibernateTemplate().find(hql,Long.parseLong(data)*60);
 		}else{
 			hql = " from Course where " +flag+" like ?";
 			courseList = (ArrayList<Course>)this.getHibernateTemplate().find(hql,"%"+data+"%");
@@ -158,11 +158,59 @@ public class CourseDao extends HibernateDaoSupport{
 		return null;
 	}
 	//添加课程
-	public String addCourse(Course c,String coachId){
+	public String addCourse(Course c,String coachId){		
 		Coach coach =  this.getHibernateTemplate().get(Coach.class,Integer.parseInt(coachId));
-		c.setCoach(coach);
-		this.getHibernateTemplate().save(c);
+		String hql = "from Course where courseName = ?";
+		List<Course> clist = this.getHibernateTemplate().find(hql,c.getCourseName()+"●"+coach.getCoachName());
+		if(clist.size()>0){
+			return "添加失败，已有相同老师教授本课程";
+		}else{
+			c.setCoach(coach);
+			c.setCourseName(c.getCourseName()+"●"+coach.getCoachName());
+			this.getHibernateTemplate().save(c);
+			this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
+			return "添加成功";
+		}	
+	}
+	//课程查重
+	public String checkCourseTwo(Course c){
+		//1:重复 2:无重复		
+		Course course =  this.getHibernateTemplate().get(Course.class,c.getCourseId());
+		if(course!=null){
+			return "1";	
+		}else{
+			return "2";	
+		}		
+	}
+	//课程删除
+	public String deleteCourse(Course c){
+		Course course = this.getHibernateTemplate().get(Course.class, c.getCourseId());
+		String hql = "from Appointment where courseName =?";
+		List<Appointment> apptList = this.getHibernateTemplate().find(hql,course.getCourseName());
+		for (Appointment appt : apptList) {
+			this.getHibernateTemplate().delete(appt);
+		}		
+		this.getHibernateTemplate().delete(course);
 		this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
-		return "OK";
+		return "1";		
+	}
+	//安排课程
+	public String planCourse(Course c,String date,String coachName){
+		c.setCourseName(c.getCourseName()+"●"+coachName);
+		String hql = "from Course where courseName = ?";
+		List<Course> courseList =(ArrayList<Course>)this.getHibernateTemplate().find(hql,c.getCourseName());
+		Course course = courseList.get(0);
+		if(course!=null){
+			//转化时间类型
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			ParsePosition pos = new ParsePosition(0);//指向String转换为Date()时的索引位置
+			Date newDate = format.parse(date,pos);
+			course.getStartDate().add(newDate);				
+			this.getHibernateTemplate().update(course);
+			this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
+			return "1";
+		}else{
+			return "2";
+		}
 	}
 }	
