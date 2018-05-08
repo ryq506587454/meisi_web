@@ -173,4 +173,15 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 		msg = UserService.deleteUser(user);
 		return "MediaMsg";
 	}
+	//通过ID查用户
+	public String FindById(){
+		mediaUser = UserService.findByUserId(user);		
+		return "MediaUser";	
+	}
+	//更改用户信息
+	public String UpdateUser(){
+		msg = UserService.updateUser(user);	
+		return "Update_suc";	
+	}
+	
 }

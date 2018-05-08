@@ -70,8 +70,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 　　			}); 
 		</script>
 		<script>
-			$('#SerchBtn').click(function(){
-														
+			$('#SerchBtn').click(function(){														
 				 $.ajax({
 				 	 type:"post",					 
 					 url:"Course_FindAppt",

@@ -9,7 +9,7 @@
 	<package name="User" extends="struts-default,json-default" namespace="/">
 		<action name="User_*" method="{1}"  class="UserAction">		
 			<!-- 登陆成功后返回页面 -->
-			<result name="Login_SUCCESS">/index.jsp</result>
+			<result name="Login_SUCCESS">/tip/loginsuc.jsp</result>
 			<result name="Login_FAIL">/tip/out.jsp</result>			
 			<!-- 移动端登陆 -->			   
 			<result name="MediaUser" type="json" >
@@ -28,7 +28,9 @@
 				<param name="root">Utillist</param>				
 			</result> 
 			<!-- 新增成功 -->	  
-			<result name="ADD_Success">/tip/addsuc.jsp</result>		                 			
+			<result name="ADD_Success">/tip/addsuc.jsp</result>
+			<!-- 更新成功 -->	  
+			<result name="Update_suc">/tip/updateUser.jsp</result>			                 			
 		</action>
 		<action name="Course_*" method="{1}"  class="CourseAction">			
 			<!--返回课程列表 -->		   
@@ -61,11 +63,16 @@
 			<result name="MediaMsg" type="json" >
 				<param name="root">msg</param>				
 			</result> 
-			<!--返回带Msg的教练
-			列表 -->		   
+			<!--返回带Msg的教练列表 -->		   
 			<result name="UtilList" type="json" >
 				<param name="root">Utillist</param>				
-			</result> 	 			
+			</result> 
+			<!--返回教练信息 -->		   
+			<result name="MidCoach" type="json" >
+				<param name="root">midCoach</param>				
+			</result>
+			<!-- 更新成功 -->	  
+			<result name="Update_suc">/tip/updateCoach.jsp</result>			 			
 		</action>
 	</package>		
 </struts>    

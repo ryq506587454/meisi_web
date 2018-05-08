@@ -19,9 +19,7 @@ public class UserDao extends HibernateDaoSupport{
 	public User login(User user){		
 		System.out.println("UD.login被调用。。");
 		System.out.println(user.getUserId()+" "+user.getPassword());
-		//String hql ="from User where userId = ? and grade = 1";
 		User u  = (User)this.getHibernateTemplate().get(User.class,user.getUserId());
-		//User u = list.get(0);
 		if(u==null){
 			return null;
 		}else if(u.getPassword().equals(user.getPassword())){	
@@ -196,6 +194,36 @@ public class UserDao extends HibernateDaoSupport{
 		this.getHibernateTemplate().delete(coach);
 		this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
 		return "1";	
+	}
+	//根据ID查找会员
+	public User findByUserId(User u){
+		return this.getHibernateTemplate().get(User.class, u.getUserId());
+	}
+	//更新用户信息
+	public String updateUser(User u){
+		User user =this.getHibernateTemplate().get(User.class, u.getUserId());
+		user.setIdentity(u.getIdentity());
+		user.setName(u.getName());
+		user.setPassword(u.getPassword());
+		user.setTel(u.getTel());
+		this.getHibernateTemplate().update(user);
+		this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
+		return "1";
+	}
+	//根据ID查找教练
+	public Coach findByCoachId(Coach c){
+		return this.getHibernateTemplate().get(Coach.class, c.getCoachId());
+	}
+	//更新教练信息
+	public String updateCoach(Coach c){		
+		Coach coach =this.getHibernateTemplate().get(Coach.class, c.getCoachId());
+		System.out.println(coach.getCoachName());
+		coach.setCoachInfo(c.getCoachInfo());
+		coach.setCoachName(c.getCoachName());
+		coach.setCourseType(c.getCourseType());
+		this.getHibernateTemplate().update(coach);
+		this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
+		return "1";
 	}
 }
 

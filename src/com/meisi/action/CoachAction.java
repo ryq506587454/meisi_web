@@ -27,6 +27,13 @@ public class CoachAction extends ActionSupport implements ModelDriven<Coach>{
 		public void setMsg(String msg) {
 			this.msg = msg;
 		}
+		private Coach midCoach;				
+		public Coach getMidCoach() {
+			return midCoach;
+		}
+		public void setMidCoach(Coach midCoach) {
+			this.midCoach = midCoach;
+		}
 		private List<Coach> coachList;		
 		public List<Coach> getCoachList() {
 			return coachList;
@@ -97,6 +104,16 @@ public class CoachAction extends ActionSupport implements ModelDriven<Coach>{
 		public String DeleteCoach(){
 			msg =  UserService.deleteCoach(Coach);
 			return "MediaMsg";	
+		}
+		//根据ID查找教练
+		public String FindById(){
+			midCoach = UserService.findByCoachId(Coach);		
+			return "MidCoach";	
+		}
+		//更新教练信息
+		public String UpdateCoach(){
+			msg = UserService.updateCoach(Coach);
+			return "Update_suc";	
 		}
 
 }

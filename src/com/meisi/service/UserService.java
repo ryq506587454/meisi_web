@@ -87,4 +87,20 @@ public class UserService {
 	public String deleteCoach(Coach c){
 		return UserDao.deleteCoach(c);
 	}
+	//根据ID查找用户
+	public User findByUserId(User u){
+		return UserDao.findByUserId(u);
+	}
+	//更新用户信息
+	public String updateUser(User u){
+		return UserDao.updateUser(u);
+	}
+	//根据ID查找教练
+	public Coach findByCoachId(Coach c){
+		return UserDao.findByCoachId(c);
+	}
+	//更新教练信息
+	public String updateCoach(Coach c){
+		return UserDao.updateCoach(c);
+	}
 }
