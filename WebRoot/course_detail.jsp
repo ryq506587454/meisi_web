@@ -42,13 +42,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<!-- Row start -->
 						<div class="am-u-sm-12">
 							<div class="card-box">								
-								<form action="Course_AddCourse" method="post" class="am-form">
+								<form action="Course_UpdateCourse" method="post" class="am-form">
 								  <fieldset>
 								    <legend>添加新课程</legend>
+								     <div class="form-group col-md-offset-4">
+									    <div class="am-btn-group">						  
+										  <div class="am-dropdown" data-am-dropdown>										
+										  	<button id="SerchBtn" class="am-btn am-btn-secondary am-dropdown-toggle"  data-am-dropdown-toggle >查询</button>						  										    
+										  </div>
+										</div>
+									    <div class="col-md-5">									    
+									      <input id="SerchInput" type="text" class="form-control" id="serch" placeholder="请输入课程编号" />
+									    </div>
+									</div>
 								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
 								      <label >课程编号:</label>
-								      <input name="courseId" id="courseId" type="number"  placeholder="输入课程编号" required oninvalid="setCustomValidity('请输入课程编号);"/>
-								      <h4 id="msg"></h4>
+								      <input name="courseId" id="courseId" type="number"  disabled />								      
 								    </div>
 								     <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
 								      <label >课程名称:</label>
@@ -60,25 +69,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								    </div>
 								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
 								     <label >课程时长(分钟):</label>
-								      <input name="courseDuration" type="number"   placeholder="输入课程时长" required oninvalid="setCustomValidity('请输入课程介绍');" />
-								    </div>																	   																    								
-								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1" >
-								      <label for="doc-select-1">课程类型</label>
-								      <select name="courseType"  id="select" required />
-								      	<option  >请选择</option>								        
-								        <option  value="瘦身">瘦身</option>
-								        <option  value="增肌">增肌</option>
-								        <option  value="塑形">塑形</option>
-								        <option  value="瑜伽">瑜伽</option>
-								      </select>
-								      <span class="am-form-caret"></span>
+								      <input name="courseDuration" id="courseDuration" type="number"   placeholder="输入课程时长" required oninvalid="setCustomValidity('请输入课程介绍');" />
 								    </div>	
-								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1" >
-								      <label for="doc-select-1">授课教练</label>
-								      <select name="coachId" id="coach" required oninvalid="setCustomValidity('请选择课程类别后选择合适教练');"/>								        								        
-								      </select>
-								      <span class="am-form-caret"></span>
-								    </div>
+								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
+								      <label >课程类型:</label>
+								      <input name="courseType" id="courseType" type="text"  disabled />								      
+								    </div>	
+								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
+								      <label >授课教练:</label>
+								      <input name="coachName" id="coachName" type="text"  disabled />								      
+								    </div>																	   																    																   									   
 								    <div class="am-form-group am-u-sm-7">
 								    	<button id="sub" class="am-btn am-btn-secondary  am-u-sm-3" type="submit">提交</button>
 								    </div>													    															    								    
@@ -97,53 +97,38 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script type="text/javascript" src="assets/js/amazeui.min.js"></script>
 		<script>
 			$(function(){ 
-　　				$('#page-title').text('添加课程');
+　　				$('#page-title').text('课程详情');
 				
 　　			}); 
 		</script>
-		<script type="text/javascript">
-		$('#select').change(function(){
-			$.ajax({
+		<script>
+			$('#SerchBtn').click(function(){
+				if($('#SerchInput').val()==""){
+				alert("请输入课程编号");
+				}else{
+					$.ajax({
 				 	 type:"post",					 
-					 url:"User_FindCoachByType",
-					 data:{	
-					 	courseType:	$(this).val()				 
+					 url:"Course_meidaFindByID",
+					 data:{
+					 courseId:$('#SerchInput').val()
 					 },
-					 success:function(result){						 
-        			    $("#coach").empty();	        			      
-        			    $.each(result.list,function (index,coach){		        			    	                  		                        		                        
-	                        $("#coach").append(
-	                       '<option  value="'+coach.coachId+'">'+coach.coachName+'</option>'	                                                           
-	                        ); 		                        
-	                    });      			    
+					 success:function(result){	
+					 $('#SerchInput').val("");
+					 if(result==null){
+					 	alert('课程不存在，请查证');
+					 }else{
+					 	$('#courseId').val(result.courseId);
+					 	$('#courseName').val(result.courseName.split("●")[0]);
+					 	$('#courseIntro').val(result.courseIntro);
+					 	$('#courseDuration').val(result.courseDuration/60);	
+					 	$('#courseType').val(result.courseType);	
+					 	$('#coachName').val(result.coach.coachName);	                      	
+					 }										 							  				 					 			        			   	        			 		        			    		        			         			    
     				}
    				});
-			})			
-		</script>
-		<script>
-			$('#courseId').blur(function(){	
-				var value = $(this).val().length;				
-				if(value==" "){				
-				}else{
-						$.ajax({
-						 	 type:"post",					 
-							 url:"Course_CheckCourseTwo",
-							 data:{
-								courseId:$('#courseId').val()
-							 },
-							 success:function(result){
-							 if(result=="1"){
-							 		$('#sub').attr("disabled", true);	
-							 		$('#msg').text('该课程号已被注册');	
-							 		$('#msg').css({color:"red"});	
-							 	}else{
-							 		$('#sub').attr("disabled", false);	
-							 		$('#msg').text('该课程号可以注册');
-							 		$('#msg').css({color:"green"});	
-							 	}						 				 					 		        			   	        			 		        			    		        			         			    
-		    				 }
-	    				});	
-					}																		  								
-				});
-		</script>
+				}					 									
+			});
+		</script>	
+		
+		
 </html>

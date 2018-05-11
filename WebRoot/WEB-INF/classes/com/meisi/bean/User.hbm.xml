@@ -15,7 +15,7 @@
         <many-to-one name="card"  unique="true" class="com.meisi.bean.Card" cascade="all">
             <column name="cardId" />
         </many-to-one>
-       	<set name="course" table="User_Course" lazy="false">
+       	<set name="course" table="user_course" lazy="false">
        		<key column="userId" />       		 
        		<many-to-many  class="com.meisi.bean.Course" column="courseId" /> 		
        	</set>

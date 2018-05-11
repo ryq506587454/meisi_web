@@ -45,14 +45,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<form  class="am-form">
 								  <fieldset>
 								    <legend>安排课程</legend>
+								     <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
+								      <label >课程编号:</label>
+								      <input name="courseId" id="courseId" type="number"  placeholder="输入课程编号" required oninvalid="setCustomValidity('输入课程编号);"/>
+								    </div>	
 								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
 								      <label >课程名称:</label>
-								      <input name="courseName" id="courseName" type="text"  placeholder="输入课程的完整名称" required oninvalid="setCustomValidity('请输入课程名称);"/>								     
-								    </div>					   	
-								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
-								      <label >教练名称:</label>
-								      <input name="coachName" id="coachName" type="text"  placeholder="输入教练名称" required oninvalid="setCustomValidity('请输入教练名称);"/>
-								    </div>	
+								      <input name="courseName" id="courseName" type="text" disabled  />								     
+								    </div>					   									  
 								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1" >
 								      <label >上课日期:</label>
 								      <input name="courseDate" id="courseDate" type="date"  placeholder="输入上课日期" required oninvalid="setCustomValidity('请输入上课日期);"/>
@@ -83,22 +83,45 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 　　				$('#page-title').text('安排课程');						
 　　			}); 
 		</script>
-			<script>
+		<script>
+			$('#courseId').blur(function(){				
+				$.ajax({
+				 	 type:"post",					 
+					 url:"Course_meidaFindByID",
+					 data:{
+					 	courseId:$('#courseId').val()
+					 },
+					 success:function(result){	
+					 console.log(result);
+					 if(result==null){
+					 	alert('课程编号错误，请查证');	
+					 	$('#courseId').empty();
+					 	$('#sub').attr("disabled", true);	
+					 }else{
+					 	$('#courseName').val(result.courseName);
+					 	$('#sub').attr("disabled", false);						 		
+					 }					
+					 							  				 					 			        			   	        			 		        			    		        			         			    
+    				}
+   				});			
+			});
+		</script>
+		<script>
 			$('#sub').click(function(){														
 				 $.ajax({
 				 	 type:"post",					 
 					 url:"Course_PlanCourse",
 					 data:{
-					 	courseName:$('#courseName').val(),
-					 	coachName:$('#coachName').val(),
+					 	courseId:$('#courseId').val(),
 					 	courseDate:$('#courseDate').val(),
 					 	courseTime:	$('#courseTime').val()
 					 },
 					 success:function(result){
+					 console.log(result);
 					 	if(result=="1"){
 					 		alert('添加成功');
-					 	}else{
-					 		alert('添加失败,请检查课程名称和教练名称');
+					 	}else if(result=="3"){
+					 		alert('添加失败,该时间段已有该课程');
 					 	}						  				 					 			        			   	        			 		        			    		        			         			    
     				}
    				});							

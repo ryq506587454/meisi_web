@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class Notice {
 	private int noticeId;			//公告ID
-	private String bulletin; 		//公告简述
+	private String title; 			//公告简述
 	private String noticeDetail;	//公告详情
 	private Date publishTime;		//公告发布时间
 	
@@ -17,11 +17,12 @@ public class Notice {
 	public void setNoticeId(int noticeId) {
 		this.noticeId = noticeId;
 	}
-	public String getBulletin() {
-		return bulletin;
+	
+	public String getTitle() {
+		return title;
 	}
-	public void setBulletin(String bulletin) {
-		this.bulletin = bulletin;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public String getNoticeDetail() {
 		return noticeDetail;
@@ -35,12 +36,7 @@ public class Notice {
 	public void setPublishTime(Date publishTime) {
 		this.publishTime = publishTime;
 	}
-	@Override
-	public String toString() {
-		return "Notice [noticeId=" + noticeId + ", bulletin=" + bulletin
-				+ ", noticeDetail=" + noticeDetail + ", publishTime="
-				+ publishTime + "]";
-	}
+
 	
 
 }

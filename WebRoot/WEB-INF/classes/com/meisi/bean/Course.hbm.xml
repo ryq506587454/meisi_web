@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">    
 <!-- 会员卡实体类的hbm文件 -->      
 <hibernate-mapping package="com.meisi.bean">  
-    <class name="Course" table="Course">  
+    <class name="Course" table="course">  
         <id name="courseId" column="courseId" type="long">  
             <generator class="assigned"/> 
         </id>   
@@ -15,7 +15,7 @@
             <key column="courseId" />  
             <element type="timestamp" column="startTime" not-null="true" /> 
         </set>   
-        <set name="user" lazy="false" table="User_Course" inverse="true">
+        <set name="user" lazy="false" table="user_course" inverse="true">
        		<key column="courseId" />      
        		<many-to-many fetch="join" class="com.meisi.bean.User" column="userId" />
        	</set>

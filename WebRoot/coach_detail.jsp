@@ -57,7 +57,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</div>
 									<div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
 								      <label >教练编号： </label>
-								      <input name="coachId" type="number"  id="coachId"  disabled />								     
+								      	<input name="coachId" type="number"  id="coachId"  disabled />								     
 								     </div>
 								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
 								      <label >教练名称:</label>
@@ -98,16 +98,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$(function(){ 
 　　				$('#page-title').text('查看修改教练信息');
 　　			}); 
-		</script>
+		</script>		
 		<script>
-			$('#SerchBtn').click(function(){	
+			$('#SerchBtn').click(function(){
+			if($('#SerchInput').val()==""){
+				alert("请输入教练编号");
+				}else{	
 				 $.ajax({
 				 	 type:"post",					 
 					 url:"Coach_FindById",
 					 data:{
 					 coachId:$('#SerchInput').val()
 					 },
-					 success:function(result){	
+					 success:function(result){
+					 $('#SerchInput').val("");	
 					 if(result==null){
 					 	alert('教练不存在，请查证');
 					 }else{
@@ -118,7 +122,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					 }					
 					 							  				 					 			        			   	        			 		        			    		        			         			    
     				}
-   				});									
+   				});
+   				}									
 			});
 		</script>		
 </html>

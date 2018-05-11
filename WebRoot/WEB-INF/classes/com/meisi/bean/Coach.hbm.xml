@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">    
 <!-- 会员卡实体类的hbm文件 -->      
 <hibernate-mapping package="com.meisi.bean">  
-    <class name="Coach" table="Coach">  
+    <class name="Coach" table="coach">  
         <id name="coachId" column="coachId" type="int">  
             <generator class="identity"/> 
         </id>   

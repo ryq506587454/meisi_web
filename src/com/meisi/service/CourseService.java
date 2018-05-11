@@ -71,7 +71,12 @@ public class CourseService {
 		return CourseDao.deleteCourse(c);
 	}
 	//安排课程
-	public String planCourse(Course c,String date,String coachName){
-		return CourseDao.planCourse(c, date, coachName);
+	public String planCourse(Course c,String date){
+		return CourseDao.planCourse(c, date);
+	}
+	//更新课程
+	public String updateCourse(Course c){
+		c.setCourseDuration(c.getCourseDuration()*60);
+		return CourseDao.updateCourse(c);
 	}
 }	

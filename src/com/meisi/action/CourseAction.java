@@ -122,7 +122,7 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		return "MediaCourseList";		
 	}
 	//根据课程ID查课-移动端
-	public String meidaFindByID(){		
+	public String meidaFindByID(){	
 		mediaCourse = CourseService.findCourseById(Course);
 		return "MediaCourse";		
 	}
@@ -179,9 +179,14 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 	}
 	//安排课程
 	public String PlanCourse(){
-		String currentDate=courseDate+" "+courseTime;		
-		msg = CourseService.planCourse(Course,currentDate, coachName);
+		String currentDate=courseDate+" "+courseTime;	
+		msg = CourseService.planCourse(Course,currentDate);
 		System.out.println(msg);
 		return "MediaMsg";
+	}
+	//更新课程
+	public String UpdateCourse(){
+		msg = CourseService.updateCourse(Course);
+		return "Update_suc";
 	}
 }

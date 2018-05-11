@@ -54,7 +54,9 @@
 				<param name="root">Utillist</param>				
 			</result> 	
 			<!-- 新增成功 -->	  
-			<result name="AddCourse_success">/tip/addCoursesuc.jsp</result>	 		                   			
+			<result name="AddCourse_success">/tip/addCoursesuc.jsp</result>	 
+			<!-- 更新成功 -->	  
+			<result name="Update_suc">/tip/updateCourse.jsp</result>				                   			
 		</action>
 		<action name="Coach_*" method="{1}"  class="CoachAction">
 			<!-- 新增成功 -->	  

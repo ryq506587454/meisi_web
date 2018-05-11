@@ -12,8 +12,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <title>My JSP 'quite.jsp' starting page</title>
      
     <script>
-    	alert('添加成功');
-    	window.location.href ='<%=basePath%>coach_table.jsp';
+    	alert('更新成功');
+    	window.location.href ='<%=basePath%>course_detail.jsp';
      </script>    
   </head>
   

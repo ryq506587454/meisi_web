@@ -61,6 +61,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								      <input name="userId" type="number"  id="userId"  disabled />								      
 								     </div>
 								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
+								      <label >用户姓名：</label>
+								      <input name="name" type="text" id="name" required oninvalid="setCustomValidity('不能为空');"/>
+								    </div>
+								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
 								      <label >用户手机号： </label>
 								      <input name="tel" type="number"   id="tel" minlength="11"  required oninvalid="setCustomValidity('不能为空');"/>
 								     <h4 id="msg"></h4>
@@ -73,10 +77,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								      <label >用户身份证号：</label>
 								      <input name="identity" type="number"  id="identity" minlength="18" required oninvalid="setCustomValidity('不能为空');" />
 								    </div>								
-								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
-								      <label >用户姓名：</label>
-								      <input name="name" type="text" id="name" required oninvalid="setCustomValidity('不能为空');"/>
-								    </div>																   																  																   
+								    																   																  																   
 								    <div class="am-form-group am-u-sm-7">
 								    	<button id="sub" class="am-btn am-btn-secondary  am-u-sm-3" type="submit">修改</button>
 								    </div>													    															    								    
@@ -99,14 +100,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 　　			}); 
 		</script>
 		<script>
-			$('#SerchBtn').click(function(){	
+			$('#SerchBtn').click(function(){
+			if($('#SerchInput').val()==""){
+				alert("请输入教练编号");
+				}else{		
 				 $.ajax({
 				 	 type:"post",					 
 					 url:"User_FindById",
 					 data:{
 					 userId:$('#SerchInput').val()
 					 },
-					 success:function(result){	
+					 success:function(result){
+					 $('#SerchInput').val("");	
 					 if(result==null){
 					 alert('用户不存在，请查证');
 					 }else{
@@ -118,7 +123,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					 }					
 					 							  				 					 			        			   	        			 		        			    		        			         			    
     				}
-   				});									
+   				});	
+   				}								
 			});
 		</script>
 </html>
