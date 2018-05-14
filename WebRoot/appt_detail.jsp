@@ -30,7 +30,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="card-box">
 					<div class="am-input-group am-datepicker-date col-md-6 col-md-offset-3" data-am-datepicker="{format: 'yyyy-mm-dd'}">
   							<input type="text" class="am-form-field " placeholder="请输入日期"  readonly>
-  						<span class="am-input-group-btn am-datepicker-add-on">
+  							<span class="am-input-group-btn am-datepicker-add-on">
     						<button class="am-btn am-btn-default"  type="button"><span class="am-icon-calendar"></span> </button>
   						</span>
 					</div>

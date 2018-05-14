@@ -10,8 +10,10 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import com.meisi.bean.Appointment;
 import com.meisi.bean.Coach;
 import com.meisi.bean.Course;
+import com.meisi.bean.Notice;
 import com.meisi.bean.User;
 import com.meisi.util.ApptLog;
+import com.meisi.util.ApptSMSUtil;
 
 
 public class CourseDao extends HibernateDaoSupport{
@@ -66,6 +68,7 @@ public class CourseDao extends HibernateDaoSupport{
 			this.getHibernateTemplate().update(apptCourse);
 			this.getHibernateTemplate().update(vip);
 			this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
+			System.out.println(ApptSMSUtil.sendSms(String.valueOf(vip.getTel()), date, apptCourse.getCourseName(), vip.getName()));
 			return "OK";
 		}else{
 			return "TIMESERRO";
@@ -227,4 +230,25 @@ public class CourseDao extends HibernateDaoSupport{
 		return "1";
 	}	
 	
+	
+/*
+ * 通知部分	
+ */
+	//发布通知
+	public String addNotice(Notice notice){	
+		notice.setPublishTime(new Date());
+		this.getHibernateTemplate().save(notice);
+		this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
+		return  "OK";
+	}	
+	//查询所有通知
+	public List<Notice> findAllNotice(){
+		String hql = "from Notice";
+		List<Notice> notice = this.getHibernateTemplate().find(hql);
+		return notice;
+	}
+	//根据ID查询
+	public Notice findByID(Notice notice){
+		return this.getHibernateTemplate().get(Notice.class, notice.getNoticeId());
+	}
 }	

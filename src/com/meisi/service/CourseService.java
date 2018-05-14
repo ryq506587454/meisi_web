@@ -5,6 +5,7 @@ package com.meisi.service;
 import java.util.List;
 
 import com.meisi.bean.Course;
+import com.meisi.bean.Notice;
 import com.meisi.dao.CourseDao;
 import com.meisi.util.ApptLog;
 
@@ -78,5 +79,20 @@ public class CourseService {
 	public String updateCourse(Course c){
 		c.setCourseDuration(c.getCourseDuration()*60);
 		return CourseDao.updateCourse(c);
+	}
+/*
+ * 通知部分	
+ */
+	//发布通知
+	public String addNotice(Notice notice){
+		return CourseDao.addNotice(notice);
+	}
+	//查询所有通知
+	public List<Notice> findAllNotice(){
+		return CourseDao.findAllNotice();
+	}
+	//根据ID查询通知
+	public Notice findByID(Notice notice){
+		return CourseDao.findByID(notice);
 	}
 }	

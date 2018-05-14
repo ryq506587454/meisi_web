@@ -1,5 +1,6 @@
 package com.meisi.dao;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,6 +14,7 @@ import com.meisi.bean.User;
 /*
  * 用户持久层
  */
+import com.meisi.util.UnApptSMSUtil;
 
 public class UserDao extends HibernateDaoSupport{
 	//用户登录
@@ -30,8 +32,7 @@ public class UserDao extends HibernateDaoSupport{
 	}
 	
 	//查询所有用户
-	public List<User> findAllVip(){
-		System.out.println("UD.findAllVip被调用。。");
+	public List<User> findAllVip(){		
 		List<User> VipList = new ArrayList<User>(); 
 		String hql = "from User where grade = 0 ";  
 		VipList= this.getHibernateTemplate().find(hql);		
@@ -39,7 +40,6 @@ public class UserDao extends HibernateDaoSupport{
 	}
 	//移动端-修改信息
 	public String updateUserInfo(String flag,User user){
-		System.out.println("UD.updateUserInfo被调用。。");
 		User u = this.getHibernateTemplate().get(User.class, user.getUserId());
 		switch(Integer.parseInt(flag)){
 			case 1:
@@ -58,21 +58,28 @@ public class UserDao extends HibernateDaoSupport{
 	}
 	//取消预约
 	public String quiteAppt(User user,String courseName,String apptId){
-		System.out.println("UD.quiteAppt被调用。。");
+	//获取用户信息	
 		User vip = this.getHibernateTemplate().get(User.class, user.getUserId());	
 		String hql = "from Course where courseName = ?";
+	//查询预约的课程
 		List<Course> courseList = (ArrayList<Course>)this.getHibernateTemplate().find(hql,courseName);
 		Course vipCourse = courseList.get(0);
+		//课程总人数-1
 		vipCourse.setTotalNumber(vipCourse.getTotalNumber()-1);
+	//获取预约信息
 		Appointment a = new Appointment();
 		a.setApptId(Integer.parseInt(apptId));
 		Appointment vipAppt =this.getHibernateTemplate().get(Appointment.class,a.getApptId());
 		vip.getAppt().remove(vipAppt);
 		vip.getCourse().remove(vipCourse);
+	//时间转换格式(用于发送短信)
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+		String date=sdf.format(vipAppt.getCourseTime()); 
 		this.getHibernateTemplate().delete(vipAppt);
 		this.getHibernateTemplate().update(vipCourse);
 		this.getHibernateTemplate().update(vip);
-		this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();			
+		this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
+		System.out.println(UnApptSMSUtil.sendSms(String.valueOf(vip.getTel()),date,vipAppt.getCourseName(), vip.getName()));		
 		return "OK";		
 	}
 	//根据条件查询

@@ -76,5 +76,19 @@
 			<!-- 更新成功 -->	  
 			<result name="Update_suc">/tip/updateCoach.jsp</result>			 			
 		</action>
+			<action name="Notice_*" method="{1}"  class="NoticeAction">
+			<!-- 更新成功 -->	  
+			<result name="Add_suc">/tip/addNoticesuc.jsp</result>
+			<!-- 跳转页面 -->	  
+			<result name="Add_suc">addNoticesuc.jsp</result>
+			<!--返回通知列表 -->		   
+			<result name="MediaNoticeList" type="json" >
+				<param name="root">mediaNoticeList</param>				
+			</result> 	
+			<!--返回通知详情 -->		   
+			<result name="MediaNotice" type="json" >
+				<param name="root">mediaNotice</param>				
+			</result>			 			
+		</action>
 	</package>		
 </struts>    

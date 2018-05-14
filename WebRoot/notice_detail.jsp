@@ -14,8 +14,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<link rel="stylesheet" href="assets/css/core.css" />
 		<link rel="stylesheet" href="assets/css/menu.css" />				
 		<link rel="stylesheet" href="assets/css/admin.css" />	
-		<link rel="stylesheet" href="assets/css/component.css" />
-		<!-- 消除number类型数据的小三角 -->
+		<link rel="stylesheet" href="assets/css/component.css" />	
+			<!-- 消除number类型数据的小三角 -->
 		<style>
     		input::-webkit-outer-spin-button,
     		input::-webkit-inner-spin-button {
@@ -24,9 +24,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		input[type="number"]{
     	    -moz-appearance: textfield;
    		 }
-		</style>		
+		</style>	
 	</head>
-	<body >		
+	<body>		
 		<!-- 顶部 开始-->
 		<%@ include file="header.jsp" %>
 		<!-- 顶部 结束 -->		
@@ -39,12 +39,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- Start content -->
 			<div class="content">
 				<div class="am-container" >
+					
 					<!-- Row start -->
-						<div class="am-u-sm-12">
-							<div class="card-box">								
-								<form action="Coach_UpdateCoach" method="post" class="am-form">
+						<div class="am-u-sm-12">						
+							<div class="card-box">															
+								<form action="User_UpdateUser" method="post" class="am-form">
 								  <fieldset>
-								    <legend>教练详细信息</legend>
+								    <legend>查看/修改用户信息</legend>								   
 								    <div class="form-group col-md-offset-4">
 									    <div class="am-btn-group">						  
 										  <div class="am-dropdown" data-am-dropdown>										
@@ -52,34 +53,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										  </div>
 										</div>
 									    <div class="col-md-5">									    
-									      <input id="SerchInput" type="text" class="form-control" id="serch" placeholder="请输入教练编号" />
+									      <input id="SerchInput" type="text" class="form-control" id="serch" placeholder="请输入会员号" />
 									    </div>
 									</div>
 									<div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
-								      <label >教练编号： </label>
-								      	<input name="coachId" type="number"  id="coachId"  disabled />								     
-								     </div>
+								      <label >公告编号： </label>
+								      <input name="noticeId" type="number"  id="noticeId"  disabled />								      
+								    </div>								    
 								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
-								      <label >教练名称:</label>
-								      <input name="coachName" id="coachName" type="text"  placeholder="输入教练名称" required oninvalid="setCustomValidity('请输入教练名称);"/>
+								      <label >公告标题:</label>
+								      <input name="title" id="title" type="text"  placeholder="输入公告标题" required oninvalid="setCustomValidity('请输入公告标题);"/>
 								      <h4 id="msg"></h4>
-								    </div>
-								     <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
-								      <label >教练简介:</label>
-								      <input name="coachInfo" id="coachInfo" type="text"  placeholder="输入教练简介" />
-								    </div>									    															    															   																			    																	   																    								
-								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1" >
-								      <label for="doc-select-1">授课类型</label>
-								      <select name="courseType"  id="courseType" required />								        
-								        <option  value="瘦身">瘦身</option>
-								        <option  value="增肌">增肌</option>
-								        <option  value="塑形">塑形</option>
-								        <option  value="瑜伽">瑜伽</option>
-								      </select>
-								      <span class="am-form-caret"></span>
-								    </div>									    
+								    </div>								    									    
+								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
+								      <label >公告内容：</label>
+								      <textarea name="noticeDetail" rows="10" placeholder="输入公告内容" required oninvalid="setCustomValidity('请输入公告内容);"></textarea>
+								    </div>														   																  																   
 								    <div class="am-form-group am-u-sm-7">
-								    	<button id="sub" class="am-btn am-btn-secondary  am-u-sm-3" type="submit">提交</button>
+								    	<button id="sub" class="am-btn am-btn-secondary  am-u-sm-3" type="submit">修改</button>
 								    </div>													    															    								    
 								  </fieldset>
 								</form>																
@@ -96,34 +87,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script type="text/javascript" src="assets/js/amazeui.min.js"></script>
 		<script>
 			$(function(){ 
-　　				$('#page-title').text('查看修改教练信息');
+　　				$('#page-title').text('查看修改用户信息');
 　　			}); 
-		</script>		
+		</script>
 		<script>
 			$('#SerchBtn').click(function(){
 			if($('#SerchInput').val()==""){
 				alert("请输入教练编号");
-				}else{	
+				}else{		
 				 $.ajax({
 				 	 type:"post",					 
-					 url:"Coach_FindById",
+					 url:"User_FindById",
 					 data:{
-					 coachId:$('#SerchInput').val()
+					 userId:$('#SerchInput').val()
 					 },
 					 success:function(result){
 					 $('#SerchInput').val("");	
 					 if(result==null){
-					 	alert('教练不存在，请查证');
+					 alert('用户不存在，请查证');
 					 }else{
-					 	$('#coachId').val(result.coachId);
-					 	$('#coachName').val(result.coachName);
-					 	$('#coachInfo').val(result.coachInfo);
-					 	$('#courseType').val(result.courseType);	
+					 	$('#userId').val(result.userId);
+					 	$('#tel').val(result.tel);
+					 	$('#password').val(result.password);	
+					 	$('#identity').val(result.identity);	
+					 	$('#name').val(result.name);
 					 }					
 					 							  				 					 			        			   	        			 		        			    		        			         			    
     				}
-   				});
-   				}									
+   				});	
+   				}								
 			});
-		</script>		
+		</script>
 </html>

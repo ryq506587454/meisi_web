@@ -66,7 +66,7 @@ public class CoachAction extends ActionSupport implements ModelDriven<Coach>{
 		public void setUtillist(Utillist utillist) {
 			this.utillist = utillist;
 		}
-	//课程业务层注入
+	//教练业务层注入（公用User的）
 		private UserService UserService;
 		public void setUserService(UserService userService) {
 			UserService = userService;

@@ -7,7 +7,7 @@
             <generator class="identity"/> 
         </id>   
         <property name="title" column="title" type="string" not-null="true" /> 
-        <property name="noticeDetail" column="noticeDetail" type="string" not-null="true" />   
+        <property name="noticeDetail" column="noticeDetail" type="text" not-null="true" />   
         <property name="publishTime" column="publishTime" type="date" not-null="true"/>  
     </class>  
 </hibernate-mapping>  

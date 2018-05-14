@@ -47,7 +47,8 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		public void setMediaCourList(List<Course> mediaCourList) {
 			this.mediaCourList = mediaCourList;
 		}
-		//传过来的非模型元素
+	//传过来的非模型元素
+		//搜索框内数据
 		private String data;		
 		public String getData() {
 			return data;
@@ -55,6 +56,7 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		public void setData(String data) {
 			this.data = data;
 		}
+		//条件
 		private String flag;		
 		public String getFlag() {
 			return flag;
@@ -62,6 +64,7 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		public void setFlag(String flag) {
 			this.flag = flag;
 		}
+		//用户编号
 		private String userId;		
 		public String getUserId() {
 			return userId;
@@ -69,6 +72,7 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		public void setUserId(String userId) {
 			this.userId = userId;
 		}
+		//开课时间
 		private String courseDate;		
 		public String getCourseDate() {
 			return courseDate;
@@ -76,6 +80,7 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		public void setCourseDate(String courseDate) {
 			this.courseDate = courseDate;
 		}
+		//教练名称
 		private String coachName;		
 		public String getCoachName() {
 			return coachName;
@@ -83,6 +88,7 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		public void setCoachName(String coachName) {
 			this.coachName = coachName;
 		}
+		//教练编号
 		private String coachId;				
 		public String getCoachId() {
 			return coachId;
@@ -90,6 +96,7 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		public void setCoachId(String coachId) {
 			this.coachId = coachId;
 		}
+		//开课时间（预约表）
 		private String courseTime;				
 		public String getCourseTime() {
 			return courseTime;
@@ -106,10 +113,10 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 			this.utillist = utillist;
 		}
 	//课程业务层注入
-	private CourseService CourseService;
-	public void setCourseService(CourseService courseService) {
-		CourseService = courseService;
-	}
+		private CourseService CourseService;
+		public void setCourseService(CourseService courseService) {
+			CourseService = courseService;
+		}
 	
 	//查找所有课程
 	public String FindAllCourse(){		
@@ -189,4 +196,5 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		msg = CourseService.updateCourse(Course);
 		return "Update_suc";
 	}
+
 }

@@ -45,7 +45,6 @@
 				<value>com/meisi/bean/User.hbm.xml</value>
 				<value>com/meisi/bean/Card.hbm.xml</value>
 				<value>com/meisi/bean/Course.hbm.xml</value>
-				<value>com/meisi/bean/Financelog.hbm.xml</value>
 				<value>com/meisi/bean/Consumelog.hbm.xml</value>
 				<value>com/meisi/bean/Notice.hbm.xml</value>				
 				<value>com/meisi/bean/Appointment.hbm.xml</value>	
@@ -92,4 +91,9 @@
 		<property name="UserService" ref="UserService"/>
 	</bean>
  <!-- 对Coach的一系列管理结束 -->
+ <!-- 对Notice的一系列管理开始 -->
+ 	<bean id="NoticeAction" class="com.meisi.action.NoticeAction">
+		<property name="CourseService" ref="CourseService"/>
+	</bean>
+ <!-- 对Notice的一系列管理结束 -->
 </beans>

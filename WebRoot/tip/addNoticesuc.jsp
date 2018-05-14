@@ -9,11 +9,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>更新会员信息成功提示</title>
+    <title>添加教练成功提示</title>
      
     <script>
-    	alert('更新成功');
-    	window.location.href ='<%=basePath%>vip_detail.jsp';
+    	alert('发布成功');
+    	window.location.href ='<%=basePath%>index.jsp';
      </script>    
   </head>
   

@@ -27,10 +27,7 @@ public class UserService {
 	public List<User> findAllVip(){		
 		return UserDao.findAllVip();
 	}
-	//遍历所有教练信息
-	public List<Coach> findAllCoach(){	
-		return UserDao.findAllCoach();
-	}
+	
 	//修改信息
 	public String updateUserInfo(String flag,User user){		
 		return UserDao.updateUserInfo(flag,user);
@@ -57,21 +54,34 @@ public class UserService {
 	public String addNewUser(User u,String cType){
 		return UserDao.addNewUser(u,cType);
 	}
-	//根据类别查找教练
-	public List<Coach> findCoachByType(String courseType){
-		return UserDao.findCoachByType(courseType);
-	}
-	//添加新教练
-	public String addNewCoach(Coach coach){
-		return UserDao.addNewCoach(coach);
-	}
-	//教练查重
-	public String checkCoachTwo(Coach coach){
-		return UserDao.checkCoachTwo(coach); 
-	}
+
 	//删除会员
 	public String deleteUser(User u){
 		return UserDao.deleteUser(u); 
+	}
+	
+	//根据ID查找用户
+	public User findByUserId(User u){
+		return UserDao.findByUserId(u);
+	}
+	//更新用户信息
+	public String updateUser(User u){
+		return UserDao.updateUser(u);
+	}
+/*
+ * 教练部分	
+ */
+	//遍历所有教练信息
+	public List<Coach> findAllCoach(){	
+		return UserDao.findAllCoach();
+	}
+	//根据ID查找教练
+	public Coach findByCoachId(Coach c){
+		return UserDao.findByCoachId(c);
+	}
+	//更新教练信息
+	public String updateCoach(Coach c){
+		return UserDao.updateCoach(c);
 	}
 	//根绝条件查找教练
 	public List<Coach> findCoachByFlag(String flag,String data){
@@ -87,20 +97,16 @@ public class UserService {
 	public String deleteCoach(Coach c){
 		return UserDao.deleteCoach(c);
 	}
-	//根据ID查找用户
-	public User findByUserId(User u){
-		return UserDao.findByUserId(u);
+	//根据类别查找教练
+	public List<Coach> findCoachByType(String courseType){
+		return UserDao.findCoachByType(courseType);
 	}
-	//更新用户信息
-	public String updateUser(User u){
-		return UserDao.updateUser(u);
+	//添加新教练
+	public String addNewCoach(Coach coach){
+		return UserDao.addNewCoach(coach);
 	}
-	//根据ID查找教练
-	public Coach findByCoachId(Coach c){
-		return UserDao.findByCoachId(c);
-	}
-	//更新教练信息
-	public String updateCoach(Coach c){
-		return UserDao.updateCoach(c);
+	//教练查重
+	public String checkCoachTwo(Coach coach){
+		return UserDao.checkCoachTwo(coach); 
 	}
 }
