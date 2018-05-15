@@ -52,8 +52,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</tbody>
 							</table>
 							<ul class="am-pagination" style="margin-top: 50px;">
-							  <li class="am-pagination-prev"><a href="">&laquo; Prev</a></li>
-							  <li class="am-pagination-next"><a href="">Next &raquo;</a></li>
+							  <li id="prevLi" class="am-pagination-prev"><a id="prev" href="javascript:;">&laquo; Prev</a></li>
+							  <li id="nextLi" class="am-pagination-next"><a id="next" href="javascript:;">Next &raquo;</a></li>
 							</ul>				          
 				        </div>
       					</div>					  			  
@@ -69,23 +69,42 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="assets/js/amazeui.min.js"></script>
 		<script>
+			var page = 1;
+			$("#prev").click(function(){				
+				page = page-1;	
+				findAllNotice();	
+			})
+			$("#next").click(function(){				
+				page = page+1;
+				findAllNotice();						
+			})
 			$(function(){ 
 				console.log("111");
 　　				$('#page-title').text('公告列表');
 					findAllNotice();		 	
 　　			}); 
-		</script>		
-		<script type="text/javascript">
 		    function findAllNotice() {
+		    	if(page == "1"){
+					 $("#prevLi").addClass("am-disabled");
+					
+				}else {					 			 	
+				 	 $("#prevLi").removeClass("am-disabled");
+				}
 		        $.ajax({
 					 	 type:"post",					 
 						 url:"Notice_FindAllNotice",
-						 data:{						 
+						 data:{	
+						 	page:page					 
 						 },
 						 success:function(result){	
 						 console.log(result);					 
-	        			    $("#tbody").empty();	        			      
-	        			    $.each(result,function (index,notice){		        			    	                  		                        		                        
+	        			    $("#tbody").empty();
+	        			   	if(page==result.msg){
+								$("#nextLi").addClass("am-disabled");
+							}else{
+								$("#nextLi").removeClass("am-disabled");
+							}        			      
+	        			    $.each(result.list,function (index,notice){		        			    	                  		                        		                        
 		                        $("#tbody").append(
 		                        '<tr><td >'+notice.noticeId+'</td>'+
 							      '<td><a href="Notice_Jump?noticeId='+notice.noticeId+'">'+notice.title+'</a></td>'+							     

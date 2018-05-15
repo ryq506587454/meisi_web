@@ -1,11 +1,16 @@
 package com.meisi.dao;
 
+import java.sql.SQLException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import com.meisi.bean.Appointment;
 import com.meisi.bean.Coach;
@@ -100,10 +105,30 @@ public class CourseDao extends HibernateDaoSupport{
 			return advice;		
 	}
 	//查询所有课程
-	public List<Course> findAllCourse(){
-		String hql = "from Course";
-		List<Course> allCourse = this.getHibernateTemplate().find(hql);
+	public List<Course> findAllCourse(final int page ,final int pageSize){		
+		List<Course> allCourse = this.getHibernateTemplate().execute(new HibernateCallback(){
+			@Override
+			public Object doInHibernate(Session session)
+					throws HibernateException, SQLException {
+				String hql = "from Course"; 
+				Query query = session.createQuery(hql);
+				int begin = (page-1)*pageSize; 
+				query.setFirstResult(begin);  
+				query.setMaxResults(pageSize); 
+				return query.list();
+			}			
+		});
 		return allCourse;		
+	}
+	//计算课程表总页数
+	public int CourseNumber(int pageSize){
+		List<User> courseList = this.getHibernateTemplate().find("from Course");
+		int count = courseList.size();
+		if(count%pageSize==0){
+			return (count/pageSize);
+		}else{
+			return (count/pageSize)+1;
+		}	
 	}
 	//根据教练名称筛选课程
 	public List<Course> findCourseByCoach(String name){
@@ -285,10 +310,31 @@ public class CourseDao extends HibernateDaoSupport{
 		return  "OK";
 	}	
 	//查询所有通知
-	public List<Notice> findAllNotice(){
-		String hql = "from Notice";
-		List<Notice> notice = this.getHibernateTemplate().find(hql);
+	public List<Notice> findAllNotice(final int page ,final int pageSize){	
+		List<Notice> notice = this.getHibernateTemplate().execute(new HibernateCallback() {
+			@Override
+			public Object doInHibernate(Session session)
+					throws HibernateException, SQLException {
+				String hql = "from Notice"; 
+				Query query = session.createQuery(hql);
+				int begin = (page-1)*pageSize; 
+				query.setFirstResult(begin);  
+				query.setMaxResults(pageSize); 
+				return query.list();
+			}
+			
+		});
 		return notice;
+	}
+	//查询页面多少页
+	public int NoticeNumber(int pageSize){
+		List<Notice> courseList = this.getHibernateTemplate().find("from Notice");
+		int count = courseList.size();
+		if(count%pageSize==0){
+			return (count/pageSize);
+		}else{
+			return (count/pageSize)+1;
+		}	
 	}
 	//根据ID查询
 	public Notice findByID(Notice notice){

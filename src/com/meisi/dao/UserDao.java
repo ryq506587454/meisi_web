@@ -1,20 +1,26 @@
 package com.meisi.dao;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import com.meisi.bean.Appointment;
 import com.meisi.bean.Card;
 import com.meisi.bean.Coach;
 import com.meisi.bean.Course;
 import com.meisi.bean.User;
+import com.meisi.util.UnApptSMSUtil;
 /*
  * 用户持久层
  */
-import com.meisi.util.UnApptSMSUtil;
+
 
 public class UserDao extends HibernateDaoSupport{
 	//用户登录
@@ -30,11 +36,30 @@ public class UserDao extends HibernateDaoSupport{
 	}
 	
 	//查询所有用户
-	public List<User> findAllVip(){		
-		List<User> VipList = new ArrayList<User>(); 
-		String hql = "from User where grade = 0 ";  
-		VipList= this.getHibernateTemplate().find(hql);		
+	public List<User> findAllVip(final int page ,final int pageSize){		
+		List<User> VipList = new ArrayList<User>(); 		
+		VipList= this.getHibernateTemplate().execute(new HibernateCallback() {
+			public Object doInHibernate(Session session)
+					throws HibernateException, SQLException {
+				String hql = "from User where grade = 0 ";  
+				Query query = session.createQuery(hql);
+				int begin = (page-1)*pageSize; 
+				query.setFirstResult(begin);  
+				query.setMaxResults(pageSize); 
+				return query.list();
+			}		
+		});		
 		return VipList;		
+	}
+	//计算用户表总页数
+	public int VipNumber(int pageSize){
+		List<User> VipList = this.getHibernateTemplate().find("from User where grade = 0");
+		int count = VipList.size();
+		if(count%pageSize==0){
+			return (count/pageSize);
+		}else{
+			return (count/pageSize)+1;
+		}	
 	}
 	//移动端-修改信息
 	public String updateUserInfo(String flag,User user){
@@ -96,7 +121,6 @@ public class UserDao extends HibernateDaoSupport{
 	//新增用户查重
 		public String checkUserTwo(User u){
 			//1:重复 2:无重复
-			System.out.println("UD.checkUserTwo被调用了。。。");
 			User user = this.getHibernateTemplate().get(User.class, u.getUserId());
 			if(user!=null){
 				return "1";	
@@ -134,11 +158,32 @@ public class UserDao extends HibernateDaoSupport{
 			return "OK";			
 		}
 	//查找所有教练
-	public List<Coach> findAllCoach(){
-			String hql = "from Coach";
-			List<Coach> coachList = this.getHibernateTemplate().find(hql);
+	public List<Coach> findAllCoach(final int page ,final int pageSize){
+			List<Coach> coachList = this.getHibernateTemplate().execute(new HibernateCallback(){
+				@Override
+				public Object doInHibernate(Session session)
+						throws HibernateException, SQLException {
+					String hql = "from Coach";
+					Query query = session.createQuery(hql);
+					int begin = (page-1)*pageSize; 
+					query.setFirstResult(begin);  
+					query.setMaxResults(pageSize); 
+					return query.list();
+				}
+			});
 			return coachList;
 		}
+	//计算用户表总页数
+	public int CoachNumber(int pageSize){
+		List<User> CoachList = this.getHibernateTemplate().find("from Coach");
+		int count = CoachList.size();
+		if(count%pageSize==0){
+			return (count/pageSize);
+		}else{
+			return (count/pageSize)+1;
+		}
+		
+	}
 	//根据类别查找教练
 	public List<Coach> findCoachByType(String courseType){
 		String hql = "from Coach where courseType=?";

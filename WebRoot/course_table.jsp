@@ -67,8 +67,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</tbody>
 							</table>
 							<ul class="am-pagination" style="margin-top: 50px;">
-							  <li class="am-pagination-prev"><a href="">&laquo; Prev</a></li>
-							  <li class="am-pagination-next"><a href="">Next &raquo;</a></li>
+							  <li id="prevLi" class="am-pagination-prev"><a href="javascript:;" id="prev">&laquo; Prev</a></li>
+							  <li id="nextLi" class="am-pagination-next"><a href="javascript:;" id="next">Next &raquo;</a></li>
 							</ul>				          
 				        </div>
       					</div>					  			  
@@ -84,14 +84,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="assets/js/amazeui.min.js"></script>
 		<script>
+			var page = 1;
+			$("#prev").click(function(){				
+				page = page-1;	
+				findAllCourse();	
+			})
+			$("#next").click(function(){				
+				page = page+1;
+				findAllCourse();
+				if(page=="${sessionScope.coursePageSize}"){
+					$("#nextLi").addClass("am-disabled");
+				}else{
+					$("#nextLi").removeClass("am-disabled");
+				}						
+			})
 			$(function(){ 
-				console.log("111");
 　　				$('#page-title').text('课程列表');
-					findAllCourse();		 	
+				findAllCourse();									 	
 　　			}); 
-		</script>
-		<script>
-			$(function(){
+			$(function(){			
 				$('#select a').click(function(){					
 					var flag  = $(this).data("flag");						
 					 $.ajax({
@@ -99,10 +110,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						 url:"Course_FindByFlag",
 						 data:{
 						 flag:flag,
-						 data:$('#SerchInput').val()
+						 data:$('#SerchInput').val()						
 						 },
-						 success:function(result){
-						 	console.log(result);						  				 
+						 success:function(result){							  				 
 						 	if(result.code==100){						 		
 						 		alert('没有查询到相关信息');						 		
 		    				}else{
@@ -117,8 +127,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								      '<td class="am-hide-sm-only"><button type="button" id="btn'+course.courseId+'" data-courseid='+course.courseId+' class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button></td>'+					     
 								    '</tr>'		                            
 			                        );
-			                         $('#btn'+course.courseId).click(function(){	
-		                        		console.log(111)							    							    	
+			                         $('#btn'+course.courseId).click(function(){			                    						    							    	
 							    	if(confirm("确定删除该课程?")){		
 										$.ajax({
 										 	 type:"post",					 
@@ -143,18 +152,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     				});							
 				})			 
 			});
-		</script>
-		<script type="text/javascript">
 		    function findAllCourse() {
+		    	if(page == "1"){
+					 $("#prevLi").addClass("am-disabled");
+					
+				}else {					 			 	
+				 	 $("#prevLi").removeClass("am-disabled");
+				}
 		        $.ajax({
 					 	 type:"post",					 
 						 url:"Course_FindAllCourse",
-						 data:{						 
+						 data:{	
+						  page:page					 
 						 },
-						 success:function(result){	
-						 	console.log(result);					 
-	        			    $("#tbody").empty();	        			      
-	        			    $.each(result,function (index,course){		        			   	        			    	                  		                        		                        
+						 success:function(result){						 
+	        			    $("#tbody").empty();
+	        			    if(page==result.msg){
+									$("#nextLi").addClass("am-disabled");
+								}else{
+									 $("#nextLi").removeClass("am-disabled");
+								}	        			      
+	        			    $.each(result.list,function (index,course){	        			    		        			   	        			    	                  		                        		                        
 		                        $("#tbody").append(
 		                        '<tr><td >'+course.courseId+'</td>'+
 							      '<td>'+course.courseName+'</td>'+

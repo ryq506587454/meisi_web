@@ -66,8 +66,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</tbody>
 							</table>
 							<ul class="am-pagination" style="margin-top: 50px;">
-							  <li class="am-pagination-prev"><a href="">&laquo; Prev</a></li>
-							  <li class="am-pagination-next"><a href="">Next &raquo;</a></li>
+							  <li id="prevLi" class="am-pagination-prev"><a id="prev" href="javascript:;">&laquo; Prev</a></li>
+							  <li id="nextLi" class="am-pagination-next"><a id="next" href="javascript:;">Next &raquo;</a></li>
 							</ul>				          
 				        </div>
       					</div>					  			  
@@ -83,13 +83,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="assets/js/amazeui.min.js"></script>
 		<script>
+			var page = 1;
+			var lastPage=1;
+			$("#prev").click(function(){				
+				page = page-1;	
+				findAllCoach();	
+			})
+			$("#next").click(function(){				
+				page = page+1;
+				findAllCoach();						
+			})
 			$(function(){ 
 				console.log("111");
 　　				$('#page-title').text('教练列表');
 					findAllCoach();		 	
 　　			}); 
-		</script>
-		<script>
 			$(function(){
 				$('#select a').click(function(){					
 					var flag  = $(this).data("flag");						
@@ -141,18 +149,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     				});							
 				})			 
 			});
-		</script>
-		<script type="text/javascript">
 		    function findAllCoach() {
+		    	if(page == "1"){
+					$("#prevLi").addClass("am-disabled");
+					
+				}else {					 			 	
+				 	$("#prevLi").removeClass("am-disabled");
+				}
 		        $.ajax({
 					 	 type:"post",					 
 						 url:"Coach_FindAllCoach",
-						 data:{						 
+						 data:{	
+						 	page:page					 
 						 },
 						 success:function(result){	
 						 console.log(result);					 
 	        			    $("#tbody").empty();	        			      
-	        			    $.each(result.list,function (index,coach){		        			    	                  		                        		                        
+	        			    $.each(result.list,function (index,coach){
+	        			    	if(page==result.msg){
+									$("#nextLi").addClass("am-disabled");
+								}else{
+									 $("#nextLi").removeClass("am-disabled");
+								}	        			    	                  		                        		                        
 		                        $("#tbody").append(
 		                        '<tr><td >'+coach.coachId+'</td>'+
 							      '<td>'+coach.coachName+'</td>'+

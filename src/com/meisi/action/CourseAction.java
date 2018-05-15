@@ -104,6 +104,14 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		public void setCourseTime(String courseTime) {
 			this.courseTime = courseTime;
 		}
+		//页数
+		private String page;
+		public String getPage() {
+			return page;
+		}
+		public void setPage(String page) {
+			this.page = page;
+		}
 		//辅助工具
 		private Utillist utillist; 		
 		public Utillist getUtillist() {
@@ -117,11 +125,13 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		public void setCourseService(CourseService courseService) {
 			CourseService = courseService;
 		}
+	//设置页码
+		private int pageSize=3;
 	
 	//查找所有课程
-	public String FindAllCourse(){		
-	    mediaCourList =CourseService.findAllCourse();	    
-	    return "MediaCourseList";				
+	public String FindAllCourse(){	   
+	    utillist=utillist.CreatUtillist(String.valueOf(CourseService.CourseNumber(pageSize)), CourseService.findAllCourse(Integer.parseInt(page),pageSize),100);	    	
+    	return "UtilList";				
 	}		
 	//根据课程类型查课-移动端
 	public String meidaFindByType(){		
@@ -160,7 +170,7 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 	}
 	//根据条件查询
 	public String FindByFlag(){		
-		mediaCourList = CourseService.findCourseByFlag(flag, data);	
+		mediaCourList = CourseService.findCourseByFlag(flag, data,Integer.parseInt(page),pageSize);	
 		if(mediaCourList==null||mediaCourList.size()==0){
 	    	msg ="未查询到结果";
 	    	utillist=utillist.CreatUtillist(msg,mediaCourList,100);	    	

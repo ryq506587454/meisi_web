@@ -113,12 +113,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="assets/js/amazeui.min.js"></script>
 		<script>
+		var page = 1;
 		$(function(){ 
 			console.log("111");
 			 $.ajax({
 				 	 type:"post",					 
 					 url:"Coach_FindAllCoach",
-					 data:{						 
+					 data:{	
+					 	page:page					 
 					 },
 					 success:function(result){						 
         			    $("#coach").empty();	        			      
@@ -132,7 +134,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                        '</div>'+
                                  '</a>'	                                                           
 	                        );
-                         	if(index==3){
+                         	if(index==4){
                                return flase;
                             }	 		                        
 	                    });      			    

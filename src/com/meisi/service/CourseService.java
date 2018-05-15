@@ -33,8 +33,12 @@ public class CourseService {
 		return CourseDao.addviceCourse();
 	}	
 	//查询所有课程
-	public List<Course> findAllCourse(){
-		return CourseDao.findAllCourse();		
+	public List<Course> findAllCourse(int page ,int pageSize){
+		return CourseDao.findAllCourse(page ,pageSize);		
+	}
+	//计算教练表页数
+	public int CourseNumber(int pageSize){
+		return CourseDao.CourseNumber(pageSize);
 	}
 	//根据教练查询
 	public List<Course> findCourseByCoach(String name,Course Course){	
@@ -49,9 +53,9 @@ public class CourseService {
 		return CourseDao.findCourseByDateAndCoach(name, courseDate, c);
 	}
 	//按照条件查询
-	public List<Course> findCourseByFlag(String flag,String data){
+	public List<Course> findCourseByFlag(String flag,String data,int page ,int pageSize){
 		if(flag.equals("All")){
-			return this.findAllCourse();
+			return this.findAllCourse(page,pageSize);
 		}else if(data.length()<1){	
 			return null;
 		}else{
@@ -97,8 +101,12 @@ public class CourseService {
 		return CourseDao.addNotice(notice);
 	}
 	//查询所有通知
-	public List<Notice> findAllNotice(){
-		return CourseDao.findAllNotice();
+	public List<Notice> findAllNotice(final int page ,final int pageSize){
+		return CourseDao.findAllNotice(page,pageSize);
+	}
+	//计算页面数
+	public int NoticeNumber(int pageSize){
+		return CourseDao.NoticeNumber(pageSize);
 	}
 	//根据ID查询通知
 	public Notice findByID(Notice notice){

@@ -56,7 +56,7 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 		public void setData(String data) {
 			this.data = data;
 		}
-		
+		//条件
 		private String flag;	
 		public String getFlag() {
 			return flag;
@@ -64,6 +64,7 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 		public void setFlag(String flag) {
 			this.flag = flag;
 		}
+		//课程名称
 		private String courseName;
 		public String getCourseName() {
 			return courseName;
@@ -71,6 +72,7 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 		public void setCourseName(String courseName) {
 			this.courseName = courseName;
 		}
+		//课程类别
 		private String courseType;
 		public String getCourseType() {
 			return courseType;
@@ -78,6 +80,7 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 		public void setCourseType(String courseType) {
 			this.courseType = courseType;
 		}
+		//预约记录编号
 		private String appId;
 		public String getAppId() {
 			return appId;
@@ -85,12 +88,21 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 		public void setAppId(String appId) {
 			this.appId = appId;
 		}	
+		//会员类型
 		private String select;		
 		public String getSelect() {
 			return select;
 		}
 		public void setSelect(String select) {
 			this.select = select;
+		}
+		//页码
+		private String page;
+		public String getPage() {
+			return page;
+		}
+		public void setPage(String page) {
+			this.page = page;
 		}
 		//辅助工具
 		private Utillist utillist; 		
@@ -105,7 +117,8 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 	public void setUserService(UserService userService) {
 		UserService = userService;
 	}
-	
+	//设置页面大小
+	private int pageSize=3; 
 	
 	//登陆功能
 	public String login(){		
@@ -120,8 +133,8 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 	}
 	//查询所有会员信息
 	public String findAllVip(){
-		userList =UserService.findAllVip();	
-		return "MediaUserList";			
+		utillist=utillist.CreatUtillist(String.valueOf(UserService.VipNumber(pageSize)),UserService.findAllVip(Integer.parseInt(page) ,pageSize),100);			
+		return "UtilList";			
 	}
 	//微信用户登陆-移动端
 	public String meidalogin(){		
@@ -140,7 +153,7 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 	}
 	//根据flag查询
 	public String FindByFlag(){		
-		userList = UserService.findUserByFlag(flag, data);	
+		userList = UserService.findUserByFlag(flag, data,Integer.parseInt(page),pageSize);	
 		if(userList==null||userList.size()==0){
 	    	msg ="未查询到结果";
 	    	utillist=utillist.CreatUtillist(msg,userList,100);	    	

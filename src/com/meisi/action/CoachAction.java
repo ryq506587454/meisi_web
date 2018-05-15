@@ -58,7 +58,14 @@ public class CoachAction extends ActionSupport implements ModelDriven<Coach>{
 		public void setFlag(String flag) {
 			this.flag = flag;
 		}
-	//辅助工具
+		private String page;	
+		public String getPage() {
+			return page;
+		}
+		public void setPage(String page) {
+			this.page = page;
+		}
+		//辅助工具
 		private Utillist utillist; 		
 		public Utillist getUtillist() {
 			return utillist;
@@ -66,6 +73,8 @@ public class CoachAction extends ActionSupport implements ModelDriven<Coach>{
 		public void setUtillist(Utillist utillist) {
 			this.utillist = utillist;
 		}
+		//设置页面大小
+		private int pageSize = 3;
 	//教练业务层注入（公用User的）
 		private UserService UserService;
 		public void setUserService(UserService userService) {
@@ -83,13 +92,12 @@ public class CoachAction extends ActionSupport implements ModelDriven<Coach>{
 		}
 		//查找所有教练
 		public String FindAllCoach(){		
-			msg = "查询成功";
-			utillist=utillist.CreatUtillist(msg,UserService.findAllCoach(),100);
+			utillist=utillist.CreatUtillist(String.valueOf(UserService.CoachNumber(pageSize)),UserService.findAllCoach(Integer.valueOf(page),pageSize),100);			
 			return "UtilList";
 		}
 		//根据条件查询
 		public String FindByFlag(){		
-			coachList = UserService.findCoachByFlag(flag, data);	
+			coachList = UserService.findCoachByFlag(flag, data,Integer.valueOf(page),pageSize);	
 			if(coachList==null||coachList.size()==0){
 		    	msg ="未查询到结果";
 		    	utillist=utillist.CreatUtillist(msg,coachList,100);	    	

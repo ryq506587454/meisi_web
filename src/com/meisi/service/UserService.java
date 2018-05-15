@@ -24,10 +24,13 @@ public class UserService {
 		}
 	}
 	//遍历所有会员信息
-	public List<User> findAllVip(){		
-		return UserDao.findAllVip();
+	public List<User> findAllVip(int page,int pageSize){		
+		return UserDao.findAllVip(page,pageSize);
 	}
-	
+	//计算用户表总页数
+	public int VipNumber(int pageSize){
+		return UserDao.VipNumber(pageSize);
+	}
 	//修改信息
 	public String updateUserInfo(String flag,User user){		
 		return UserDao.updateUserInfo(flag,user);
@@ -37,9 +40,9 @@ public class UserService {
 		return UserDao.quiteAppt(user, courseName, apptId);		
 	}
 	//按照条件查询
-	public List<User> findUserByFlag(String flag,String data){
+	public List<User> findUserByFlag(String flag,String data,int page,int pageSize){
 		if(flag.equals("All")){
-			return this.findAllVip();
+			return this.findAllVip(page,pageSize);
 		}else if(data.length()<1){	
 			return null;
 		}else{
@@ -72,8 +75,12 @@ public class UserService {
  * 教练部分	
  */
 	//遍历所有教练信息
-	public List<Coach> findAllCoach(){	
-		return UserDao.findAllCoach();
+	public List<Coach> findAllCoach(final int page ,final int pageSize){	
+		return UserDao.findAllCoach(page,pageSize);
+	}
+	//教练总页数
+	public int CoachNumber(int pageSize){
+		return UserDao.CoachNumber(pageSize);
 	}
 	//根据ID查找教练
 	public Coach findByCoachId(Coach c){
@@ -84,9 +91,9 @@ public class UserService {
 		return UserDao.updateCoach(c);
 	}
 	//根绝条件查找教练
-	public List<Coach> findCoachByFlag(String flag,String data){
+	public List<Coach> findCoachByFlag(String flag,String data,final int page ,final int pageSize){
 		if(flag.equals("All")){
-			return this.findAllCoach();
+			return this.findAllCoach( page,pageSize);
 		}else if(data.length()<1){	
 			return null;
 		}else{
