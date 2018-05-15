@@ -19,8 +19,9 @@ public class Course {
 	private String courseName; 								//课程名称
 	private String courseIntro; 							//简介
 	private String courseType;								//课程类型
-	private long courseDuration;							//课程时长
-	private int totalNumber;								//总人数	
+	private long courseDuration;							//课程时长	
+	private int totalNumber;								//总人数
+	private int classNumber;								//没节课的人数	
 	private Coach coach;									//该课教练
 	private Set<Date> startDate = new HashSet<Date>();		//开课时间
 	private Set<User> user = new HashSet<User>();			//用户		
@@ -79,16 +80,14 @@ public class Course {
 	public void setCoach(Coach coach) {
 		this.coach = coach;
 	}
-	@Override
-	public String toString() {
-		return "Course [courseId=" + courseId + ", courseName=" + courseName
-				+ ", startDate=" + startDate + ", courseIntro=" + courseIntro
-				+ ", user=" + user + "]";
+	public int getClassNumber() {
+		return classNumber;
 	}
-	public void pushSet(){
-		for (User i : this.getUser()) {
-			System.out.println(i.getName());
-		}
+	public void setClassNumber(int classNumber) {
+		this.classNumber = classNumber;
 	}
+	
+	
+	
 	
 }

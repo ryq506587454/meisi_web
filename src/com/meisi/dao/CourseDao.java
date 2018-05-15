@@ -18,9 +18,7 @@ import com.meisi.util.ApptSMSUtil;
 
 public class CourseDao extends HibernateDaoSupport{
 	//根据课程类型查课
-	public List<Course> findCourseByType(Course course){
-		System.out.println("CD.findCourseType被调用。。");
-		System.out.println(course.getCourseId()+" "+course.getCourseType());
+	public List<Course> findCourseByType(Course course){		
 		String hql = "from Course where courseType = ?";  	
 		List<Course> courList = (ArrayList<Course>)this.getHibernateTemplate().find(hql,course.getCourseType()); 
 		return courList;
@@ -31,10 +29,15 @@ public class CourseDao extends HibernateDaoSupport{
 		Course c  =(Course)this.getHibernateTemplate().get(Course.class,course.getCourseId()); 		
 		return c;		
 	}
+	//统计某节课程已报人数
+	public String findClassNumber(Course c,String date){
+		String hql = "select count(a.apptId) from Appointment as a where a.courseTime = '"+date+"' and a.courseName = '"+c.getCourseName()+"'";
+		Number count = (Number)this.getHibernateTemplate().find(hql).listIterator().next();
+		return String.valueOf(count);
+		
+	}
 	//预约课程-移动端
-	public String apptmenCourse(String userId,Course c,String date){
-		System.out.println("CD.apptmenCourse被调用了。。");
-		System.out.println(userId+" "+c.getCourseId());
+	public String apptmenCourse(String userId,Course c,String date){		
 		//转化时间类型
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		ParsePosition pos = new ParsePosition(0);//指向String转换为Date()时的索引位置
@@ -42,13 +45,18 @@ public class CourseDao extends HibernateDaoSupport{
 		//查询User
 		User vip = (User)this.getHibernateTemplate().get(User.class,Long.parseLong(userId));
 		//查询course
-		Course apptCourse = (Course)this.getHibernateTemplate().get(Course.class,c.getCourseId());
-		//总人数+1
-		apptCourse.setTotalNumber(apptCourse.getTotalNumber()+1);
+		Course apptCourse = (Course)this.getHibernateTemplate().get(Course.class,c.getCourseId());		
+		//统计已预约人数
+		String hql = "select count(a.apptId) from Appointment as a where a.courseTime = '"+date+"' and a.courseName = '"+apptCourse.getCourseName()+"'";
+		Number count = (Number)this.getHibernateTemplate().find(hql).listIterator().next();
 		//给用户添加新的预约课程
 		vip.getCourse().add(apptCourse);
 		//进行预约条件判断
-		if(vip.getCard().getRestTimes()>0){
+		//预约人数判断
+		if(count.intValue()==apptCourse.getClassNumber()){
+			return "CLASSNUMBERERRO";
+		}else if(vip.getCard().getRestTimes()>0){
+			//次数判断
 			for (Appointment d : vip.getAppt()) {
 				if(d.getCourseTime().compareTo(rcreate) == 0){
 					return "TIMEERRO";
@@ -65,18 +73,19 @@ public class CourseDao extends HibernateDaoSupport{
 			//扣除次数
 			vip.getCard().setRestTimes(vip.getCard().getRestTimes()-1);
 			//执行更新
+			//总人数+1
+			apptCourse.setTotalNumber(apptCourse.getTotalNumber()+1);
 			this.getHibernateTemplate().update(apptCourse);
 			this.getHibernateTemplate().update(vip);
 			this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
-			System.out.println(ApptSMSUtil.sendSms(String.valueOf(vip.getTel()), date, apptCourse.getCourseName(), vip.getName()));
+			//System.out.println(ApptSMSUtil.sendSms(String.valueOf(vip.getTel()), date, apptCourse.getCourseName(), vip.getName()));
 			return "OK";
 		}else{
 			return "TIMESERRO";
 		}			
 	}
 	//推荐课程-移动端
-	public List<Course> addviceCourse(){
-		System.out.println("CD.addviceCourse被调用。。");
+	public List<Course> addviceCourse(){		
 		List<Course> advice = new ArrayList<Course>();
 		String Sql = "SELECT count(*) AS count,courseName FROM appointment GROUP BY courseName ORDER BY count DESC limit 4";  	
 		List<Object[]> list = this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(Sql).list();
@@ -86,9 +95,7 @@ public class CourseDao extends HibernateDaoSupport{
 			String courseName = (String)objects[1];
 			String hql = "from Course where courseName = ?";
 			List<Course> c = (ArrayList<Course>)this.getHibernateTemplate().find(hql,courseName);
-			advice.add(c.get(0));
-			System.out.println("count:"+count);			
-			System.out.println("courseName:"+courseName);			
+			advice.add(c.get(0));	
 		}	
 			return advice;		
 	}
@@ -96,12 +103,10 @@ public class CourseDao extends HibernateDaoSupport{
 	public List<Course> findAllCourse(){
 		String hql = "from Course";
 		List<Course> allCourse = this.getHibernateTemplate().find(hql);
-		return allCourse;
-		
+		return allCourse;		
 	}
 	//根据教练名称筛选课程
 	public List<Course> findCourseByCoach(String name){
-		System.out.println("CD.findCourseByCoach被调用了。。。");
 		String hql = "from Coach where coachName = ?";
 		List<Coach> cList = (ArrayList<Coach>)this.getHibernateTemplate().find(hql,name);
 		Coach c = cList.get(0);	
@@ -111,9 +116,45 @@ public class CourseDao extends HibernateDaoSupport{
 		}		
 		return allCourse;			
 	}
+	//根据时间筛选课程
+	public List<Course> findCourseByDate(String courseDate,Course c){
+		String hql = "from Course where courseType = ?";  	
+		List<Course> courList = (ArrayList<Course>)this.getHibernateTemplate().find(hql,c.getCourseType()); 
+		SimpleDateFormat str = new SimpleDateFormat("yyyy-MM-dd");
+		List<Course> allCourse = new ArrayList<Course>(); 
+		for (Course course : courList) {
+			for (Date date : course.getStartDate()) {				
+				String serDate = str.format(date);
+				if(serDate.equals(courseDate)){
+					allCourse.add(course);
+				}
+			}
+		}
+		return allCourse;
+	}
+	//根据时间和教练筛选课程
+	public List<Course> findCourseByDateAndCoach(String name,String courseDate,Course c){
+		String hql = "from Coach where coachName = ?";
+		List<Coach> cList = (ArrayList<Coach>)this.getHibernateTemplate().find(hql,name);
+		Coach coach = cList.get(0);	
+		List<Course> courseList = new ArrayList<Course>(); 
+		List<Course> allCourse = new ArrayList<Course>(); 
+		SimpleDateFormat str = new SimpleDateFormat("yyyy-MM-dd");		
+		for (Course cc : coach.getCourse()) {
+			courseList.add(cc);
+		}
+		for (Course course : courseList) {
+			for (Date date : course.getStartDate()) {				
+				String serDate = str.format(date);
+				if(serDate.equals(courseDate)){
+					allCourse.add(course);
+				}
+			}
+		}
+		return allCourse;
+	}
 	//根据条件查询
 	public List<Course> findCourseByFlag(String flag,String data){
-		System.out.println("CD.findCourseByFlag被调用了。。。");	
 		String hql = " from Course where " +flag+" = ?";;
 		List<Course> courseList = new ArrayList<Course>();
 		if(flag.equals("courseId")){			
@@ -134,30 +175,30 @@ public class CourseDao extends HibernateDaoSupport{
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		ParsePosition pos = new ParsePosition(0);//指向String转换为Date()时的索引位置
 		Date serDate = format.parse(date,pos);	
-		String hql = "from Appointment where courseTime between '"+date+"0:00:00' and '"+date+"23:59:59'";		
+		String hql = "from Appointment where courseTime between '"+date+" 0:00:00' and '"+date+" 23:59:59'";		
 		List<Appointment> apptList = (List<Appointment>) this.getHibernateTemplate().find(hql);
-		System.out.println(apptList.size());
-		for (Appointment appt : apptList) {					
-			ApptLog AL =new ApptLog();
-			String hql2 = "from Course where courseName = ?";
-			List<Course> courseList = this.getHibernateTemplate().find(hql,appt.getCourseName());
-			AL.setCourse(courseList.get(0));
-			AL.setCourse_date(appt.getCourseTime());
-			AL.getUser().add(appt.getUser());
-			if(apptLog.size()==0){
-				apptLog.add(AL);
-			}else{
-					for (ApptLog al : apptLog) {
-						if(al.getCourse().getCourseId()==(AL.getCourse().getCourseId())&&(al.getCourse_date().compareTo(AL.getCourse_date()))==0){
-						al.getUser().add(appt.getUser());
-					}
-				}	
-			}
-			
-		}
-		for (ApptLog aa : apptLog) {
-			System.out.println(aa.getCourse()+" "+aa.getCourse_date());
-		}
+		System.out.println(apptList.get(0).getCourseName());
+//		for (Appointment appt : apptList) {					
+//			ApptLog AL =new ApptLog();
+//			String hql2 = "from Course where courseName = ?";
+//			List<Course> courseList = this.getHibernateTemplate().find(hql,appt.getCourseName());
+//			AL.setCourse(courseList.get(0));
+//			AL.setCourse_date(appt.getCourseTime());
+//			AL.getUser().add(appt.getUser());
+//			if(apptLog.size()==0){
+//				apptLog.add(AL);
+//			}else{
+//					for (ApptLog al : apptLog) {
+//						if(al.getCourse().getCourseId()==(AL.getCourse().getCourseId())&&(al.getCourse_date().compareTo(AL.getCourse_date()))==0){
+//						al.getUser().add(appt.getUser());
+//					}
+//				}	
+//			}
+//			
+//		}
+//		for (ApptLog aa : apptLog) {
+//			System.out.println(aa.getCourse()+" "+aa.getCourse_date());
+//		}
 		return null;
 	}
 	//添加课程
@@ -231,6 +272,8 @@ public class CourseDao extends HibernateDaoSupport{
 	}	
 	
 	
+	
+	
 /*
  * 通知部分	
  */
@@ -250,5 +293,14 @@ public class CourseDao extends HibernateDaoSupport{
 	//根据ID查询
 	public Notice findByID(Notice notice){
 		return this.getHibernateTemplate().get(Notice.class, notice.getNoticeId());
+	}
+	//更新公告
+	public String updateNotice(Notice notice){
+		Notice newNotice = this.getHibernateTemplate().get(Notice.class, notice.getNoticeId());
+		newNotice.setNoticeDetail(notice.getNoticeDetail());
+		newNotice.setTitle(notice.getTitle());
+		this.getHibernateTemplate().update(newNotice);
+		this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
+		return "1";
 	}
 }	

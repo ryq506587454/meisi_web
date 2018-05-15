@@ -18,9 +18,7 @@ import com.meisi.util.UnApptSMSUtil;
 
 public class UserDao extends HibernateDaoSupport{
 	//用户登录
-	public User login(User user){		
-		System.out.println("UD.login被调用。。");
-		System.out.println(user.getUserId()+" "+user.getPassword());
+	public User login(User user){						
 		User u  = (User)this.getHibernateTemplate().get(User.class,user.getUserId());
 		if(u==null){
 			return null;
@@ -79,7 +77,7 @@ public class UserDao extends HibernateDaoSupport{
 		this.getHibernateTemplate().update(vipCourse);
 		this.getHibernateTemplate().update(vip);
 		this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
-		System.out.println(UnApptSMSUtil.sendSms(String.valueOf(vip.getTel()),date,vipAppt.getCourseName(), vip.getName()));		
+		//System.out.println(UnApptSMSUtil.sendSms(String.valueOf(vip.getTel()),date,vipAppt.getCourseName(), vip.getName()));		
 		return "OK";		
 	}
 	//根据条件查询

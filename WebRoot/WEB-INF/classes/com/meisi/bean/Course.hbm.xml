@@ -11,6 +11,7 @@
         <property name="courseType" column="courseType" type="string" not-null="true"/>
         <property name="courseDuration" column="courseDuration" type="long" not-null="true"/> 
         <property name="totalNumber" column="totalNumber" type="int" not-null="true"/>  
+        <property name="classNumber" column="classNumber" type="int" not-null="true"/> 
         <set name="startDate" lazy="false" cascade="save-update,delete" table="course_time">  
             <key column="courseId" />  
             <element type="timestamp" column="startTime" not-null="true" /> 

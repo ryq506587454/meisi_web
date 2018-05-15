@@ -48,7 +48,7 @@
 			      </ul>
 			      <a class="am-cf" data-am-collapse="{target: '#collapse-nav5'}"><span class="am-icon-table" />&nbsp;&nbsp;预约管理 <span class="am-icon-angle-right am-fr am-margin-right" /></a>
 			      <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav5">
-			      	 <li><a href="appt_detail.jsp">预约统计</a></li>
+			      	 <li><a href="appt_table.jsp">预约统计</a></li>
 			      	 <li><a href="appt_detail.jsp">查看/修改预约详情</a></li>					
 			      </ul>
 			    </li>			  

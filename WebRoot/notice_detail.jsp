@@ -38,14 +38,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="content-page">
 			<!-- Start content -->
 			<div class="content">
-				<div class="am-container" >
-					
+				<div class="am-container" >					
 					<!-- Row start -->
 						<div class="am-u-sm-12">						
 							<div class="card-box">															
-								<form action="User_UpdateUser" method="post" class="am-form">
+								<form action="Notice_UpdateNotice" method="post" class="am-form">
 								  <fieldset>
-								    <legend>查看/修改用户信息</legend>								   
+								    <legend>公告</legend>								   
 								    <div class="form-group col-md-offset-4">
 									    <div class="am-btn-group">						  
 										  <div class="am-dropdown" data-am-dropdown>										
@@ -53,7 +52,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										  </div>
 										</div>
 									    <div class="col-md-5">									    
-									      <input id="SerchInput" type="text" class="form-control" id="serch" placeholder="请输入会员号" />
+									      <input id="SerchInput" type="text" class="form-control" id="serch" placeholder="请输入公告编号" />
 									    </div>
 									</div>
 									<div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
@@ -67,7 +66,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								    </div>								    									    
 								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
 								      <label >公告内容：</label>
-								      <textarea name="noticeDetail" rows="10" placeholder="输入公告内容" required oninvalid="setCustomValidity('请输入公告内容);"></textarea>
+								      <textarea name="noticeDetail" id="noticeDetail"  rows="10" placeholder="输入公告内容" required oninvalid="setCustomValidity('请输入公告内容);"></textarea>
 								    </div>														   																  																   
 								    <div class="am-form-group am-u-sm-7">
 								    	<button id="sub" class="am-btn am-btn-secondary  am-u-sm-3" type="submit">修改</button>
@@ -87,35 +86,48 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script type="text/javascript" src="assets/js/amazeui.min.js"></script>
 		<script>
 			$(function(){ 
-　　				$('#page-title').text('查看修改用户信息');
+　　				$('#page-title').text('公告');
+				if("${!empty sessionScope.noticeId}"){				
+					 $.ajax({
+					 	 type:"post",					 
+						 url:"Notice_FindByID",
+						 data:{	
+						 noticeId:"${sessionScope.noticeId}"					 
+						 },
+						 success:function(result){	
+						 console.log(result.noticeDetail);						
+						  	$('#SerchInput').val("");	
+						 	$('#noticeId').val(result.noticeId);
+						 	$('#title').val(result.title);
+						 	$('#noticeDetail').val(result.noticeDetail);					 		 	        			                           			    
+	    				}
+    				});
+				}
 　　			}); 
 		</script>
 		<script>
 			$('#SerchBtn').click(function(){
 			if($('#SerchInput').val()==""){
-				alert("请输入教练编号");
-				}else{		
+				alert("请输入公告编号");
+				}else{	
 				 $.ajax({
 				 	 type:"post",					 
-					 url:"User_FindById",
-					 data:{
-					 userId:$('#SerchInput').val()
+					 url:"Notice_FindByID",
+					 data:{	
+					 noticeId:$('#SerchInput').val()					 
 					 },
 					 success:function(result){
 					 $('#SerchInput').val("");	
 					 if(result==null){
-					 alert('用户不存在，请查证');
+					 	alert('公告不存在，请查证');
 					 }else{
-					 	$('#userId').val(result.userId);
-					 	$('#tel').val(result.tel);
-					 	$('#password').val(result.password);	
-					 	$('#identity').val(result.identity);	
-					 	$('#name').val(result.name);
-					 }					
-					 							  				 					 			        			   	        			 		        			    		        			         			    
+					 	$('#noticeId').val(result.noticeId);
+					 	$('#title').val(result.title);
+					 	$('#noticeDetail').val(result.noticeDetail);
+					 }									 							  				 					 			        			   	        			 		        			    		        			         			    
     				}
-   				});	
-   				}								
+   				});
+   				}									
 			});
-		</script>
+		</script>		
 </html>

@@ -60,7 +60,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								    </div>
 								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
 								     <label >课程时长(分钟):</label>
-								      <input name="courseDuration" type="number"   placeholder="输入课程时长" required oninvalid="setCustomValidity('请输入课程介绍');" />
+								      <input name="courseDuration" type="number"   placeholder="输入课程时长" required oninvalid="setCustomValidity('请输入课程时长');" />
+								    </div>	
+								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1">
+								     <label >每节课人数:</label>
+								      <input name="classNumber" type="number"   placeholder="输入每节课人数" required oninvalid="setCustomValidity('请输入每节课人数');" />
 								    </div>																	   																    								
 								    <div class="am-form-group am-u-sm-10 am-u-sm-offset-1" >
 								      <label for="doc-select-1">课程类型</label>

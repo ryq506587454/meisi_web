@@ -88,7 +88,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        			    $.each(result,function (index,notice){		        			    	                  		                        		                        
 		                        $("#tbody").append(
 		                        '<tr><td >'+notice.noticeId+'</td>'+
-							      '<td><a href="javascript: void(0)">'+notice.title+'</a></td>'+							     
+							      '<td><a href="Notice_Jump?noticeId='+notice.noticeId+'">'+notice.title+'</a></td>'+							     
 							      '<td>'+notice.publishTime.slice(0,10)+'</td>'+							     					      		     							    						    
 							      '<td class="am-hide-sm-only"><button type="button" id="btn'+notice.noticeId+'" data-coachid='+notice.noticeId+' class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button> </td>'+						     
 							    '</tr>'							  							    	                            

@@ -58,7 +58,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							      <th class="col-md-2 text-center" >课程名称</th>							    
 							      <th class="col-md-2 text-center am-hide-sm-only" >课程类型</th>
 							      <th class="col-md-2 text-center" >课程时长</th>
-							      <th class="col-md-2 text-center am-hide-sm-only" >已报人数</th>							     
+							      <th class="col-md-1 text-center am-hide-sm-only" >已报人数</th>
+							      <th class="col-md-1 text-center am-hide-sm-only" >每节课人数</th>								     
 								  <th class="col-md-2 text-center am-hide-sm-only" >操作</th>
 							    </tr>
 							  </thead>
@@ -150,20 +151,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						 url:"Course_FindAllCourse",
 						 data:{						 
 						 },
-						 success:function(result){						 
+						 success:function(result){	
+						 	console.log(result);					 
 	        			    $("#tbody").empty();	        			      
-	        			    $.each(result,function (index,course){		        			    	                  		                        		                        
+	        			    $.each(result,function (index,course){		        			   	        			    	                  		                        		                        
 		                        $("#tbody").append(
 		                        '<tr><td >'+course.courseId+'</td>'+
 							      '<td>'+course.courseName+'</td>'+
 							      '<td class="am-hide-sm-only">'+course.courseType+'</td>'+
 							      '<td>'+course.courseDuration/60+' 分钟</td>'+
-							      '<td class="am-hide-sm-only">'+course.totalNumber+'</td>'+							      		     							    						    
-							       '<td class="am-hide-sm-only"><button type="button" id="btn'+course.courseId+'" data-courseid='+course.courseId+' class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button></td>'+						     
+							      '<td class="am-hide-sm-only">'+course.totalNumber+'</td>'+
+							      '<td class="am-hide-sm-only">'+course.classNumber+'人/节课</td>'+							      		     							    						    
+							      '<td class="am-hide-sm-only"><button type="button" id="btn'+course.courseId+'" data-courseid='+course.courseId+' class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button></td>'+						     
 							    '</tr>'		                            
 		                        );
 		                        $('#btn'+course.courseId).click(function(){	
-		                        console.log(111)							    							    	
+		                       	 console.log(111)							    							    	
 							    	if(confirm("确定删除该课程?")){		
 										$.ajax({
 										 	 type:"post",					 

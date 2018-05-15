@@ -37,12 +37,16 @@ public class CourseService {
 		return CourseDao.findAllCourse();		
 	}
 	//根据教练查询
-	public List<Course> findCourseByCoach(String name,Course Course){
-		if(name.equals("无")){
-			return findCourseByType(Course);
-		}else{
-			return CourseDao.findCourseByCoach(name);
-		}		
+	public List<Course> findCourseByCoach(String name,Course Course){	
+		return CourseDao.findCourseByCoach(name);				
+	}
+	//根据时间查询
+	public List<Course> findCourseByDate(String courseDate,Course c){
+		return CourseDao.findCourseByDate(courseDate,c);
+	}
+	//根据时间和教练筛选课程
+	public List<Course> findCourseByDateAndCoach(String name,String courseDate,Course c){
+		return CourseDao.findCourseByDateAndCoach(name, courseDate, c);
 	}
 	//按照条件查询
 	public List<Course> findCourseByFlag(String flag,String data){
@@ -80,6 +84,11 @@ public class CourseService {
 		c.setCourseDuration(c.getCourseDuration()*60);
 		return CourseDao.updateCourse(c);
 	}
+	//统计某节课程已报人数
+	public String findClassNumber(Course c,String date){
+		return  CourseDao.findClassNumber(c, date);
+	}
+	
 /*
  * 通知部分	
  */
@@ -95,4 +104,8 @@ public class CourseService {
 	public Notice findByID(Notice notice){
 		return CourseDao.findByID(notice);
 	}
-}	
+	//更新公告
+	public String updateNotice(Notice notice){
+		return CourseDao.updateNotice(notice);
+	}
+}

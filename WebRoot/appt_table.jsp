@@ -29,21 +29,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="content">
 				<div class="card-box">
 					<div class="am-input-group am-datepicker-date col-md-6 col-md-offset-3" data-am-datepicker="{format: 'yyyy-mm-dd'}">
-  							<input type="text" class="am-form-field " placeholder="请输入日期"  readonly>
+  							<input id="SerchInput" type="text" class="am-form-field " placeholder="请输入日期"  readonly>
   							<span class="am-input-group-btn am-datepicker-add-on">
-    						<button class="am-btn am-btn-default"  type="button"><span class="am-icon-calendar"></span> </button>
+    						<button class="am-btn am-btn-default"  type="button" style="margin-top: -6px;" ><span class="am-icon-calendar"></span></button>    							
   						</span>
+  						<button id="SerchBtn" class="am-btn am-btn-secondary" style="margin-top: -30px;">查询</button>	
 					</div>
 					<div class="am-g">
 				        <div class="row" style="padding:0 10px ;">
 				        	<table class="table table-condensed text-center">
-							  <caption><h2>课程列表</h2></caption>
+							  <caption><h2>预约列表</h2></caption>
 							  <thead>
 							    <tr>
-							      <th class="col-md-2 text-center" >课程编号</th>
-							      <th class="col-md-2 text-center" >课程名称</th>							    
-							      <th class="col-md-2 text-center am-hide-sm-only" >课程类型</th>
-							      <th class="col-md-2 text-center" >课程时长</th>
+							      <th class="col-md-2 text-center" >预约编号</th>
+							      <th class="col-md-2 text-center" >课程名称</th>	
+							      <th class="col-md-2 text-center" >课程教练</th>						    							      
+							      <th class="col-md-2 text-center" >开课时间</th>
 							      <th class="col-md-2 text-center am-hide-sm-only" >已报人数</th>							     
 								  <th class="col-md-2 text-center am-hide-sm-only" >操作</th>
 							    </tr>

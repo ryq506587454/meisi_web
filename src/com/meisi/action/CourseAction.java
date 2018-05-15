@@ -148,6 +148,16 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		mediaCourList=CourseService.findCourseByCoach(coachName,Course);			
 		return "MediaCourseList";
 	}
+	//根据时间查找课程
+	public String meidaFindByDate(){		
+		mediaCourList=CourseService.findCourseByDate(courseDate,Course);			
+		return "MediaCourseList";
+	}
+	//根据时间和教练查找
+	public String meidaFindByDateAndCoach(){		
+		mediaCourList=CourseService.findCourseByDateAndCoach(coachName, courseDate, Course);			
+		return "MediaCourseList";
+	}
 	//根据条件查询
 	public String FindByFlag(){		
 		mediaCourList = CourseService.findCourseByFlag(flag, data);	
@@ -196,5 +206,10 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		msg = CourseService.updateCourse(Course);
 		return "Update_suc";
 	}
-
+	//查询某一节课已报人数
+	public String FindClassNumber(){
+		msg = CourseService.findClassNumber(Course, courseDate);
+		return "MediaMsg";		
+	}
+	
 }

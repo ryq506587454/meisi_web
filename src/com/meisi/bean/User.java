@@ -89,11 +89,6 @@ public class User {
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
-	public void pushSet(){
-		for (Course i : this.getCourse()) {
-			System.out.println(i.getCourseIntro());
-		}
-	}
 	
 	
 

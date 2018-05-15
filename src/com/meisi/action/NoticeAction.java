@@ -3,6 +3,7 @@ package com.meisi.action;
 import java.util.List;
 import com.meisi.bean.Notice;
 import com.meisi.service.CourseService;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
@@ -52,11 +53,17 @@ public class NoticeAction extends ActionSupport implements ModelDriven<Notice>{
 		}
 		//跳转到详情
 		public String Jump(){
-			return "Jump";
+			ActionContext.getContext().getSession().put("noticeId",String.valueOf(Notice.getNoticeId()));;
+			return "JumpToDetail";
 		}
 		//根据ID查询
 		public String FindByID(){
 			mediaNotice=CourseService.findByID(Notice);
-			return "ediaNotice";
+			return "MediaNotice";
+		}
+		//更新公告
+		public String UpdateNotice(){
+			CourseService.updateNotice(Notice);
+			return "Update_suc";
 		}
 }
