@@ -1,5 +1,4 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -97,8 +96,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 　　			}); 
 			$(function(){
 				$('#select a').click(function(){					
-					var flag  = $(this).data("flag");						
-					  $.ajax({
+					var flag  = $(this).data("flag");
+					 if(flag=="All"){
+					 	findAllVip();	
+					 }else{
+					 	 $.ajax({
 					 	 type:"post",					 
 						 url:"User_FindByFlag",
 						 data:{
@@ -109,12 +111,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						 	if(result.code==100){						 		
 						 		alert('没有查询到相关信息');						 		
 		    				}else{
+		    					  $("#prevLi").addClass("am-disabled");
+		    					  $("#nextLi").addClass("am-disabled");	
 		    					  $("#tbody").empty();		
-						 		  $.each(result.list,function (index,vip){						 		 		        			    	                  		                        		                        
-			                        $("#tbody").append(			                      
+						 		  $.each(result.list,function (index,vip){
+						 		  if(vip.card==null){
+						 		  $("#tbody").append(					                     	                      
 			                        '<tr>'+
 								      '<td>'+vip.userId+'</td>'+
-								      '<td>'+vip.name+'</td>'+
+								      '<td><a href="User_Jump?userId='+vip.userId+'">'+vip.name+'</a></td>'+
+								      '<td class="am-hide-sm-only">'+vip.tel+'</td>'+
+								      '<td class="am-hide-sm-only">无会员卡信息</td>'+
+								      '<td class="am-hide-sm-only">无会员卡信息</td>'+
+								      '<td class="am-hide-sm-only">无会员卡信息</td>'+							     
+								      '<td >无会员卡信息</td>'+							    
+								      '<td class="am-hide-sm-only"><a type="button" id="btn'+vip.userId+'" data-userid='+vip.userId+' class="am-btn am-btn-default"><span class="am-icon-trash-o" /> 删除</a></td>'+							     
+							    	'</tr>'                           
+			                        );
+						 		  }else{
+						 		  $("#tbody").append(					                     	                      
+			                        '<tr>'+
+								      '<td>'+vip.userId+'</td>'+
+								      '<td><a href="User_Jump?userId='+vip.userId+'">'+vip.name+'</a></td>'+
 								      '<td class="am-hide-sm-only">'+vip.tel+'</td>'+
 								      '<td class="am-hide-sm-only">'+vip.card.type+'</td>'+
 								      '<td class="am-hide-sm-only">'+vip.card.startTime.slice(0,10)+'</td>'+
@@ -123,6 +141,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								      '<td class="am-hide-sm-only"><a type="button" id="btn'+vip.userId+'" data-userid='+vip.userId+' class="am-btn am-btn-default"><span class="am-icon-trash-o" /> 删除</a></td>'+							     
 							    	'</tr>'                           
 			                        );
+						 		  }						 		 		        			    	                  		                        		                        			                        
 			                      $('#btn'+vip.userId).click(function(){								    							    	
 							    	if(confirm("确定删除该用户?")){		
 										$.ajax({
@@ -143,9 +162,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							    	}
 							   	}) 		                        
 		                     });
-						 	}		        			   	        			 		        			    		        			         			    
+						   }		        			   	        			 		        			    		        			         			    
 	    				}
-    				});						
+    				 });
+					}				 											 						
 				})			 
 			});
 		    function findAllVip() {
@@ -169,28 +189,42 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								$("#nextLi").removeClass("am-disabled");
 							}	        			      
 	        			    $.each(result.list,function (index,vip){		        			 	        			    	                  		                        		                        
-		                        $("#tbody").append(		                        
-		                        '<tr>'+
-							      '<td>'+vip.userId+'</td>'+
-							      '<td>'+vip.name+'</td>'+
-							      '<td class="am-hide-sm-only">'+vip.tel+'</td>'+
-							      '<td class="am-hide-sm-only">'+vip.card.type+'</td>'+
-							      '<td class="am-hide-sm-only">'+vip.card.startTime.slice(0,10)+'</td>'+
-							      '<td class="am-hide-sm-only">'+vip.card.endTime.slice(0,10)+'</td>'+							     
-							      '<td >剩余'+vip.card.restTimes+'次</td>'+							    
-							      '<td class="am-hide-sm-only"><a type="button" id="btn'+vip.userId+'" data-userid='+vip.userId+' class="am-btn am-btn-default"><span class="am-icon-trash-o" /> 删除</a></td>'+							     
-							    '</tr>'						      	                         		                        							      	                         		                        
-							    );	
+		                        if(vip.card==null){
+						 		  $("#tbody").append(					                     	                      
+			                        '<tr>'+
+								      '<td>'+vip.userId+'</td>'+
+								      '<td><a href="User_Jump?userId='+vip.userId+'">'+vip.name+'</a></td>'+
+								      '<td class="am-hide-sm-only">'+vip.tel+'</td>'+
+								      '<td class="am-hide-sm-only">无会员卡信息</td>'+
+								      '<td class="am-hide-sm-only">无会员卡信息</td>'+
+								      '<td class="am-hide-sm-only">无会员卡信息</td>'+							     
+								      '<td >无会员卡信息</td>'+							    
+								      '<td class="am-hide-sm-only"><a type="button" id="btn'+vip.userId+'" data-userid='+vip.userId+' class="am-btn am-btn-default"><span class="am-icon-trash-o" /> 删除</a></td>'+							     
+							    	'</tr>'                           
+			                        );
+						 		  }else{
+						 		  $("#tbody").append(					                     	                      
+			                        '<tr>'+
+								      '<td>'+vip.userId+'</td>'+
+								      '<td><a href="User_Jump?userId='+vip.userId+'">'+vip.name+'</a></td>'+
+								      '<td class="am-hide-sm-only">'+vip.tel+'</td>'+
+								      '<td class="am-hide-sm-only">'+vip.card.type+'</td>'+
+								      '<td class="am-hide-sm-only">'+vip.card.startTime.slice(0,10)+'</td>'+
+								      '<td class="am-hide-sm-only">'+vip.card.endTime.slice(0,10)+'</td>'+							     
+								      '<td >剩余'+vip.card.restTimes+'次</td>'+							    
+								      '<td class="am-hide-sm-only"><a type="button" id="btn'+vip.userId+'" data-userid='+vip.userId+' class="am-btn am-btn-default"><span class="am-icon-trash-o" /> 删除</a></td>'+							     
+							    	'</tr>'                           
+			                        );
+						 		  }	
 							    $('#btn'+vip.userId).click(function(){						    							    							    	
-							    	if(confirm("确定删除该用户?")){	
-							    		console.log(111)		
+							    	if(confirm("确定删除该用户?")){								    			
 									$.ajax({
 									 	 type:"post",					 
 										 url:"User_DeletUser",
 										 data:{	
 										 userId:$(this).data("userid")					 
 										 },
-										 success:function(result){							 					 
+										 success:function(result){																 					 
 					        			     if(result=="1"){
 					        			     alert('删除成功');
 					        			     findAllVip();

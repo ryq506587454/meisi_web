@@ -30,7 +30,9 @@
 			<!-- 新增成功 -->	  
 			<result name="ADD_Success">/tip/addsuc.jsp</result>
 			<!-- 更新成功 -->	  
-			<result name="Update_suc">/tip/updateUser.jsp</result>			                 			
+			<result name="Update_suc">/tip/updateUser.jsp</result>
+			<!-- 跳转页面 -->	  
+			<result name="JumpToDetail">/tip/to_vip_detail.jsp</result>				                 			
 		</action>
 		<action name="Course_*" method="{1}"  class="CourseAction">			
 			<!--返回课程列表 -->		   
@@ -56,7 +58,9 @@
 			<!-- 新增成功 -->	  
 			<result name="AddCourse_success">/tip/addCoursesuc.jsp</result>	 
 			<!-- 更新成功 -->	  
-			<result name="Update_suc">/tip/updateCourse.jsp</result>				                   			
+			<result name="Update_suc">/tip/updateCourse.jsp</result>
+			<!-- 跳转页面 -->	  
+			<result name="JumpToDetail">/tip/to_course_detail.jsp</result>					                   			
 		</action>
 		<action name="Coach_*" method="{1}"  class="CoachAction">
 			<!-- 新增成功 -->	  
@@ -74,7 +78,9 @@
 				<param name="root">midCoach</param>				
 			</result>
 			<!-- 更新成功 -->	  
-			<result name="Update_suc">/tip/updateCoach.jsp</result>			 			
+			<result name="Update_suc">/tip/updateCoach.jsp</result>	
+			<!-- 跳转页面 -->	  
+			<result name="JumpToDetail">/tip/to_coach_detail.jsp</result>		 			
 		</action>
 		<action name="Notice_*" method="{1}"  class="NoticeAction">
 			<!-- 更新成功 -->	  

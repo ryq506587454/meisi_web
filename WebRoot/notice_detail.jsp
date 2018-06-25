@@ -104,8 +104,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     				});
 				}
 　　			}); 
-		</script>
-		<script>
 			$('#SerchBtn').click(function(){
 			if($('#SerchInput').val()==""){
 				alert("请输入公告编号");

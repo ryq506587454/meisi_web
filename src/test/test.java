@@ -12,6 +12,6 @@ public class test {
 //        cardNnumer+=rand.nextInt(10);//生成6位数字
 //        }
 //        System.out.println(cardNnumer);
-		System.out.println(ReigstSMSUtil.sendSms("13272422355"));		
+		//System.out.println(ReigstSMSUtil.sendSms("13272422355"));		
 	}
 }

@@ -11,7 +11,7 @@
         <property name="sex" column="sex" type="string" length="2"  /> 
         <property name="grade" column="grade" type="int" length="3" not-null="true" /> 
         <property name="tel" column="tel" type="long" length="11" not-null="true" />   
-        <property name="identity" column="identity" type="long"  length="18" not-null="true" />           
+        <property name="identity" column="identity" type="long"  length="18" />           
         <many-to-one name="card"  unique="true" class="com.meisi.bean.Card" cascade="all">
             <column name="cardId" />
         </many-to-one>

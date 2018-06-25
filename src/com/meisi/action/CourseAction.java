@@ -3,6 +3,7 @@ package com.meisi.action;
 
 import java.util.List;
 
+import com.meisi.bean.Appointment;
 import com.meisi.bean.Coach;
 import com.meisi.bean.Course;
 import com.meisi.service.CourseService;
@@ -47,7 +48,15 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		public void setMediaCourList(List<Course> mediaCourList) {
 			this.mediaCourList = mediaCourList;
 		}
-	//传过来的非模型元素
+		//预约列表
+		private List<Appointment> ApptList;		
+	    public List<Appointment> getApptList() {
+			return ApptList;
+		}
+		public void setApptList(List<Appointment> apptList) {
+			ApptList = apptList;
+		}
+		//传过来的非模型元素
 		//搜索框内数据
 		private String data;		
 		public String getData() {
@@ -126,7 +135,7 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 			CourseService = courseService;
 		}
 	//设置页码
-		private int pageSize=3;
+		private int pageSize=5;
 	
 	//查找所有课程
 	public String FindAllCourse(){	   
@@ -140,6 +149,7 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 	}
 	//根据课程ID查课-移动端
 	public String meidaFindByID(){	
+		ActionContext.getContext().getSession().put("courseId",String.valueOf(Course.getCourseId()));;
 		mediaCourse = CourseService.findCourseById(Course);
 		return "MediaCourse";		
 	}
@@ -159,8 +169,8 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		return "MediaCourseList";
 	}
 	//根据时间查找课程
-	public String meidaFindByDate(){		
-		mediaCourList=CourseService.findCourseByDate(courseDate,Course);			
+	public String meidaFindByDate(){	
+		mediaCourList=CourseService.findCourseByDate(courseDate,Course);	
 		return "MediaCourseList";
 	}
 	//根据时间和教练查找
@@ -170,7 +180,7 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 	}
 	//根据条件查询
 	public String FindByFlag(){		
-		mediaCourList = CourseService.findCourseByFlag(flag, data,Integer.parseInt(page),pageSize);	
+		mediaCourList = CourseService.findCourseByFlag(flag, data);	
 		if(mediaCourList==null||mediaCourList.size()==0){
 	    	msg ="未查询到结果";
 	    	utillist=utillist.CreatUtillist(msg,mediaCourList,100);	    	
@@ -183,9 +193,25 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 	}
 	//查询预约
 	public String FindAppt(){
-		msg ="查询到结果";
-    	utillist=utillist.CreatUtillist(msg,CourseService.findAppt(courseDate),100);	 
+		ApptList = CourseService.findAppt(courseDate,Integer.valueOf(page),pageSize);
+		if(ApptList==null||ApptList.size()==0){
+    	 utillist=utillist.CreatUtillist(String.valueOf(CourseService.ApptNumber(courseDate, pageSize)),ApptList,100);	 
     	return "UtilList";	
+		}else{
+		 utillist=utillist.CreatUtillist(String.valueOf(CourseService.ApptNumber(courseDate, pageSize)),ApptList,101);	 
+		 return "UtilList";	
+		}
+	}
+	//根据用户Id查询
+	public String FindApptByUserId(){
+		ApptList = CourseService.findApptByUserId(userId, Integer.valueOf(page), pageSize);
+		if(ApptList==null||ApptList.size()==0){
+    	 utillist=utillist.CreatUtillist(String.valueOf(CourseService.ApptByUserIdNumber(userId, pageSize)),ApptList,100);	 
+    	return "UtilList";	
+		}else{
+		 utillist=utillist.CreatUtillist(String.valueOf(CourseService.ApptByUserIdNumber(userId, pageSize)),ApptList,101);	 
+		 return "UtilList";	
+		}			
 	}
 	//添加课程
 	public String AddCourse(){
@@ -208,7 +234,6 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 	public String PlanCourse(){
 		String currentDate=courseDate+" "+courseTime;	
 		msg = CourseService.planCourse(Course,currentDate);
-		System.out.println(msg);
 		return "MediaMsg";
 	}
 	//更新课程
@@ -221,5 +246,11 @@ public class CourseAction extends ActionSupport implements ModelDriven<Course>{
 		msg = CourseService.findClassNumber(Course, courseDate);
 		return "MediaMsg";		
 	}
+	//跳转到详情
+	public String Jump(){
+		ActionContext.getContext().getSession().put("courseId",String.valueOf(Course.getCourseId()));;
+		return "JumpToDetail";
+	}
+	
 	
 }

@@ -28,12 +28,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="content-page">
 			<div class="content">
 				<div class="card-box">
-					<div class="am-input-group am-datepicker-date col-md-6 col-md-offset-3" data-am-datepicker="{format: 'yyyy-mm-dd'}">
-  							<input id="SerchInput" type="text" class="am-form-field " placeholder="请选择日期"  readonly>
-  							<span class="am-input-group-btn am-datepicker-add-on">
-    						<button class="am-btn am-btn-default"  type="button" style="margin-top: -6px;" ><span class="am-icon-calendar"></span></button>    							
-  						</span>
-  						<button id="SerchBtn" class="am-btn am-btn-secondary" style="margin-top: -30px;">查询</button>	
+					<div class="form-group col-md-offset-4">
+					    <div class="am-btn-group">						  
+						  <div class="am-dropdown" data-am-dropdown>										
+						  	<button id="SerchBtn" class="am-btn am-btn-secondary am-dropdown-toggle"  data-am-dropdown-toggle >查询</button>						  										    
+						  </div>
+						</div>
+					    <div class="col-md-5">									    
+					      <input id="SerchInput" type="text" class="form-control" id="serch" placeholder="请输入会员编号" />
+					    </div>
 					</div>
 					<div class="am-g">
 				        <div class="row" style="padding:0 10px ;">
@@ -44,8 +47,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							      <th class="col-md-2 text-center" >预约编号</th>
 							      <th class="col-md-2 text-center" >课程名称</th>								    				    							      
 							      <th class="col-md-2 text-center" >开课时间</th>
-							      <th class="col-md-2 text-center" >课程时长</th>		
-							      <th class="col-md-2 text-center" >用户编号</th>					     
+							      <th class="col-md-2 text-center" >课程时长</th>									    				     
 								  <th class="col-md-2 text-center am-hide-sm-only" >操作</th>
 							    </tr>
 							  </thead>
@@ -69,7 +71,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script type="text/javascript" src="assets/js/amazeui.min.js"></script>
 		<script>
 			var page = 1;
-			var lastPage=1;
+			var userId="";
 			$("#prev").click(function(){				
 				page = page-1;	
 				apptList();	
@@ -78,24 +80,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				page = page+1;
 				apptList();							
 			})
+			$('#SerchBtn').click(function(){
+			if($('#SerchInput').val()==""){
+				   alert("请输入会员编号");
+				}else{														
+				   apptList();	
+				   userId=$('#SerchInput').val();
+				}				
+			});							
 			$(function(){ 
-　　				$('#page-title').text('预约列表');					 	
-　　			}); 
-			$('#SerchBtn').click(function(){														
-				apptList();					
-			});	
+　　				$('#page-title').text('会员预约列表');					 	
+　　			}); 			
 			function apptList(){
 				if(page == "1"){
 					 $("#prevLi").addClass("am-disabled");
 					
 				}else {					 			 	
 				 	 $("#prevLi").removeClass("am-disabled");
-				}
+				}				
 			 	$.ajax({
 				 	 type:"post",					 
-					 url:"Course_FindAppt",
+					 url:"Course_FindApptByUserId",
 					 data:{
-					 courseDate:$('#SerchInput').val(),
+					 userId:$('#SerchInput').val(),
 					 page:page
 					 },
 					 success:function(result){				 	
@@ -113,12 +120,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                    '<tr><td >'+appt.apptId+'</td>'+
 						      	'<td >'+appt.courseName+'</a></td>'+
 						      	'<td >'+appt.courseTime.replace("T"," ")+'</td>'+
-						      	'<td >'+appt.courseDuration/60+'</td>'+
-						      	'<td >'+appt.user.userId+'</td>'+							      		     							    						    
-						        '<td ><button type="button" id="btn'+appt.apptId+'" data-userid='+appt.user.userId+' data-coursename='+appt.courseName+'	 data-apptid='+appt.apptId+' class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button></td>'+						     
+						      	'<td >'+appt.courseDuration/60+'</td>'+							      								      		     							    						    
+						        '<td ><button type="button" id="btn'+appt.apptId+'" data-coursename='+appt.courseName+'	 data-apptid='+appt.apptId+' class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button></td>'+						     
 						    '</tr>'		                            
 	                        );
-	                         $('#btn'+appt.apptId).click(function(){	
+	                        $('#btn'+appt.apptId).click(function(){	
 	                        console.log($(this).data("apptid"))							    							    	
 							    	if(confirm("确定删除该预约?")){		
 										$.ajax({
@@ -126,7 +132,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											 url:"User_mediaQuiteAppt",
 											 data:{	
 											  appId:$(this).data("apptid"),
-											  userId:$(this).data("userid"),
+											  userId:userId,
 											  courseName:$(this).data("coursename")					 
 											 },
 											 success:function(result){
@@ -141,9 +147,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							    	}
 							   	})		                        	                        
 	                      });
+	                      
 					 	}						  				 					 			        			   	        			 		        			    		        			         			    
     				}
-   				});	
+   				});
 			}	 
 		</script>
 	</body>

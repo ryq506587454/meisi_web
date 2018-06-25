@@ -12,14 +12,8 @@ import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 
 public class ReigstSMSUtil {
-	public static String sendSms(String tel){		
-		try {
-			//生成验证码
-			Random rand=new Random();//生成随机数
-	        String code="";
-	        for(int a=0;a<6;a++){
-	        code+=rand.nextInt(10);//生成6位数字
-	        }
+	public static String sendSms(String tel,String code){		
+		try {	        
 			//设置超时时间-可自行调整
 			System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
 			System.setProperty("sun.net.client.defaultReadTimeout", "10000");

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -16,6 +18,7 @@ import com.meisi.bean.Card;
 import com.meisi.bean.Coach;
 import com.meisi.bean.Course;
 import com.meisi.bean.User;
+import com.meisi.util.ReigstSMSUtil;
 import com.meisi.util.UnApptSMSUtil;
 /*
  * 用户持久层
@@ -102,7 +105,7 @@ public class UserDao extends HibernateDaoSupport{
 		this.getHibernateTemplate().update(vipCourse);
 		this.getHibernateTemplate().update(vip);
 		this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
-		//System.out.println(UnApptSMSUtil.sendSms(String.valueOf(vip.getTel()),date,vipAppt.getCourseName(), vip.getName()));		
+		UnApptSMSUtil.sendSms(String.valueOf(vip.getTel()),date,vipAppt.getCourseName(), vip.getName());		
 		return "OK";		
 	}
 	//根据条件查询
@@ -128,6 +131,31 @@ public class UserDao extends HibernateDaoSupport{
 				return "2";	
 			}		
 		}
+	//获取验证码
+	public String getCode(User user){
+		//生成验证码		
+        String code="";
+        if(this.checkUserTwo(user)=="1"){
+        	return "存在";
+        }else{
+			Random rand=new Random();
+		    for(int a=0;a<6;a++){
+		    code+=rand.nextInt(10);
+		    }
+			ReigstSMSUtil.sendSms(String.valueOf(user.getUserId()),code);
+			return code;
+        }       
+	}
+	//移动端注册
+	public String regist(User user){
+		user.setGrade(0);
+		user.setName("用户"+user.getUserId());
+		user.setTel(user.getUserId());
+		this.getHibernateTemplate().save(user);
+		this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
+		return "OK";
+		
+	}
 	//添加新用户
 		public String addNewUser(User u,String cardType){								
 			//时间转化格式						
@@ -156,6 +184,42 @@ public class UserDao extends HibernateDaoSupport{
 			this.getHibernateTemplate().save(u);
 			this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
 			return "OK";			
+		}
+	//办卡
+		public String addNewCard(User u,String cardType){
+			User user = this.getHibernateTemplate().get(User.class, u.getUserId());
+			//时间转化格式						
+			Calendar calendar = Calendar.getInstance();
+			//开始时间
+			Date startdate = new Date();				
+			calendar.setTime(startdate);						
+			//设置会员卡
+			Card c = new Card();
+			c.setType(cardType);
+			c.setStartTime(startdate);
+			if(cardType.equals("普通会员")){
+				calendar.add(Calendar.YEAR, 1);
+				Date endDate = calendar.getTime();		
+				c.setEndTime(endDate);
+				c.setRestTimes(50);				
+			}else if(cardType.equals("高级会员")){
+				calendar.add(Calendar.YEAR, 2);
+				Date endDate = calendar.getTime();
+				c.setEndTime(endDate);
+				c.setRestTimes(100);
+			}
+			user.setCard(c);
+			this.getHibernateTemplate().update(user);
+			this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
+			return "OK";			
+		}
+	//充次
+		public String addCost(User u,String resTimes){
+			User user = this.getHibernateTemplate().get(User.class, u.getUserId());
+			user.getCard().setRestTimes(user.getCard().getRestTimes()+Integer.valueOf(resTimes));
+			this.getHibernateTemplate().update(user);
+			this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
+			return "OK";
 		}
 	//查找所有教练
 	public List<Coach> findAllCoach(final int page ,final int pageSize){
@@ -210,9 +274,14 @@ public class UserDao extends HibernateDaoSupport{
 	}
 	//根据ID删除数据
 	public String deleteUser(User u){
-		User user = this.getHibernateTemplate().get(User.class,u.getUserId());
-		this.getHibernateTemplate().delete(user.getCard());	
-		this.getHibernateTemplate().delete(user);	
+		if(u.getCard()==null){
+			User user = this.getHibernateTemplate().get(User.class,u.getUserId());
+			this.getHibernateTemplate().delete(user);
+		}else{
+			User user = this.getHibernateTemplate().get(User.class,u.getUserId());
+			this.getHibernateTemplate().delete(user.getCard());	
+			this.getHibernateTemplate().delete(user);	
+		}		
 		this.getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction().commit();
 		return "1";		
 	}

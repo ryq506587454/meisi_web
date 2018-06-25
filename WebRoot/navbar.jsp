@@ -43,20 +43,19 @@
 			         <li><a href="course_table.jsp">课程列表</a></li>
 			         <li><a href="add_course.jsp">增加课程</a></li>			       
 			         <li><a href="plan_course.jsp">安排课程</a></li>
-			         <li><a href="">查看课程开课时间</a></li>	
+			         <li><a href="course_timetable.jsp">查看某日课程</a></li>
+			         <li><a href="course_time.jsp">查看课程开课时间</a></li>	
 			         <li><a href="course_detail.jsp">查看/修改课程详情</a></li>					         	       				        		        		        						       
 			      </ul>
 			      <a class="am-cf" data-am-collapse="{target: '#collapse-nav5'}"><span class="am-icon-table" />&nbsp;&nbsp;预约管理 <span class="am-icon-angle-right am-fr am-margin-right" /></a>
 			      <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav5">
 			      	 <li><a href="appt_table.jsp">预约统计</a></li>
-			      	 <li><a href="appt_detail.jsp">查看/修改预约详情</a></li>					
+			      	 <li><a href="appt_detail.jsp">查看用户预约</a></li>					
 			      </ul>
 			    </li>			  
 			  </ul>
 			</div>
 		  </div>
-	<!-- 左侧导航结束  -->	
-	
-   	
+	<!-- 左侧导航结束  -->		  	
   </body>
 </html>

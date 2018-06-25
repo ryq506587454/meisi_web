@@ -97,9 +97,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script>
 			$(function(){ 
 　　				$('#page-title').text('查看修改用户信息');
+				if("${!empty sessionScope.userId}"){
+					$.ajax({
+				 	 type:"post",					 
+					 url:"User_FindById",
+					 data:{
+					 userId:"${sessionScope.userId}"
+					 },
+					 success:function(result){
+					 $('#SerchInput').val("");						
+					 	$('#userId').val(result.userId);
+					 	$('#tel').val(result.tel);
+					 	$('#password').val(result.password);	
+					 	$('#identity').val(result.identity);	
+					 	$('#name').val(result.name);													 							  				 					 			        			   	        			 		        			    		        			         			    
+    				}
+   				});
+				}
 　　			}); 
-		</script>
-		<script>
 			$('#SerchBtn').click(function(){
 			if($('#SerchInput').val()==""){
 				alert("请输入教练编号");

@@ -5,6 +5,7 @@ import java.util.List;
 import com.meisi.bean.Coach;
 import com.meisi.service.UserService;
 import com.meisi.util.Utillist;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
@@ -74,7 +75,7 @@ public class CoachAction extends ActionSupport implements ModelDriven<Coach>{
 			this.utillist = utillist;
 		}
 		//设置页面大小
-		private int pageSize = 3;
+		private int pageSize = 5;
 	//教练业务层注入（公用User的）
 		private UserService UserService;
 		public void setUserService(UserService userService) {
@@ -115,6 +116,7 @@ public class CoachAction extends ActionSupport implements ModelDriven<Coach>{
 		}
 		//根据ID查找教练
 		public String FindById(){
+			ActionContext.getContext().getSession().put("coachId",String.valueOf(Coach.getCoachId()));;
 			midCoach = UserService.findByCoachId(Coach);		
 			return "MidCoach";	
 		}
@@ -123,5 +125,10 @@ public class CoachAction extends ActionSupport implements ModelDriven<Coach>{
 			msg = UserService.updateCoach(Coach);
 			return "Update_suc";	
 		}
-
+		//跳转到详情
+		public String Jump(){
+			ActionContext.getContext().getSession().put("coachId",String.valueOf(Coach.getCoachId()));;
+			return "JumpToDetail";
+		}
+		
 }

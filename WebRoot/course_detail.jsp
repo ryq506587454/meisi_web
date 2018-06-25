@@ -44,7 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="card-box">								
 								<form action="Course_UpdateCourse" method="post" class="am-form">
 								  <fieldset>
-								    <legend>添加新课程</legend>
+								    <legend>课程详情</legend>
 								     <div class="form-group col-md-offset-4">
 									    <div class="am-btn-group">						  
 										  <div class="am-dropdown" data-am-dropdown>										
@@ -98,10 +98,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script>
 			$(function(){ 
 　　				$('#page-title').text('课程详情');
-				
+				if("${!empty sessionScope.courseId}"){	
+						$.ajax({
+				 	 type:"post",					 
+					 url:"Course_meidaFindByID",
+					 data:{
+					 courseId:"${sessionScope.courseId}"
+					 },
+					 success:function(result){	
+					 $('#SerchInput').val("");					
+					 	$('#courseId').val(result.courseId);
+					 	$('#courseName').val(result.courseName.split("●")[0]);
+					 	$('#courseIntro').val(result.courseIntro);
+					 	$('#courseDuration').val(result.courseDuration/60);	
+					 	$('#courseType').val(result.courseType);	
+					 	$('#coachName').val(result.coach.coachName);	                      	
+					 }										 							  				 					 			        			   	        			 		        			    		        			         			    
+   				});
+				}				
 　　			}); 
-		</script>
-		<script>
 			$('#SerchBtn').click(function(){
 				if($('#SerchInput').val()==""){
 				alert("请输入课程编号");

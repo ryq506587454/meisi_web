@@ -4,6 +4,7 @@ package com.meisi.service;
  */
 import java.util.List;
 
+import com.meisi.bean.Appointment;
 import com.meisi.bean.Course;
 import com.meisi.bean.Notice;
 import com.meisi.dao.CourseDao;
@@ -53,19 +54,28 @@ public class CourseService {
 		return CourseDao.findCourseByDateAndCoach(name, courseDate, c);
 	}
 	//按照条件查询
-	public List<Course> findCourseByFlag(String flag,String data,int page ,int pageSize){
-		if(flag.equals("All")){
-			return this.findAllCourse(page,pageSize);
-		}else if(data.length()<1){	
+	public List<Course> findCourseByFlag(String flag,String data){
+	 if(data.length()<1){	
 			return null;
 		}else{
-			System.out.println("111");
 			return CourseDao.findCourseByFlag(flag, data);
 		}		
 	}
 	//预约情况
-	public List<ApptLog> findAppt(String date){
-		return CourseDao.findAppt(date);		
+	public List<Appointment> findAppt(String date,int page ,int pageSize){
+		return CourseDao.findAppt(date,page,pageSize);		
+	}
+	//计算预约记录总数
+	public int ApptNumber(String date,int pageSize){
+		return CourseDao.ApptNumber(date, pageSize);
+	}
+	//根据用户Id查看预约记录
+	public List<Appointment> findApptByUserId(String userId,int page ,int pageSize){
+		return CourseDao.findApptByUserId(userId,page,pageSize);	
+	}
+	//计算根据用户Id查看预约记录
+	public int ApptByUserIdNumber(String userId,int pageSize){
+		return CourseDao.ApptByUserIdNumber(userId, pageSize);
 	}
 	//添加课程
 	public String addCourse(Course c,String coachId){
@@ -115,5 +125,9 @@ public class CourseService {
 	//更新公告
 	public String updateNotice(Notice notice){
 		return CourseDao.updateNotice(notice);
+	}
+	//首页通知
+	public List<Notice> indexNotice(){
+		return CourseDao.indexNotice();
 	}
 }

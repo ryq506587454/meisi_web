@@ -5,10 +5,7 @@ import java.util.Date;
 /*
  * 会员卡实体类
  */
-/*
- * 会员卡类型：
- * 次卡,月卡,季卡,半年卡,年卡
- */
+
 
 public class Card {
 	private long cardId;		//会员卡ID

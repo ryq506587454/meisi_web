@@ -46,19 +46,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                 </div>
                             </div>
                         </div>                            
-					</div>
-					<div class="am-u-lg-4  am-u-md-uncentered" >							
-						<div class="card-box widget-user">								
-                            <div class="text-align">
-                                <img src="assets/img/avatar-10.jpg" class="img-responsive img-circle" alt="user">
-                                <div class="wid-u-info">
-                                    <h4 class="m-t-0 m-b-5 font-600">杨XX</h4>    
-                                     <p class="text-muted m-b-5 font-13">电话:13010001000</p>
-                                    <small class="text-info"><b>运营部总经理</b></small>                                       
-                                </div>
-                            </div>
-                        </div>                            
-					</div>
+					</div>					
 					<!-- col end -->				
 				</div>	
 				<!-- Row end -->
@@ -82,16 +70,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                             <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>公告</th>
-                                                <th>时间</th>                                                
+                                                <th>公告标题</th>
+                                                <th>发布时间</th>                                                
                                             </tr>
                                             </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td><a href="#">五一放假通知</a></td>
-                                                    <td>2018/4/20</td>                                                
-                                                </tr>                                                
+                                            <tbody id="notice">                                                                                           
                                             </tbody>
                                         </table>
                                     </div>
@@ -115,7 +98,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script>
 		var page = 1;
 		$(function(){ 
-			console.log("111");
 			 $.ajax({
 				 	 type:"post",					 
 					 url:"Coach_FindAllCoach",
@@ -126,7 +108,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         			    $("#coach").empty();	        			      
         			    $.each(result.list,function (index,coach){		        			    	                  		                        		                        
 	                        $("#coach").append(
-	                        '<a href="#">'+
+	                        '<a href="Coach_Jump?coachId='+coach.coachId+'">'+
                                        '<div class="inbox-item">'+
                                            '<div class="inbox-item-img"><img src="assets/img/avatar-1.jpg" class="img-circle" alt="" /></div>'+
                                            '<p class="inbox-item-author">'+coach.coachName+'</p>'+
@@ -139,8 +121,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             }	 		                        
 	                    });      			    
     				}
-   				});		 	
+   				});	
+   				$.ajax({
+				 	 type:"post",					 
+					 url:"Notice_IndexNotice",
+					 data:{						 					 
+					 },
+					 success:function(result){	
+					 console.log(result)
+					 $("#notice").empty();
+					  $.each(result,function (index,notice){		        			    	                  		                        		                        
+	                        $("#notice").append(
+	                          '<tr>'+
+                                 '<td>'+notice.noticeId+'</td>'+
+                                 '<td><a href="Notice_Jump?noticeId='+notice.noticeId+'">'+notice.title+'</a></td>'+
+                                 '<td>'+notice.publishTime.slice(0,10)+'</td>'+                                                
+                              '</tr>'                                                      
+	                        );
+                         	if(index==4){
+                               return flase;
+                            }	 		                        
+	                    }); 							 							 							 							   	       			        			    
+    				}
+   				});			 	
 　　			}); 
+			
+		
 		</script>
 	</body>
 	

@@ -76,6 +76,7 @@ public class NoticeAction extends ActionSupport implements ModelDriven<Notice>{
 		}
 		//根据ID查询
 		public String FindByID(){
+			ActionContext.getContext().getSession().put("noticeId",String.valueOf(Notice.getNoticeId()));;
 			mediaNotice=CourseService.findByID(Notice);
 			return "MediaNotice";
 		}
@@ -84,4 +85,11 @@ public class NoticeAction extends ActionSupport implements ModelDriven<Notice>{
 			CourseService.updateNotice(Notice);
 			return "Update_suc";
 		}
+		//首页通知
+		public String IndexNotice(){
+			mediaNoticeList = CourseService.indexNotice();
+			return "MediaNoticeList";
+			
+		}
+		
 }

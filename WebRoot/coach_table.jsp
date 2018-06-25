@@ -1,5 +1,4 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -66,8 +65,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</tbody>
 							</table>
 							<ul class="am-pagination" style="margin-top: 50px;">
-							  <li id="prevLi" class="am-pagination-prev"><a id="prev" href="javascript:;">&laquo; Prev</a></li>
-							  <li id="nextLi" class="am-pagination-next"><a id="next" href="javascript:;">Next &raquo;</a></li>
+							  <li id="prevLi" class="am-pagination-prev "><a id="prev" href="javascript:;">&laquo; Prev</a></li>
+							  <li id="nextLi" class="am-pagination-next "><a id="next" href="javascript:;">Next &raquo;</a></li>
 							</ul>				          
 				        </div>
       					</div>					  			  
@@ -84,7 +83,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script type="text/javascript" src="assets/js/amazeui.min.js"></script>
 		<script>
 			var page = 1;
-			var lastPage=1;
 			$("#prev").click(function(){				
 				page = page-1;	
 				findAllCoach();	
@@ -100,24 +98,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 　　			}); 
 			$(function(){
 				$('#select a').click(function(){					
-					var flag  = $(this).data("flag");						
-					 $.ajax({
+					var flag  = $(this).data("flag");
+					if(flag=="All"){
+						findAllCoach();	
+					}else{
+						 $.ajax({
 					 	 type:"post",					 
 						 url:"Coach_FindByFlag",
 						 data:{
 						 flag:flag,
 						 data:$('#SerchInput').val()
 						 },
-						 success:function(result){
-						 	console.log(result);						  				 
+						 success:function(result){						  				 
 						 	if(result.code==100){						 		
 						 		alert('没有查询到相关信息');						 		
 		    				}else{
+		    					$("#prevLi").addClass("am-disabled");
+		    					$("#nextLi").addClass("am-disabled");	
 		    					$("#tbody").empty();		
 						 		$.each(result.list,function (index,coach){		                       		                        		                        
 			                    $("#tbody").append(
 			                    '<tr><td >'+coach.coachId+'</td>'+
-							      	'<td>'+coach.coachName+'</td>'+
+							      	'<td ><a href="Coach_Jump?coachId='+coach.coachId+'">'+coach.coachName+'</a></td>'+
 							      	'<td class="am-hide-sm-only">'+coach.sex+'</td>'+
 							      	'<td>'+coach.coachInfo+'</td>'+
 							      	'<td class="am-hide-sm-only">'+coach.courseType+'课程</td>'+							      		     							    						    
@@ -134,9 +136,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											 },
 											 success:function(result){							 					 
 						        			     if(result=="1"){
-						        			     alert('删除成功');
+						        			      alert('删除成功');
 						        			     $('#SerchInput').empty();	
-						        			     findAllCoach();
+						        			      findAllCoach();
 						        			     }   			    
 						    				 }
 					    				});				    		
@@ -146,7 +148,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                      });
 						 	}		        			   	        			 		        			    		        			         			    
 	    				}
-    				});							
+    				});
+				   }																	
 				})			 
 			});
 		    function findAllCoach() {
@@ -162,8 +165,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						 data:{	
 						 	page:page					 
 						 },
-						 success:function(result){	
-						 console.log(result);					 
+						 success:function(result){						 
 	        			    $("#tbody").empty();	        			      
 	        			    $.each(result.list,function (index,coach){
 	        			    	if(page==result.msg){
@@ -173,11 +175,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								}	        			    	                  		                        		                        
 		                        $("#tbody").append(
 		                        '<tr><td >'+coach.coachId+'</td>'+
-							      '<td>'+coach.coachName+'</td>'+
+							      '<td ><a href="Coach_Jump?coachId='+coach.coachId+'">'+coach.coachName+'</a></td>'+
 							      '<td class="am-hide-sm-only">'+coach.sex+'</td>'+
 							      '<td>'+coach.coachInfo+'</td>'+
 							      '<td class="am-hide-sm-only">'+coach.courseType+'课程</td>'+							      		     							    						    
-							       '<td class="am-hide-sm-only"><button type="button" id="btn'+coach.coachId+'" data-coachid='+coach.coachId+' class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button> </td>'+						     
+							      '<td class="am-hide-sm-only"><button type="button" id="btn'+coach.coachId+'" data-coachid='+coach.coachId+' class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button> </td>'+						     
 							    '</tr>'		                            
 		                        );
 		                        $('#btn'+coach.coachId).click(function(){								    							    	

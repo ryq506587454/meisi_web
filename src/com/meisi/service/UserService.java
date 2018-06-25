@@ -4,10 +4,12 @@ package com.meisi.service;
  */
 
 import java.util.List;
+import java.util.Random;
 
 import com.meisi.bean.Coach;
 import com.meisi.bean.User;
 import com.meisi.dao.UserDao;
+import com.meisi.util.ReigstSMSUtil;
 
 public class UserService {
 	//用户持久层类注入
@@ -57,7 +59,22 @@ public class UserService {
 	public String addNewUser(User u,String cType){
 		return UserDao.addNewUser(u,cType);
 	}
-
+	//办卡
+	public String addNewCard(User u,String cardType){
+		return UserDao.addNewCard(u, cardType);
+	}
+	//充次
+	public String addCost(User u,String resTimes){
+		return UserDao.addCost(u, resTimes);
+	}
+	//获取验证码
+	public String getCode(User user){	
+		return UserDao.getCode(user);
+	}
+	//移动端注册
+	public String regist(User user){
+		return UserDao.regist(user);
+	}
 	//删除会员
 	public String deleteUser(User u){
 		return UserDao.deleteUser(u); 

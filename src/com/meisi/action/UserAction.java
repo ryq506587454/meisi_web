@@ -104,6 +104,14 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 		public void setPage(String page) {
 			this.page = page;
 		}
+		//充值次数
+		private String resTimes;		
+	    public String getResTimes() {
+			return resTimes;
+		}
+		public void setResTimes(String resTimes) {
+			this.resTimes = resTimes;
+		}
 		//辅助工具
 		private Utillist utillist; 		
 		public Utillist getUtillist() {
@@ -147,7 +155,7 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 		return "MediaMsg";
 	}
 	//取消预约
-	public String mediaQuiteAppt(){		
+	public String mediaQuiteAppt(){	
 		msg = UserService.quiteAppt(user, courseName, appId);
 		return "MediaMsg";
 	}
@@ -188,6 +196,7 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 	}
 	//通过ID查用户
 	public String FindById(){
+		ActionContext.getContext().getSession().put("userId",String.valueOf(user.getUserId()));;
 		mediaUser = UserService.findByUserId(user);		
 		return "MediaUser";	
 	}
@@ -196,5 +205,29 @@ public class UserAction extends ActionSupport implements ModelDriven<User>{
 		msg = UserService.updateUser(user);	
 		return "Update_suc";	
 	}
-	
+	//获取验证码
+	public String GetCode(){
+		msg = UserService.getCode(user);
+		return "MediaMsg";
+	}
+	//注册
+	public String Regist(){
+		msg = UserService.regist(user);
+		return "MediaMsg";
+	}
+	//跳转到详情
+	public String Jump(){
+		ActionContext.getContext().getSession().put("userId",String.valueOf(user.getUserId()));;
+		return "JumpToDetail";
+	}
+	//办卡
+	public String AddCard(){
+		msg = UserService.addNewCard(user, select);
+		return "MediaMsg";	
+	}
+	//充次
+	public String AddRestimes(){
+		msg = UserService.addCost(user, resTimes);
+		return "MediaMsg";	
+	}
 }

@@ -104,8 +104,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 　　				$('#page-title').text('添加课程');
 				
 　　			}); 
-		</script>
-		<script type="text/javascript">
+
 		$('#select').change(function(){
 			$.ajax({
 				 	 type:"post",					 
@@ -123,8 +122,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     				}
    				});
 			})			
-		</script>
-		<script>
+
 			$('#courseId').blur(function(){	
 				var value = $(this).val().length;				
 				if(value==" "){				

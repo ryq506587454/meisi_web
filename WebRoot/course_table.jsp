@@ -1,5 +1,4 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -91,12 +90,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			})
 			$("#next").click(function(){				
 				page = page+1;
-				findAllCourse();
-				if(page=="${sessionScope.coursePageSize}"){
-					$("#nextLi").addClass("am-disabled");
-				}else{
-					$("#nextLi").removeClass("am-disabled");
-				}						
+				findAllCourse();						
 			})
 			$(function(){ 
 　　				$('#page-title').text('课程列表');
@@ -104,26 +98,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 　　			}); 
 			$(function(){			
 				$('#select a').click(function(){					
-					var flag  = $(this).data("flag");						
-					 $.ajax({
+					var flag  = $(this).data("flag");
+					if(flag=="All"){
+						findAllCourse();	
+					}else{
+						$.ajax({
 					 	 type:"post",					 
 						 url:"Course_FindByFlag",
 						 data:{
 						 flag:flag,
 						 data:$('#SerchInput').val()						
 						 },
-						 success:function(result){							  				 
+						 success:function(result){						  				 
 						 	if(result.code==100){						 		
 						 		alert('没有查询到相关信息');						 		
 		    				}else{
+		    					$("#prevLi").addClass("am-disabled");
+		    					$("#nextLi").addClass("am-disabled");	
 		    					$("#tbody").empty();		
 						 		$.each(result.list,function (index,course){		                       		                        		                        
 			                        $("#tbody").append(
 			                        '<tr><td >'+course.courseId+'</td>'+
-								      '<td>'+course.courseName+'</td>'+
+								      '<td><a href="Course_Jump?courseId='+course.courseId+'">'+course.courseName+'</a></td>'+
 								      '<td class="am-hide-sm-only">'+course.courseType+'</td>'+
 								      '<td>'+course.courseDuration/60+'分钟</td>'+
-								      '<td class="am-hide-sm-only">'+course.totalNumber+'</td>'+							      		     							    						    
+								      '<td class="am-hide-sm-only">'+course.totalNumber+'</td>'+
+								      '<td class="am-hide-sm-only">'+course.classNumber+'人/节课</td>'+								      		     							    						    
 								      '<td class="am-hide-sm-only"><button type="button" id="btn'+course.courseId+'" data-courseid='+course.courseId+' class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button></td>'+					     
 								    '</tr>'		                            
 			                        );
@@ -149,7 +149,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                    	});
 						 	}		        			   	        			 		        			    		        			         			    
 	    				}
-    				});							
+    				});
+				}									 							
 				})			 
 			});
 		    function findAllCourse() {
@@ -167,6 +168,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						 },
 						 success:function(result){						 
 	        			    $("#tbody").empty();
+	        			    console.log(result)
 	        			    if(page==result.msg){
 									$("#nextLi").addClass("am-disabled");
 								}else{
@@ -175,7 +177,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        			    $.each(result.list,function (index,course){	        			    		        			   	        			    	                  		                        		                        
 		                        $("#tbody").append(
 		                        '<tr><td >'+course.courseId+'</td>'+
-							      '<td>'+course.courseName+'</td>'+
+							      '<td><a href="Course_Jump?courseId='+course.courseId+'">'+course.courseName+'</a></td>'+
 							      '<td class="am-hide-sm-only">'+course.courseType+'</td>'+
 							      '<td>'+course.courseDuration/60+' 分钟</td>'+
 							      '<td class="am-hide-sm-only">'+course.totalNumber+'</td>'+
@@ -183,8 +185,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							      '<td class="am-hide-sm-only"><button type="button" id="btn'+course.courseId+'" data-courseid='+course.courseId+' class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button></td>'+						     
 							    '</tr>'		                            
 		                        );
-		                        $('#btn'+course.courseId).click(function(){	
-		                       	 console.log(111)							    							    	
+		                        $('#btn'+course.courseId).click(function(){			                       							    							    	
 							    	if(confirm("确定删除该课程?")){		
 										$.ajax({
 										 	 type:"post",					 
